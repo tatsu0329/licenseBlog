@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { getCert } from "@/lib/data/certs";
 import { getQuestionsByCert } from "@/lib/data/questions";
-import PassRateChart from "@/components/charts/PassRateChart";
-import ExamStatsTable from "@/components/charts/ExamStatsTable";
 
 export default async function CertPage({
   params,
@@ -98,30 +96,10 @@ export default async function CertPage({
               href={`/certs/${cert.slug}/overview`}
               className="text-blue-600 hover:text-blue-800 text-sm font-medium"
             >
-              試験概要の詳細を見る →
+              試験概要・合格率推移の詳細を見る →
             </Link>
           </div>
         </div>
-
-        {/* 合格率推移グラフ */}
-        {cert.examInfo?.passRateHistory && cert.examInfo.passRateHistory.length > 0 && (
-          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <PassRateChart
-              data={cert.examInfo.passRateHistory}
-              title="合格率の推移"
-            />
-          </div>
-        )}
-
-        {/* 受験者数・合格者数・合格率の統計表 */}
-        {cert.examInfo?.passRateHistory && cert.examInfo.passRateHistory.length > 0 && (
-          <div className="mb-6">
-            <ExamStatsTable
-              data={cert.examInfo.passRateHistory}
-              title="試験統計データ（受験者数・合格者数・合格率）"
-            />
-          </div>
-        )}
 
         {/* メインコンテンツ（高需要×高収益を優先） */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
