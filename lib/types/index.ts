@@ -63,6 +63,7 @@ export type Question = {
   correctAnswer: 1 | 2 | 3 | 4;
   explanation: string; // 解説（メインコンテンツ）
   explanationDetail?: string; // 詳細解説（Markdown可）
+  explanationImages?: string[]; // 解説に使用する画像URL
   difficulty?: 1 | 2 | 3 | 4 | 5; // 問題の難易度
   tags: string[]; // タグ（キーワード）
   relatedQuestionIds: string[]; // 関連問題ID（手動 or 自動）

@@ -1,8 +1,10 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Metadata } from "next";
 import { getQuestion } from "@/lib/data/questions";
 import { getCert } from "@/lib/data/certs";
 import { getCategory } from "@/lib/data/categories";
+import QuestionImage from "@/components/images/QuestionImage";
 
 // 動的メタデータ生成
 export async function generateMetadata({
@@ -183,6 +185,21 @@ export default async function QuestionPage({
               <p className="text-gray-700 leading-relaxed whitespace-pre-line">
                 {question.explanation}
               </p>
+              
+              {/* 解説画像 */}
+              {question.explanationImages && question.explanationImages.length > 0 && (
+                <div className="mt-6 space-y-4">
+                  {question.explanationImages.map((imageUrl, index) => (
+                    <QuestionImage
+                      key={index}
+                      src={imageUrl}
+                      alt={`解説図 ${index + 1}`}
+                      caption={`図${index + 1}: 解説図`}
+                    />
+                  ))}
+                </div>
+              )}
+
               {question.explanationDetail && (
                 <div className="mt-4 prose prose-sm max-w-none">
                   <div className="text-gray-700 whitespace-pre-line">

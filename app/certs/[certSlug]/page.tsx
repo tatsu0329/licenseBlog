@@ -68,7 +68,7 @@ export default async function CertPage({
           </dl>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
           <Link
             href={`/certs/${cert.slug}/study`}
             className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
@@ -103,6 +103,18 @@ export default async function CertPage({
             </h3>
             <p className="text-gray-600 text-sm">
               試験や学習に関するよくある質問と回答をご紹介します。
+            </p>
+          </Link>
+
+          <Link
+            href={`/certs/${cert.slug}/app`}
+            className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow border-2 border-blue-200"
+          >
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              アプリ紹介
+            </h3>
+            <p className="text-gray-600 text-sm">
+              過去問をスマホで学習できるアプリを紹介しています。
             </p>
           </Link>
         </div>
