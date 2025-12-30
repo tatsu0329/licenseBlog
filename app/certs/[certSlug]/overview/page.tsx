@@ -205,6 +205,30 @@ export default async function OverviewPage({
           </section>
         )}
 
+        {/* 軽いアプリCTA */}
+        <section className="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4 md:p-6 mb-6">
+          <h3 className="font-semibold text-gray-900 mb-2">
+            💡 学習計画を立てる
+          </h3>
+          <p className="text-sm text-gray-700 mb-3">
+            {cert.shortName}の学習を効率的に進めるため、診断ツールで最適な学習計画を作成しましょう。
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Link
+              href={`/certs/${cert.slug}/diagnosis`}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold text-sm text-center"
+            >
+              学習診断ツールを使う →
+            </Link>
+            <Link
+              href={`/certs/${cert.slug}/study`}
+              className="px-4 py-2 bg-white text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition-colors font-semibold text-sm text-center"
+            >
+              ロードマップを見る →
+            </Link>
+          </div>
+        </section>
+
         {/* 関連リンク */}
         <section className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">

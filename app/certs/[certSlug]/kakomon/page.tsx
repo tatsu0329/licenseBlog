@@ -64,6 +64,26 @@ export default async function KakomonPage({
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* アプリCTA（過去問ページのヘッダー下） */}
+        <div className="bg-gradient-to-r from-green-500 to-blue-500 rounded-lg shadow-lg p-4 md:p-6 mb-6 text-white">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+              <h2 className="text-lg md:text-xl font-bold mb-2">
+                📱 過去問をアプリで効率的に学習
+              </h2>
+              <p className="text-green-100 text-sm">
+                スキマ時間で繰り返し解ける。学習進捗・弱点も自動記録
+              </p>
+            </div>
+            <Link
+              href={`/certs/${cert.slug}/app`}
+              className="px-6 py-3 bg-white text-green-600 rounded-lg hover:bg-green-50 transition-colors font-semibold whitespace-nowrap"
+            >
+              アプリを見る →
+            </Link>
+          </div>
+        </div>
+
         {/* フィルター */}
         <section className="bg-white rounded-lg shadow-md p-6 mb-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
@@ -221,6 +241,25 @@ export default async function KakomonPage({
             </ul>
           )}
         </div>
+
+        {/* アプリCTA（過去問一覧の最後） */}
+        {questions.length > 0 && (
+          <div className="bg-gradient-to-r from-blue-500 to-green-500 rounded-lg shadow-lg p-6 mt-6 text-white text-center">
+            <h3 className="text-xl font-bold mb-2">
+              📱 過去問をアプリで効率的に学習
+            </h3>
+            <p className="text-blue-100 mb-4 max-w-2xl mx-auto">
+              スキマ時間で繰り返し解ける。学習進捗や弱点を自動で分析。
+              無料で10問まで試せます。
+            </p>
+            <Link
+              href={`/certs/${cert.slug}/app`}
+              className="inline-block px-8 py-3 bg-white text-blue-600 rounded-lg hover:bg-blue-50 transition-colors font-bold text-lg"
+            >
+              アプリ詳細を見る →
+            </Link>
+          </div>
+        )}
       </main>
     </div>
   );

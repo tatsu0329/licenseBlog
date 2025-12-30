@@ -147,10 +147,30 @@ export default async function QuestionPage({
               )}
             </div>
 
-            {/* 問題文（引用形式） */}
-            <blockquote className="border-l-4 border-gray-300 pl-4 py-2 mb-4 italic text-gray-700">
-              {question.questionText || question.questionTheme}
-            </blockquote>
+                {/* アプリCTA（強 - 問題文の直下） */}
+                <div className="bg-gradient-to-r from-green-500 to-blue-500 rounded-lg shadow-lg p-4 mb-4 text-white">
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div>
+                      <p className="font-semibold mb-1">
+                        📱 この問題をアプリで解く
+                      </p>
+                      <p className="text-sm text-green-100">
+                        スキマ時間で繰り返し演習できます
+                      </p>
+                    </div>
+                    <Link
+                      href={`/certs/${certSlug}/app`}
+                      className="px-5 py-2 bg-white text-green-600 rounded-lg hover:bg-green-50 transition-colors font-semibold whitespace-nowrap"
+                    >
+                      アプリを見る →
+                    </Link>
+                  </div>
+                </div>
+
+                {/* 問題文（引用形式） */}
+                <blockquote className="border-l-4 border-gray-300 pl-4 py-2 mb-4 italic text-gray-700">
+                  {question.questionText || question.questionTheme}
+                </blockquote>
 
             {/* 選択肢 */}
             <h3 className="text-lg font-semibold text-gray-900 mb-3 mt-6">
@@ -207,6 +227,26 @@ export default async function QuestionPage({
                   </div>
                 </div>
               )}
+
+              {/* アプリCTA（中 - 解説の下） */}
+              <div className="mt-6 bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                  <div>
+                    <p className="font-semibold text-gray-900 mb-1">
+                      📱 関連問題をアプリでまとめて演習
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      同じ分野の問題をまとめて解いて知識を定着させましょう
+                    </p>
+                  </div>
+                  <Link
+                    href={`/certs/${certSlug}/app`}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold whitespace-nowrap text-sm"
+                  >
+                    アプリで演習 →
+                  </Link>
+                </div>
+              </div>
             </div>
           </section>
 

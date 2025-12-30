@@ -95,6 +95,19 @@ export default async function FAQPage({
         </header>
 
         <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* 軽いCTA */}
+          <div className="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4 mb-6">
+            <p className="text-sm text-gray-700 mb-2">
+              💡 {cert.shortName}の学習を始めるなら、まずは学習ロードマップを確認しましょう。
+            </p>
+            <Link
+              href={`/certs/${cert.slug}/study`}
+              className="text-blue-600 hover:text-blue-800 font-semibold text-sm"
+            >
+              勉強ロードマップを見る →
+            </Link>
+          </div>
+
           {faqs.length === 0 ? (
             <div className="bg-white rounded-lg shadow-md p-6">
               <p className="text-gray-600">よくある質問がまだ登録されていません。</p>
@@ -124,33 +137,55 @@ export default async function FAQPage({
             </div>
           )}
 
-          {/* 関連リンク */}
+          {/* 関連リンク（収益性向上） */}
           <section className="bg-white rounded-lg shadow-md p-6 mt-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">関連リンク</h2>
-            <div className="space-y-3">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              関連コンテンツ
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Link
                 href={`/certs/${cert.slug}/study`}
-                className="block p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors"
+                className="p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
               >
-                <span className="text-blue-600 hover:text-blue-800">
-                  {cert.shortName}の勉強法を見る →
-                </span>
+                <h3 className="font-semibold text-gray-900 mb-1">
+                  📚 勉強ロードマップ
+                </h3>
+                <p className="text-sm text-gray-600">
+                  効率的な学習方法を確認
+                </p>
               </Link>
               <Link
                 href={`/certs/${cert.slug}/kakomon`}
-                className="block p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors"
+                className="p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors"
               >
-                <span className="text-blue-600 hover:text-blue-800">
-                  {cert.shortName}の過去問解説を見る →
-                </span>
+                <h3 className="font-semibold text-gray-900 mb-1">
+                  📝 過去問解説
+                </h3>
+                <p className="text-sm text-gray-600">
+                  過去問で実力を確認
+                </p>
+              </Link>
+              <Link
+                href={`/certs/${cert.slug}/app`}
+                className="p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
+              >
+                <h3 className="font-semibold text-gray-900 mb-1">
+                  📱 学習アプリ
+                </h3>
+                <p className="text-sm text-gray-600">
+                  スキマ時間で効率的に学習
+                </p>
               </Link>
               <Link
                 href={`/certs/${cert.slug}`}
-                className="block p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors"
+                className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
               >
-                <span className="text-blue-600 hover:text-blue-800">
-                  ← {cert.shortName}のトップページに戻る
-                </span>
+                <h3 className="font-semibold text-gray-900 mb-1">
+                  🏠 トップページ
+                </h3>
+                <p className="text-sm text-gray-600">
+                  {cert.shortName}の総合情報
+                </p>
               </Link>
             </div>
           </section>

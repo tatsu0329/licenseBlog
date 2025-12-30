@@ -41,6 +41,26 @@ export default async function CertPage({
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* アプリCTA（最初のCTA - 中） */}
+        <div className="bg-gradient-to-r from-blue-500 to-green-500 rounded-lg shadow-lg p-4 md:p-6 mb-6 text-white">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex-1">
+              <h2 className="text-lg md:text-xl font-bold mb-2">
+                📱 {cert.shortName}の過去問をスマホで解く
+              </h2>
+              <p className="text-blue-100 text-sm md:text-base">
+                通勤・通学中にスキマ時間で学習。無料で10問まで試せます
+              </p>
+            </div>
+            <Link
+              href={`/certs/${cert.slug}/app`}
+              className="px-6 py-3 bg-white text-blue-600 rounded-lg hover:bg-blue-50 transition-colors font-semibold whitespace-nowrap"
+            >
+              アプリを見る →
+            </Link>
+          </div>
+        </div>
+
         {/* 試験概要（クイックビュー） */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">
@@ -103,32 +123,52 @@ export default async function CertPage({
           </div>
         )}
 
-        {/* クイックアクセスセクション */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-          <Link
-            href={`/certs/${cert.slug}/study`}
-            className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow text-white"
-          >
-            <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
-              📚 勉強方法・ロードマップ
-            </h3>
-            <p className="text-blue-100 text-sm">
-              最短合格を目指す学習ロードマップと勉強法
-            </p>
-          </Link>
-
+        {/* メインコンテンツ（高需要×高収益を優先） */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          {/* 過去問（最優先：高需要×高収益） */}
           <Link
             href={`/certs/${cert.slug}/kakomon`}
-            className="bg-gradient-to-br from-green-500 to-green-600 rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow text-white"
+            className="bg-gradient-to-br from-green-500 to-green-600 rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow text-white relative overflow-hidden"
           >
-            <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+            <div className="absolute top-0 right-0 bg-green-700 text-white px-3 py-1 rounded-bl-lg text-xs font-semibold">
+              最重要
+            </div>
+            <h3 className="text-xl font-semibold mb-2 flex items-center gap-2">
               📝 過去問・解説
             </h3>
-            <p className="text-green-100 text-sm">
-              過去問の詳細な解説を提供
-              {questions.length > 0 && `（${questions.length}問）`}
+            <p className="text-green-100 text-sm mb-3">
+              詳細な解説で実力をアップ
+              {questions.length > 0 && `（${questions.length}問掲載）`}
             </p>
+            <div className="flex items-center gap-2 text-green-100 text-sm">
+              <span>→</span>
+              <span>アプリで問題演習も可能</span>
+            </div>
           </Link>
+
+          {/* 勉強ロードマップ（高需要×高収益） */}
+          <Link
+            href={`/certs/${cert.slug}/study`}
+            className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow text-white relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 bg-blue-700 text-white px-3 py-1 rounded-bl-lg text-xs font-semibold">
+              人気
+            </div>
+            <h3 className="text-xl font-semibold mb-2 flex items-center gap-2">
+              📚 勉強方法・ロードマップ
+            </h3>
+            <p className="text-blue-100 text-sm mb-3">
+              最短合格を目指す学習ロードマップ
+            </p>
+            <div className="flex items-center gap-2 text-blue-100 text-sm">
+              <span>→</span>
+              <span>診断ツールで学習計画作成</span>
+            </div>
+          </Link>
+        </div>
+
+        {/* その他コンテンツ */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
 
           {isAutoMechanic1 && (
             <Link
@@ -254,6 +294,31 @@ export default async function CertPage({
             </div>
           </section>
         )}
+
+        {/* アプリCTA（最後のCTA - 強） */}
+        <section className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg shadow-lg p-6 md:p-8 mb-6 text-white text-center">
+          <h2 className="text-2xl font-bold mb-3">
+            {cert.shortName}の合格をアプリでサポート
+          </h2>
+          <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
+            過去問演習、学習進捗管理、弱点分析など、{cert.shortName}の学習に必要な機能を全てアプリで。
+            無料で10問まで試せます。
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href={`/certs/${cert.slug}/app`}
+              className="px-8 py-4 bg-white text-blue-600 rounded-lg hover:bg-blue-50 transition-colors font-bold text-lg"
+            >
+              アプリ詳細を見る →
+            </Link>
+            <Link
+              href={`/certs/${cert.slug}/web-vs-app`}
+              className="px-8 py-4 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition-colors font-semibold text-lg"
+            >
+              Web vs アプリの使い分け
+            </Link>
+          </div>
+        </section>
       </main>
     </div>
   );

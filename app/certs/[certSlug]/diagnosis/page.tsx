@@ -62,7 +62,7 @@ export default function DiagnosisPage() {
           <div>
             {activeTab === "study-time" && <StudyTimeDiagnosis />}
             {activeTab === "pass-possibility" && <PassPossibilityCheck />}
-            {activeTab === "weak-area" && <WeakAreaDiagnosis />}
+            {activeTab === "weak-area" && <WeakAreaDiagnosis certSlug={certSlug} />}
           </div>
         </div>
 
@@ -276,7 +276,7 @@ function PassPossibilityCheck() {
 }
 
 // 苦手分野診断
-function WeakAreaDiagnosis() {
+function WeakAreaDiagnosis({ certSlug }: { certSlug: string }) {
   return (
     <div>
       <h2 className="text-lg font-semibold text-gray-900 mb-4">
