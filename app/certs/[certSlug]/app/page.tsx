@@ -152,7 +152,7 @@ export default async function AppPage({
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {app.screenshots.map((screenshot, index) => (
                   <div
-                    key={index}
+                    key={screenshot}
                     className="relative aspect-[9/16] bg-gray-100 rounded-lg overflow-hidden"
                   >
                     <div className="absolute inset-0 flex items-center justify-center">
@@ -181,7 +181,7 @@ export default async function AppPage({
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {app.features.map((feature, index) => (
-                <div key={index} className="flex gap-4">
+                <div key={feature.title} className="flex gap-4">
                   <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                     {feature.iconUrl ? (
                       <Image
@@ -219,7 +219,7 @@ export default async function AppPage({
               </h3>
               <ul className="list-disc list-inside text-green-800 text-sm space-y-1">
                 {app.freeFeatures.map((feature, index) => (
-                  <li key={index}>{feature}</li>
+                  <li key={`free-${index}-${feature.substring(0, 20)}`}>{feature}</li>
                 ))}
               </ul>
             </div>
@@ -229,7 +229,7 @@ export default async function AppPage({
               </h3>
               <ul className="list-disc list-inside text-blue-800 text-sm space-y-1">
                 {app.paidFeatures.map((feature, index) => (
-                  <li key={index}>{feature}</li>
+                  <li key={`paid-${index}-${feature.substring(0, 20)}`}>{feature}</li>
                 ))}
               </ul>
             </div>
@@ -252,7 +252,7 @@ export default async function AppPage({
                 </div>
                 <ul className="space-y-2 mb-6">
                   {app.freeFeatures.slice(0, 3).map((feature, index) => (
-                    <li key={index} className="flex items-start text-sm text-gray-600">
+                    <li key={`free-plan-${index}-${feature.substring(0, 20)}`} className="flex items-start text-sm text-gray-600">
                       <span className="text-green-500 mr-2">✓</span>
                       {feature}
                     </li>
@@ -280,7 +280,7 @@ export default async function AppPage({
                 </div>
                 <ul className="space-y-2 mb-6">
                   {app.paidFeatures.slice(0, 3).map((feature, index) => (
-                    <li key={index} className="flex items-start text-sm text-gray-600">
+                    <li key={`paid-plan-${index}-${feature.substring(0, 20)}`} className="flex items-start text-sm text-gray-600">
                       <span className="text-blue-500 mr-2">✓</span>
                       {feature}
                     </li>

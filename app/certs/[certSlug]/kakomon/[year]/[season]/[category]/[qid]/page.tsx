@@ -191,7 +191,7 @@ export default async function QuestionPage({
                 <div className="mt-6 space-y-4">
                   {question.explanationImages.map((imageUrl, index) => (
                     <QuestionImage
-                      key={index}
+                      key={imageUrl}
                       src={imageUrl}
                       alt={`解説図 ${index + 1}`}
                       caption={`図${index + 1}: 解説図`}

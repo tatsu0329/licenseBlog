@@ -31,8 +31,16 @@ export type ExamInfo = {
   passCriteria: string; // 合格基準（例: '60点以上'）
   passRateHistory: {
     year: number;
-    spring?: number;
-    autumn?: number;
+    spring?: {
+      passRate?: number; // 合格率（%）
+      examinees?: number; // 受験者数
+      passers?: number; // 合格者数
+    };
+    autumn?: {
+      passRate?: number; // 合格率（%）
+      examinees?: number; // 受験者数
+      passers?: number; // 合格者数
+    };
   }[];
 };
 

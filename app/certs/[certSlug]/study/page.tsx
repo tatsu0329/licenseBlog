@@ -18,8 +18,8 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${cert.shortName}の勉強法・学習ロードマップ`,
-    description: `${cert.shortName}の効率的な学習方法、おすすめ教材、学習計画をご紹介します。`,
+    title: `${cert.shortName}｜最短合格ロードマップ・勉強法`,
+    description: `${cert.shortName}の最短合格を目指すための学習ロードマップ、分野別重要度、過去問ベース逆算学習法を詳しく解説します。`,
     alternates: {
       canonical: `/certs/${certSlug}/study`,
     },
@@ -90,16 +90,146 @@ export default async function StudyPage({
               <span>勉強法</span>
             </nav>
             <h1 className="text-2xl font-bold text-gray-900">
-              {cert.shortName}の勉強法・学習ロードマップ
+              {cert.shortName}｜最短合格ロードマップ
             </h1>
           </div>
         </header>
 
         <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* 全体像 */}
+          <section className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 mb-6 text-white">
+            <h2 className="text-xl font-semibold mb-4">全体像：何から何まであるか</h2>
+            <p className="mb-4 leading-relaxed">
+              {cert.shortName}の試験は、学科試験と実技試験の2つから構成されます。
+              学科試験では、エンジン、シャシ、電気装置、故障診断の4分野から出題され、
+              実技試験では実際の作業手順や測定器の使用方法が問われます。
+            </p>
+            <div className="bg-white/20 rounded-lg p-4">
+              <p className="font-semibold mb-2">合格までの大まかな流れ</p>
+              <ol className="list-decimal list-inside space-y-1 text-sm">
+                <li>基礎知識の習得（2-3ヶ月）</li>
+                <li>過去問演習による知識の定着（2-3ヶ月）</li>
+                <li>実技試験対策（1-2ヶ月）</li>
+                <li>総復習・模試（1ヶ月）</li>
+              </ol>
+            </div>
+          </section>
+
+          {/* 分野別重要度 */}
+          {categories.length > 0 && (
+            <section className="bg-white rounded-lg shadow-md p-6 mb-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                分野別重要度（★〜★★★）
+              </h2>
+              <div className="space-y-4">
+                {categories
+                  .sort((a, b) => a.order - b.order)
+                  .map((category) => {
+                    const importance =
+                      category.slug === "engine" || category.slug === "electrical"
+                        ? 3
+                        : category.slug === "chassis"
+                        ? 2
+                        : 1;
+                    return (
+                      <div
+                        key={category.id}
+                        className="border-l-4 border-blue-500 pl-4 py-2"
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <h3 className="font-semibold text-gray-900">
+                            {category.name}
+                          </h3>
+                          <span className="text-yellow-500">
+                            {"★".repeat(importance)}
+                            {"☆".repeat(3 - importance)}
+                          </span>
+                        </div>
+                        <p className="text-sm text-gray-600">
+                          {category.description}
+                        </p>
+                        {importance === 3 && (
+                          <p className="text-sm text-red-600 font-semibold mt-1">
+                            ⚠️ 最重要分野：確実に得点源にする
+                          </p>
+                        )}
+                      </div>
+                    );
+                  })}
+              </div>
+            </section>
+          )}
+
+          {/* 過去問ベース逆算学習法 */}
+          <section className="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              過去問ベース逆算学習法
+            </h2>
+            <div className="space-y-4">
+              <div className="bg-blue-50 border-l-4 border-blue-500 p-4">
+                <h3 className="font-semibold text-gray-900 mb-2">
+                  なぜ過去問から始めるのか？
+                </h3>
+                <p className="text-gray-700 text-sm leading-relaxed">
+                  過去問を最初に解くことで、試験の出題形式や頻出ポイントを把握できます。
+                  その後、間違えた問題の分野を重点的に学習することで、効率的に知識を定着させることができます。
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-2">
+                  学習の流れ
+                </h3>
+                <ol className="list-decimal list-inside space-y-2 text-gray-700">
+                  <li>直近3年分の過去問を1回分解く（現状把握）</li>
+                  <li>間違えた問題の分野を特定</li>
+                  <li>該当分野の基礎知識をテキストで学習</li>
+                  <li>再度過去問を解く（知識の定着確認）</li>
+                  <li>このサイクルを3-5回繰り返す</li>
+                </ol>
+              </div>
+            </div>
+          </section>
+
+          {/* 捨てていい分野 / 必須分野 */}
+          <section className="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              学習優先度の判断基準
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                <h3 className="font-semibold text-green-900 mb-3">
+                  ✅ 必須分野（優先度：最高）
+                </h3>
+                <ul className="list-disc list-inside text-green-800 text-sm space-y-1">
+                  <li>エンジンの基本構造・動作原理</li>
+                  <li>電気装置の基礎（バッテリー、充電系）</li>
+                  <li>故障診断の基本手順</li>
+                  <li>測定器の使い方</li>
+                </ul>
+                <p className="text-green-700 text-xs mt-3">
+                  ※ これらの分野は確実に得点源にすべき
+                </p>
+              </div>
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                <h3 className="font-semibold text-yellow-900 mb-3">
+                  ⚠️ 時間があれば（優先度：中）
+                </h3>
+                <ul className="list-disc list-inside text-yellow-800 text-sm space-y-1">
+                  <li>最新技術（EV、ハイブリッド）の詳細</li>
+                  <li>特殊な故障事例</li>
+                  <li>法規の細かな条文</li>
+                </ul>
+                <p className="text-yellow-700 text-xs mt-3">
+                  ※ まずは必須分野を完璧にしてから
+                </p>
+              </div>
+            </div>
+          </section>
+
           {/* 学習ロードマップ */}
           <section className="bg-white rounded-lg shadow-md p-6 mb-6">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              学習ロードマップ
+              詳細ロードマップ
             </h2>
             <div className="space-y-4">
               <div className="border-l-4 border-blue-500 pl-4">
@@ -162,6 +292,142 @@ export default async function StudyPage({
             </div>
           </section>
 
+          {/* 社会人向け / 学生向け */}
+          <section className="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              学習スタイル別プラン
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="border-2 border-blue-200 rounded-lg p-4">
+                <h3 className="font-semibold text-gray-900 mb-2">
+                  👔 社会人向け（1日30〜60分）
+                </h3>
+                <ul className="list-disc list-inside text-gray-700 text-sm space-y-1 mb-3">
+                  <li>朝：30分（テキスト読書）</li>
+                  <li>通勤中：スマホアプリで問題演習</li>
+                  <li>夜：30分（過去問演習）</li>
+                </ul>
+                <p className="text-xs text-gray-600">
+                  週末にまとめて学習時間を確保（1日2-3時間）
+                </p>
+              </div>
+              <div className="border-2 border-green-200 rounded-lg p-4">
+                <h3 className="font-semibold text-gray-900 mb-2">
+                  🎓 学生向け（1日2-3時間）
+                </h3>
+                <ul className="list-disc list-inside text-gray-700 text-sm space-y-1 mb-3">
+                  <li>午前：2時間（基礎学習）</li>
+                  <li>午後：1時間（過去問演習）</li>
+                  <li>実技練習：週2-3回</li>
+                </ul>
+                <p className="text-xs text-gray-600">
+                  集中的な学習で短期間での合格が可能
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* 直前1ヶ月対策 */}
+          <section className="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              直前1ヶ月対策
+            </h2>
+            <div className="space-y-4">
+              <div className="bg-red-50 border-l-4 border-red-500 p-4">
+                <h3 className="font-semibold text-gray-900 mb-2">
+                  ⚡ やるべきこと（優先順位順）
+                </h3>
+                <ol className="list-decimal list-inside space-y-2 text-gray-700">
+                  <li>過去問を毎日1回分解く（時間を計る）</li>
+                  <li>間違えた問題をノートにまとめる</li>
+                  <li>弱点分野を重点的に復習</li>
+                  <li>実技試験の作業手順を体で覚える</li>
+                  <li>試験当日のシミュレーション</li>
+                </ol>
+              </div>
+              <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4">
+                <h3 className="font-semibold text-gray-900 mb-2">
+                  🚫 やらないこと
+                </h3>
+                <ul className="list-disc list-inside space-y-1 text-gray-700">
+                  <li>新しい参考書に手を出す</li>
+                  <li>細かい知識の詰め込み</li>
+                  <li>徹夜での学習（体調管理優先）</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          {/* 独学 vs 講座 */}
+          <section className="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              独学 vs 講座：どちらを選ぶべきか
+            </h2>
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      項目
+                    </th>
+                    <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">
+                      独学
+                    </th>
+                    <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">
+                      講座
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  <tr>
+                    <td className="px-4 py-3 text-sm font-medium text-gray-900">
+                      費用
+                    </td>
+                    <td className="px-4 py-3 text-sm text-center text-gray-600">
+                      安い（1-3万円）
+                    </td>
+                    <td className="px-4 py-3 text-sm text-center text-gray-600">
+                      高い（10-30万円）
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="px-4 py-3 text-sm font-medium text-gray-900">
+                      学習ペース
+                    </td>
+                    <td className="px-4 py-3 text-sm text-center text-gray-600">
+                      自由に調整可能
+                    </td>
+                    <td className="px-4 py-3 text-sm text-center text-gray-600">
+                      講座のスケジュールに従う
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="px-4 py-3 text-sm font-medium text-gray-900">
+                      実技対策
+                    </td>
+                    <td className="px-4 py-3 text-sm text-center text-gray-600">
+                      実務経験が必要
+                    </td>
+                    <td className="px-4 py-3 text-sm text-center text-gray-600">
+                      実技練習が可能
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="px-4 py-3 text-sm font-medium text-gray-900">
+                      結論
+                    </td>
+                    <td className="px-4 py-3 text-sm text-center font-semibold text-green-600">
+                      実務経験があるなら独学OK
+                    </td>
+                    <td className="px-4 py-3 text-sm text-center font-semibold text-blue-600">
+                      実技が不安なら講座推奨
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
           {/* おすすめ教材 */}
           <section className="bg-white rounded-lg shadow-md p-6 mb-6">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
@@ -197,78 +463,58 @@ export default async function StudyPage({
             </div>
           </section>
 
-          {/* 学習計画 */}
-          <section className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              学習計画（{cert.studyHours?.beginner}時間想定）
-            </h2>
-            <div className="space-y-4">
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-2">
-                  {cert.studyHours?.beginner && cert.studyHours.beginner >= 600
-                    ? "6ヶ月計画"
-                    : "3ヶ月計画"}
-                </h3>
-                <div className="text-sm text-gray-700 space-y-2">
-                  <p>
-                    <strong>1週間あたりの学習時間:</strong>{" "}
-                    {cert.studyHours?.beginner &&
-                      Math.ceil(cert.studyHours.beginner / (cert.studyHours.beginner >= 600 ? 24 : 12))}
-                    時間
-                  </p>
-                  <p>
-                    <strong>1日あたりの学習時間:</strong> 1-2時間
-                  </p>
-                  <p className="text-gray-600">
-                    ※初学者を想定した計画です。実務経験がある場合は、より短い期間で学習できます。
-                  </p>
-                </div>
-              </div>
 
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-2">学習スケジュール例</h3>
-                <div className="bg-gray-50 p-4 rounded text-sm">
-                  <p className="font-semibold mb-2">月-金（平日）</p>
-                  <ul className="list-disc list-inside text-gray-700 space-y-1">
-                    <li>朝：30分（テキスト読書）</li>
-                    <li>夜：1時間（過去問演習）</li>
-                  </ul>
-                  <p className="font-semibold mt-4 mb-2">土日</p>
-                  <ul className="list-disc list-inside text-gray-700 space-y-1">
-                    <li>午前：2時間（まとめて学習）</li>
-                    <li>午後：2時間（実技練習または復習）</li>
-                  </ul>
-                </div>
-              </div>
+          {/* CTA：診断ツール・アプリDL */}
+          <section className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg shadow-lg p-6 text-white">
+              <h2 className="text-lg font-bold mb-2">
+                🔍 学習診断ツール
+              </h2>
+              <p className="text-blue-100 text-sm mb-4">
+                勉強時間・合格可能性・苦手分野を診断
+              </p>
+              <Link
+                href={`/certs/${cert.slug}/diagnosis`}
+                className="inline-block px-4 py-2 bg-white text-blue-600 rounded-lg hover:bg-blue-50 transition-colors font-semibold text-sm"
+              >
+                診断を受ける →
+              </Link>
+            </div>
+
+            <div className="bg-gradient-to-r from-green-500 to-teal-600 rounded-lg shadow-lg p-6 text-white">
+              <h2 className="text-lg font-bold mb-2">
+                📱 アプリで効率的に学習
+              </h2>
+              <p className="text-green-100 text-sm mb-4">
+                過去問をスキマ時間で解けるアプリ
+              </p>
+              <Link
+                href={`/certs/${cert.slug}/app`}
+                className="inline-block px-4 py-2 bg-white text-green-600 rounded-lg hover:bg-green-50 transition-colors font-semibold text-sm"
+              >
+                アプリ詳細を見る →
+              </Link>
             </div>
           </section>
 
-          {/* 分野別学習ポイント */}
-          {categories.length > 0 && (
-            <section className="bg-white rounded-lg shadow-md p-6 mb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                分野別学習ポイント
-              </h2>
-              <div className="space-y-4">
-                {categories
-                  .sort((a, b) => a.order - b.order)
-                  .map((category) => (
-                    <div key={category.id} className="border-b pb-3 last:border-b-0">
-                      <h3 className="font-semibold text-gray-900 mb-1">
-                        {category.name}
-                      </h3>
-                      <p className="text-gray-700 text-sm">{category.description}</p>
-                      <Link
-                        href={`/certs/${cert.slug}/kakomon?category=${category.slug}`}
-                        className="text-blue-600 hover:text-blue-800 text-sm mt-2 inline-block"
-                      >
-                        {category.name}の過去問を見る →
-                      </Link>
-                    </div>
-                  ))}
-              </div>
-            </section>
-          )}
+          {/* PDF導線 */}
+          <section className="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-6 mb-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-2">
+              📄 PDF「最短合格ロードマップ」を無料ダウンロード
+            </h2>
+            <p className="text-gray-700 text-sm mb-4">
+              このページの内容をPDFで保存して、いつでも確認できるようにしましょう。
+            </p>
+            <button
+              disabled
+              className="px-6 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors font-semibold cursor-not-allowed opacity-50"
+            >
+              PDFをダウンロード（準備中）
+            </button>
+            <p className="text-xs text-gray-600 mt-2">
+              ※ PDFダウンロード機能は準備中です。アプリでは詳細な学習計画を保存・管理できます。
+            </p>
+          </section>
 
           {/* 関連リンク */}
           <section className="bg-white rounded-lg shadow-md p-6">

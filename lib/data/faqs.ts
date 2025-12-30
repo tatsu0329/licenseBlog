@@ -80,6 +80,45 @@ export const faqsAutoMechanic1: FAQ[] = [
     publishedAt: new Date("2024-01-01"),
     updatedAt: new Date("2024-01-01"),
   },
+  {
+    id: "faq-1-007",
+    certId: "auto-mechanic-1",
+    question: "独学で1級に合格できる？",
+    answer:
+      "2級を取得済みで実務経験がある場合は、独学での合格も可能です。ただし、実技試験の対策が独学では難しいため、実務経験がない場合は講座の受講を検討することをおすすめします。学科試験は過去問中心の学習で十分対応可能です。",
+    category: "勉強法",
+    tags: ["独学", "勉強法"],
+    relatedQuestionIds: [],
+    order: 7,
+    publishedAt: new Date("2024-01-01"),
+    updatedAt: new Date("2024-01-01"),
+  },
+  {
+    id: "faq-1-008",
+    certId: "auto-mechanic-1",
+    question: "仕事をしながら合格できる？",
+    answer:
+      "仕事をしながらでも合格は可能です。1日1-2時間の学習時間を確保すれば、6ヶ月〜1年程度で合格レベルに達することができます。通勤時間や休憩時間を活用してスマホアプリで学習するなど、スキマ時間の有効活用がポイントです。",
+    category: "勉強法",
+    tags: ["社会人", "勉強時間"],
+    relatedQuestionIds: [],
+    order: 8,
+    publishedAt: new Date("2024-01-01"),
+    updatedAt: new Date("2024-01-01"),
+  },
+  {
+    id: "faq-1-009",
+    certId: "auto-mechanic-1",
+    question: "落ちたら次どうすればいい？",
+    answer:
+      "不合格だった場合は、次回試験までに弱点を克服することが重要です。学科試験で不合格だった場合は、間違えた分野を重点的に復習しましょう。実技試験で不合格だった場合は、実務経験を積みながら、作業手順を徹底的に練習することが必要です。過去問を繰り返し解いて、次回に備えましょう。",
+    category: "試験対策",
+    tags: ["不合格", "再受験"],
+    relatedQuestionIds: [],
+    order: 9,
+    publishedAt: new Date("2024-01-01"),
+    updatedAt: new Date("2024-01-01"),
+  },
 ];
 
 export function getAllFAQs(): FAQ[] {

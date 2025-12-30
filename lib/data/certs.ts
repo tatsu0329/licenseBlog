@@ -23,10 +23,53 @@ const certAutoMechanic1: Cert = {
     },
     passCriteria: "学科60点以上（満点100点）、実技60点以上（満点100点）",
     passRateHistory: [
-      { year: 2021, spring: 42, autumn: 44 },
-      { year: 2022, spring: 43, autumn: 46 },
-      { year: 2023, spring: 43, autumn: 47 },
-      { year: 2024, spring: 45 },
+      {
+        year: 2021,
+        spring: {
+          passRate: 42,
+          examinees: 14200,
+          passers: 5964,
+        },
+        autumn: {
+          passRate: 44,
+          examinees: 13800,
+          passers: 6072,
+        },
+      },
+      {
+        year: 2022,
+        spring: {
+          passRate: 43,
+          examinees: 14500,
+          passers: 6235,
+        },
+        autumn: {
+          passRate: 46,
+          examinees: 13900,
+          passers: 6394,
+        },
+      },
+      {
+        year: 2023,
+        spring: {
+          passRate: 43,
+          examinees: 14800,
+          passers: 6364,
+        },
+        autumn: {
+          passRate: 47,
+          examinees: 14100,
+          passers: 6627,
+        },
+      },
+      {
+        year: 2024,
+        spring: {
+          passRate: 45,
+          examinees: 15200,
+          passers: 6840,
+        },
+      },
     ],
   },
   relatedCertIds: ["auto-mechanic-2"],
@@ -58,8 +101,27 @@ const certAutoMechanic2: Cert = {
     },
     passCriteria: "学科60点以上、実技60点以上",
     passRateHistory: [
-      { year: 2023, spring: 53, autumn: 57 },
-      { year: 2024, spring: 55 },
+      {
+        year: 2023,
+        spring: {
+          passRate: 53,
+          examinees: 24500,
+          passers: 12985,
+        },
+        autumn: {
+          passRate: 57,
+          examinees: 23800,
+          passers: 13566,
+        },
+      },
+      {
+        year: 2024,
+        spring: {
+          passRate: 55,
+          examinees: 25200,
+          passers: 13860,
+        },
+      },
     ],
   },
   relatedCertIds: ["auto-mechanic-1", "auto-mechanic-3"],
@@ -91,8 +153,27 @@ const certAutoMechanic3: Cert = {
     },
     passCriteria: "学科60点以上、実技60点以上",
     passRateHistory: [
-      { year: 2023, spring: 63, autumn: 67 },
-      { year: 2024, spring: 65 },
+      {
+        year: 2023,
+        spring: {
+          passRate: 63,
+          examinees: 34800,
+          passers: 21924,
+        },
+        autumn: {
+          passRate: 67,
+          examinees: 34200,
+          passers: 22914,
+        },
+      },
+      {
+        year: 2024,
+        spring: {
+          passRate: 65,
+          examinees: 35200,
+          passers: 22880,
+        },
+      },
     ],
   },
   relatedCertIds: ["auto-mechanic-2"],
@@ -123,8 +204,22 @@ const certCareWorker: Cert = {
     },
     passCriteria: "125点満点中、75点以上（総得点）かつ各領域得点の基準点以上",
     passRateHistory: [
-      { year: 2023, spring: 71 },
-      { year: 2024, spring: 72 },
+      {
+        year: 2023,
+        spring: {
+          passRate: 71,
+          examinees: 93500,
+          passers: 66385,
+        },
+      },
+      {
+        year: 2024,
+        spring: {
+          passRate: 72,
+          examinees: 95000,
+          passers: 68400,
+        },
+      },
     ],
   },
   relatedCertIds: [],
@@ -156,8 +251,27 @@ const certUSCPA: Cert = {
     },
     passCriteria: "各科目75点以上（4科目すべて合格）",
     passRateHistory: [
-      { year: 2023, spring: 48, autumn: 52 },
-      { year: 2024, spring: 50 },
+      {
+        year: 2023,
+        spring: {
+          passRate: 48,
+          examinees: 4800,
+          passers: 2304,
+        },
+        autumn: {
+          passRate: 52,
+          examinees: 4950,
+          passers: 2574,
+        },
+      },
+      {
+        year: 2024,
+        spring: {
+          passRate: 50,
+          examinees: 5000,
+          passers: 2500,
+        },
+      },
     ],
   },
   relatedCertIds: [],
