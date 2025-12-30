@@ -231,8 +231,15 @@ export default async function KakomonPage({
                             {formatExamPeriod(question.year, question.season)} 問題{question.questionNumber}
                           </span>
                           <h3 className="text-gray-900 font-medium mt-1">
-                            {question.questionText.substring(0, 100)}
-                            {question.questionText.length > 100 && "..."}
+                            {(() => {
+                              const displayText = question.questionSummary || question.questionText || question.questionTheme || "問題";
+                              return (
+                                <>
+                                  {displayText.substring(0, 100)}
+                                  {displayText.length > 100 && "..."}
+                                </>
+                              );
+                            })()}
                           </h3>
                         </div>
                         <span className="text-blue-600">詳細を見る →</span>

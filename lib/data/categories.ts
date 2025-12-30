@@ -35,11 +35,19 @@ export const categories: Category[] = [
     description: "故障診断技術、測定器の使用方法、診断フローチャートに関する分野",
   },
   {
+    id: "diesel-commonrail-1",
+    certId: "auto-mechanic-1",
+    slug: "diesel-commonrail",
+    name: "コモンレール式ディーゼル",
+    order: 5,
+    description: "コモンレール式ディーゼルエンジンの構造、動作原理、故障診断に関する分野",
+  },
+  {
     id: "practical-1",
     certId: "auto-mechanic-1",
     slug: "practical",
     name: "実技試験",
-    order: 5,
+    order: 6,
     description: "実技試験の対策（エンジン、シャシ、電気装置の実技）",
   },
   // 自動車整備士2級

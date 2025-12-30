@@ -62,7 +62,8 @@ export type Question = {
   season: 1 | 2; // 1=春期, 2=秋期
   categoryId: string;
   questionNumber: string; // 問題番号（例: '001'）
-  questionText: string; // 問題文の要約・部分引用（全文掲載は避ける）
+  questionText?: string; // 問題文の要約・部分引用（全文掲載は避ける）- 非推奨、questionSummaryを優先
+  questionSummary?: string; // 問題の概要・サマリー（新形式）
   questionTheme?: string; // 問題のテーマ・分野（問題文がない場合に使用）
   choices: {
     number: 1 | 2 | 3 | 4;

@@ -31,7 +31,8 @@ interface QuestionJsonFile {
   questions: Array<{
     questionNumber: string;
     categoryId: string;
-    questionText: string;
+    questionText?: string; // 非推奨、questionSummaryを優先
+    questionSummary?: string; // 新形式
     questionTheme?: string;
     choices: Array<{ number: 1 | 2 | 3 | 4; text: string }>;
     correctAnswer: 1 | 2 | 3 | 4;
@@ -59,7 +60,8 @@ function loadQuestionsFromJson(jsonData: QuestionJsonFile): Question[] {
       season: metadata.season,
       categoryId: q.categoryId,
       questionNumber: q.questionNumber,
-      questionText: q.questionText,
+      questionText: q.questionText || q.questionSummary, // questionSummaryを優先、なければquestionText
+      questionSummary: q.questionSummary,
       questionTheme: q.questionTheme,
       choices: q.choices,
       correctAnswer: q.correctAnswer,

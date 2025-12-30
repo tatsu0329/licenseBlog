@@ -28,9 +28,11 @@ export async function generateMetadata({
   const yearNum = parseInt(year);
   const examPeriod = formatExamPeriod(yearNum, seasonNum);
 
+  const questionDisplayText = question.questionSummary || question.questionText || question.questionTheme || "問題";
+  
   return {
     title: `${cert.shortName} ${examPeriod} 過去問解説 ${question.questionNumber}`,
-    description: `${question.questionText.substring(0, 100)}... 正解と解説はこちら`,
+    description: `${questionDisplayText.substring(0, 100)}... 正解と解説はこちら`,
     alternates: {
       canonical: `/certs/${certSlug}/kakomon/${year}/${season}/${category}/${qid}`,
     },
@@ -57,11 +59,12 @@ export default async function QuestionPage({
         const examPeriodDetailed = formatExamPeriodDetailed(yearNum, seasonNum);
 
   // 構造化データ（JSON-LD）
+  const questionDisplayText = question.questionSummary || question.questionText || question.questionTheme || "問題";
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Question",
-    name: question.questionText,
-    text: question.questionText,
+    name: questionDisplayText,
+    text: questionDisplayText,
     acceptedAnswer: {
       "@type": "Answer",
       text: question.explanation,
@@ -178,7 +181,7 @@ export default async function QuestionPage({
 
                 {/* 問題文（引用形式） */}
                 <blockquote className="border-l-4 border-gray-300 pl-4 py-2 mb-4 italic text-gray-700">
-                  {question.questionText || question.questionTheme}
+                  {question.questionSummary || question.questionText || question.questionTheme || "問題"}
                 </blockquote>
 
             {/* 選択肢 */}
