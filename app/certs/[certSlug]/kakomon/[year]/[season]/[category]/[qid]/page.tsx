@@ -5,6 +5,8 @@ import { getQuestion } from "@/lib/data/questions";
 import { getCert } from "@/lib/data/certs";
 import { getCategory } from "@/lib/data/categories";
 import QuestionImage from "@/components/images/QuestionImage";
+import QuestionExplanation from "@/components/QuestionExplanation";
+import { formatExamPeriod, formatExamPeriodDetailed } from "@/lib/utils/date";
 
 // 動的メタデータ生成
 export async function generateMetadata({
@@ -22,8 +24,12 @@ export async function generateMetadata({
     };
   }
 
+  const seasonNum = parseInt(season) as 1 | 2;
+  const yearNum = parseInt(year);
+  const examPeriod = formatExamPeriod(yearNum, seasonNum);
+
   return {
-    title: `${cert.shortName} ${year}年${season === "1" ? "春期" : "秋期"} 過去問解説 ${question.questionNumber}`,
+    title: `${cert.shortName} ${examPeriod} 過去問解説 ${question.questionNumber}`,
     description: `${question.questionText.substring(0, 100)}... 正解と解説はこちら`,
     alternates: {
       canonical: `/certs/${certSlug}/kakomon/${year}/${season}/${category}/${qid}`,
@@ -37,15 +43,18 @@ export default async function QuestionPage({
   params: Promise<{ certSlug: string; year: string; season: string; category: string; qid: string }>;
 }) {
   const { certSlug, year, season, category: categorySlug, qid } = await params;
-  const question = getQuestion(qid);
-  const cert = getCert(certSlug);
-  const category = question ? getCategory(question.categoryId) : null;
+        const question = getQuestion(qid);
+        const cert = getCert(certSlug);
+        const category = question ? getCategory(question.categoryId) : null;
 
-  if (!question || !cert) {
-    return <div>問題が見つかりません</div>;
-  }
+        if (!question || !cert) {
+          return <div>問題が見つかりません</div>;
+        }
 
-  const seasonName = season === "1" ? "春期" : "秋期";
+        const seasonNum = parseInt(season) as 1 | 2;
+        const yearNum = parseInt(year);
+        const examPeriod = formatExamPeriod(yearNum, seasonNum);
+        const examPeriodDetailed = formatExamPeriodDetailed(yearNum, seasonNum);
 
   // 構造化データ（JSON-LD）
   const jsonLd = {
@@ -94,7 +103,7 @@ export default async function QuestionPage({
                 過去問
               </Link>
               <span className="mx-2">/</span>
-              <span>{year}年{seasonName}</span>
+              <span>{examPeriod}</span>
               <span className="mx-2">/</span>
               <span>{category?.name || categorySlug}</span>
               <span className="mx-2">/</span>
@@ -108,7 +117,7 @@ export default async function QuestionPage({
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
             <div className="flex items-center gap-2 mb-4">
               <span className="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded">
-                {year}年 {seasonName}
+                {examPeriod}
               </span>
               <span className="px-3 py-1 bg-gray-100 text-gray-800 text-sm font-medium rounded">
                 {category?.name || categorySlug}
@@ -118,7 +127,7 @@ export default async function QuestionPage({
               </span>
             </div>
             <h1 className="text-2xl font-bold text-gray-900 mb-4">
-              {cert.shortName} {year}年{seasonName} {category?.name || categorySlug}{" "}
+              {cert.shortName} {examPeriodDetailed} {category?.name || categorySlug}{" "}
               問題{question.questionNumber} 過去問解説
             </h1>
           </div>
@@ -221,11 +230,7 @@ export default async function QuestionPage({
               )}
 
               {question.explanationDetail && (
-                <div className="mt-4 prose prose-sm max-w-none">
-                  <div className="text-gray-700 whitespace-pre-line">
-                    {question.explanationDetail}
-                  </div>
-                </div>
+                <QuestionExplanation explanationDetail={question.explanationDetail} />
               )}
 
               {/* アプリCTA（中 - 解説の下） */}

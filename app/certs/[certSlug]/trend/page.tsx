@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import { getCert } from "@/lib/data/certs";
 import { getQuestionsByCert } from "@/lib/data/questions";
 import { getCategoriesByCert } from "@/lib/data/categories";
+import { formatExamPeriod } from "@/lib/utils/date";
 
 export async function generateMetadata({
   params,
@@ -53,7 +54,7 @@ export default async function TrendPage({
 
   // 年度別の問題数（サンプル）
   const yearStats = questions.reduce((acc, q) => {
-    const key = `${q.year}年${q.season === 1 ? "春期" : "秋期"}`;
+    const key = formatExamPeriod(q.year, q.season);
     acc[key] = (acc[key] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);

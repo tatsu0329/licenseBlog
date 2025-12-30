@@ -1,4 +1,5 @@
 import React from "react";
+import { formatExamPeriod } from "@/lib/utils/date";
 
 interface ExamStatsData {
   year: number;
@@ -59,7 +60,7 @@ export default function ExamStatsTable({
                   {item.spring && (
                     <tr className="hover:bg-gray-50">
                       <td className="px-2 py-2 md:px-3 md:py-2 whitespace-nowrap text-xs md:text-sm font-medium text-gray-900">
-                        {item.year}年 春期
+                        {formatExamPeriod(item.year, 1)}
                       </td>
                       <td className="px-2 py-2 md:px-3 md:py-2 whitespace-nowrap text-xs md:text-sm text-right text-gray-600">
                         {item.spring.examinees
@@ -81,7 +82,7 @@ export default function ExamStatsTable({
                   {item.autumn && (
                     <tr key={`${item.year}-autumn`} className="hover:bg-gray-50">
                       <td className="px-2 py-2 md:px-3 md:py-2 whitespace-nowrap text-xs md:text-sm font-medium text-gray-900">
-                        {item.year}年 秋期
+                        {formatExamPeriod(item.year, 2)}
                       </td>
                       <td className="px-2 py-2 md:px-3 md:py-2 whitespace-nowrap text-xs md:text-sm text-right text-gray-600">
                         {item.autumn.examinees

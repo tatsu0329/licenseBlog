@@ -1,5 +1,90 @@
 import { Question } from "../types";
 
+// JSONファイルからの読み込み（移行中）
+import questionsR6_2Json from "./questions/auto_mechanic_1_r6_2.json";
+
+// Date型を変換するヘルパー関数
+function parseQuestionDates(question: any): Question {
+  return {
+    ...question,
+    publishedAt: new Date(question.publishedAt),
+    updatedAt: new Date(question.updatedAt),
+    permissionDate: question.permissionDate
+      ? new Date(question.permissionDate)
+      : undefined,
+  } as Question;
+}
+
+// JSONファイルの構造定義（メタデータ + 質問配列）
+interface QuestionJsonFile {
+  metadata: {
+    certId: string;
+    year: number;
+    season: 1 | 2;
+    source: string;
+    sourceUrl?: string;
+    officialPastQuestionUrl?: string;
+    permissionStatus?: "pending" | "granted" | "not_required" | "unknown";
+    publishedAt: string;
+    updatedAt: string;
+  };
+  questions: Array<{
+    questionNumber: string;
+    categoryId: string;
+    questionText: string;
+    questionTheme?: string;
+    choices: Array<{ number: 1 | 2 | 3 | 4; text: string }>;
+    correctAnswer: 1 | 2 | 3 | 4;
+    explanation: string;
+    explanationDetail?: string;
+    difficulty?: 1 | 2 | 3 | 4 | 5;
+    tags: string[];
+    relatedQuestionIds?: string[];
+    explanationImages?: string[];
+  }>;
+}
+
+// JSONファイルからメタデータと質問を読み込んで、完全なQuestion型に変換
+function loadQuestionsFromJson(jsonData: QuestionJsonFile): Question[] {
+  const { metadata, questions } = jsonData;
+
+  return questions.map((q) => {
+    // IDを生成: certId-year-season-questionNumber
+    const id = `${metadata.certId}-${metadata.year}-${metadata.season}-${q.questionNumber}`;
+
+    return parseQuestionDates({
+      id,
+      certId: metadata.certId,
+      year: metadata.year,
+      season: metadata.season,
+      categoryId: q.categoryId,
+      questionNumber: q.questionNumber,
+      questionText: q.questionText,
+      questionTheme: q.questionTheme,
+      choices: q.choices,
+      correctAnswer: q.correctAnswer,
+      explanation: q.explanation,
+      explanationDetail: q.explanationDetail,
+      explanationImages: q.explanationImages || [],
+      difficulty: q.difficulty,
+      tags: q.tags,
+      relatedQuestionIds: q.relatedQuestionIds || [],
+      // 共通メタデータを適用
+      source: metadata.source,
+      sourceUrl: metadata.sourceUrl,
+      officialPastQuestionUrl: metadata.officialPastQuestionUrl,
+      permissionStatus: metadata.permissionStatus,
+      publishedAt: metadata.publishedAt,
+      updatedAt: metadata.updatedAt,
+    });
+  });
+}
+
+// JSONファイルから読み込んだデータを変換
+const questionsR6_2: Question[] = loadQuestionsFromJson(
+  questionsR6_2Json as QuestionJsonFile
+);
+
 // 自動車整備士1級 - エンジン分野
 const questionAutoMechanic1Engine1: Question = {
   id: "auto-mechanic-1-2024-1-001",
@@ -895,6 +980,11 @@ const question2025_12_50: Question = {
   updatedAt: new Date("2025-03-24"),
 };
 
+// 2024年秋期（令和6年度第2回）一級整備士の問題
+// JSONファイルから読み込み（移行中）
+// 旧TypeScriptファイルは段階的に削除予定
+// import { questions2024Autumn } from "./questions_auto_mechanic_1_r6_2";
+
 export function getAllQuestions(): Question[] {
   return [
     // 自動車整備士1級
@@ -902,6 +992,8 @@ export function getAllQuestions(): Question[] {
     questionAutoMechanic1Chassis1,
     questionAutoMechanic1Electrical1,
     questionAutoMechanic1Diagnosis1,
+    // 2024年秋期（令和6年度第2回）- JSONファイルから読み込み
+    ...questionsR6_2,
     // 2025年3月23日実施分
     question2025_12_47,
     question2025_12_48,

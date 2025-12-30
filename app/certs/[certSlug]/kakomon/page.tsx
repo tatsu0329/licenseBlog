@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getCert } from "@/lib/data/certs";
 import { getQuestionsByCert } from "@/lib/data/questions";
 import { getCategoriesByCert } from "@/lib/data/categories";
+import { formatExamPeriod, formatYearForFilter } from "@/lib/utils/date";
 
 export default async function KakomonPage({
   params,
@@ -115,8 +116,9 @@ export default async function KakomonPage({
                         ? "bg-blue-500 text-white"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                     }`}
+                    title={`${y}年（${formatYearForFilter(y)}）`}
                   >
-                    {y}年
+                    {formatYearForFilter(y)}
                   </Link>
                 ))}
               </div>
@@ -177,8 +179,9 @@ export default async function KakomonPage({
                       ? "bg-purple-500 text-white"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
+                  title="第1回（春期）"
                 >
-                  春期
+                  第1回
                 </Link>
                 <Link
                   href={`/certs/${cert.slug}/kakomon?season=2${year ? `&year=${year}` : ""}${category ? `&category=${category}` : ""}`}
@@ -187,8 +190,9 @@ export default async function KakomonPage({
                       ? "bg-purple-500 text-white"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
+                  title="第2回（秋期）"
                 >
-                  秋期
+                  第2回
                 </Link>
               </div>
             </div>
@@ -215,7 +219,6 @@ export default async function KakomonPage({
           ) : (
             <ul className="space-y-4">
               {questions.map((question) => {
-                const seasonName = question.season === 1 ? "春期" : "秋期";
                 return (
                   <li key={question.id}>
                     <Link
@@ -225,7 +228,7 @@ export default async function KakomonPage({
                       <div className="flex items-center justify-between">
                         <div>
                           <span className="text-sm text-gray-500">
-                            {question.year}年{seasonName} 問題{question.questionNumber}
+                            {formatExamPeriod(question.year, question.season)} 問題{question.questionNumber}
                           </span>
                           <h3 className="text-gray-900 font-medium mt-1">
                             {question.questionText.substring(0, 100)}

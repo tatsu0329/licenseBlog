@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import { getCert } from "@/lib/data/certs";
 import PassRateChart from "@/components/charts/PassRateChart";
 import ExamStatsTable from "@/components/charts/ExamStatsTable";
+import { formatExamPeriod } from "@/lib/utils/date";
 
 export async function generateMetadata({
   params,
@@ -155,10 +156,9 @@ export default async function OverviewPage({
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <div className="text-center p-4 bg-gray-50 rounded-lg">
-                    <p className="text-sm text-gray-600 mb-1">
-                      {latest.year}年
-                      {latest.spring ? "春期" : latest.autumn ? "秋期" : ""}
-                    </p>
+                        <p className="text-sm text-gray-600 mb-1">
+                          {latest.spring ? formatExamPeriod(latest.year, 1) : latest.autumn ? formatExamPeriod(latest.year, 2) : ""}
+                        </p>
                     <p className="text-2xl font-bold text-gray-900">
                       {latestData.passRate !== undefined ? `${latestData.passRate}%` : "-"}
                     </p>
@@ -238,10 +238,10 @@ export default async function OverviewPage({
                 <dt className="font-semibold text-gray-900 mb-1">試験日程</dt>
                 <dd className="text-gray-700">
                   {cert.examInfo.examDates.spring && (
-                    <p>春期: {cert.examInfo.examDates.spring}</p>
+                    <p>第1回（春期）: {cert.examInfo.examDates.spring}</p>
                   )}
                   {cert.examInfo.examDates.autumn && (
-                    <p>秋期: {cert.examInfo.examDates.autumn}</p>
+                    <p>第2回（秋期）: {cert.examInfo.examDates.autumn}</p>
                   )}
                 </dd>
               </div>

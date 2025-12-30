@@ -1,3 +1,5 @@
+import { formatExamPeriod } from "@/lib/utils/date";
+
 interface PassRateDataPoint {
   year: number;
   spring?: {
@@ -37,7 +39,7 @@ export default function PassRateChart({
   data.forEach((item) => {
     if (item.spring?.passRate !== undefined) {
       chartData.push({
-        label: `${item.year}年春期`,
+        label: formatExamPeriod(item.year, 1),
         value: item.spring.passRate,
         examinees: item.spring.examinees,
         passers: item.spring.passers,
@@ -45,7 +47,7 @@ export default function PassRateChart({
     }
     if (item.autumn?.passRate !== undefined) {
       chartData.push({
-        label: `${item.year}年秋期`,
+        label: formatExamPeriod(item.year, 2),
         value: item.autumn.passRate,
         examinees: item.autumn.examinees,
         passers: item.autumn.passers,
@@ -114,7 +116,7 @@ export default function PassRateChart({
             const x = padding + index * (barWidth + 10);
             const barHeight = ((point.value - minValue) / range) * chartHeight;
             const y = padding + chartHeight - barHeight;
-            const isSpring = point.label.includes("春期");
+            const isSpring = point.label.includes("第1回");
             const color = isSpring ? "#3b82f6" : "#10b981";
 
             return (
@@ -149,7 +151,7 @@ export default function PassRateChart({
                   fill="#6b7280"
                   transform={`rotate(-45, ${x + barWidth / 2}, ${height - padding + 20})`}
                 >
-                  {point.label.replace("年春期", "春").replace("年秋期", "秋")}
+                  {point.label.replace("年度", "度").replace("第1回", "1回").replace("第2回", "2回")}
                 </text>
               </g>
             );
@@ -180,11 +182,11 @@ export default function PassRateChart({
       <div className="flex justify-center gap-6 mt-4">
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-blue-500 rounded"></div>
-          <span className="text-sm text-gray-600">春期</span>
+          <span className="text-sm text-gray-600">第1回</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-green-500 rounded"></div>
-          <span className="text-sm text-gray-600">秋期</span>
+          <span className="text-sm text-gray-600">第2回</span>
         </div>
       </div>
     </div>
