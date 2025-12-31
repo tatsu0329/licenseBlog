@@ -58,7 +58,7 @@ export default function ExamStatsTable({
               {sortedData.map((item) => (
                 <React.Fragment key={item.year}>
                   {item.spring && (
-                    <tr className="hover:bg-gray-50">
+                    <tr key={`${item.year}-1`} className="hover:bg-gray-50">
                       <td className="px-2 py-2 md:px-3 md:py-2 whitespace-nowrap text-xs md:text-sm font-medium text-gray-900">
                         {formatExamPeriod(item.year, 1)}
                       </td>
@@ -80,7 +80,7 @@ export default function ExamStatsTable({
                     </tr>
                   )}
                   {item.autumn && (
-                    <tr key={`${item.year}-autumn`} className="hover:bg-gray-50">
+                    <tr key={`${item.year}-2`} className="hover:bg-gray-50">
                       <td className="px-2 py-2 md:px-3 md:py-2 whitespace-nowrap text-xs md:text-sm font-medium text-gray-900">
                         {formatExamPeriod(item.year, 2)}
                       </td>

@@ -30,6 +30,7 @@ export default function PassRateChart({
 }: PassRateChartProps) {
   // データをフラット化（年度・回次ごとに）
   const chartData: Array<{
+    id: string; // 一意のIDを追加
     label: string;
     value: number;
     examinees?: number;
@@ -39,6 +40,7 @@ export default function PassRateChart({
   data.forEach((item) => {
     if (item.spring?.passRate !== undefined) {
       chartData.push({
+        id: `${item.year}-1`, // 一意のID: year-season
         label: formatExamPeriod(item.year, 1),
         value: item.spring.passRate,
         examinees: item.spring.examinees,
@@ -47,6 +49,7 @@ export default function PassRateChart({
     }
     if (item.autumn?.passRate !== undefined) {
       chartData.push({
+        id: `${item.year}-2`, // 一意のID: year-season
         label: formatExamPeriod(item.year, 2),
         value: item.autumn.passRate,
         examinees: item.autumn.examinees,
@@ -120,7 +123,7 @@ export default function PassRateChart({
             const color = isSpring ? "#3b82f6" : "#10b981";
 
             return (
-              <g key={point.label}>
+              <g key={point.id}>
                 {/* バー */}
                 <rect
                   x={x}

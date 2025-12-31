@@ -19,10 +19,15 @@ export default async function KakomonPage({
     return <div>資格が見つかりません</div>;
   }
 
-  let questions = getQuestionsByCert(cert.id);
+  // 全問題を取得（フィルター適用前）
+  const allQuestions = getQuestionsByCert(cert.id);
   const categories = getCategoriesByCert(cert.id);
 
+  // 年度のリストを取得（フィルター適用前の全問題から取得 - 回次と同じように常に全年度を表示）
+  const years = Array.from(new Set(allQuestions.map((q) => q.year))).sort((a, b) => b - a);
+
   // フィルター適用
+  let questions = allQuestions;
   if (year) {
     questions = questions.filter((q) => q.year === parseInt(year));
   }
@@ -35,9 +40,6 @@ export default async function KakomonPage({
   if (season) {
     questions = questions.filter((q) => q.season === parseInt(season));
   }
-
-  // 年度のリストを取得
-  const years = Array.from(new Set(questions.map((q) => q.year))).sort((a, b) => b - a);
 
   return (
     <div className="min-h-screen bg-gray-50">

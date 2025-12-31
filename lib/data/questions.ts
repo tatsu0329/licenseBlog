@@ -126,6 +126,126 @@ interface ExplanationSetJsonFile {
   }>;
 }
 
+// 問題文から分野（categoryId）を判定する関数
+function detectCategoryFromQuestion(
+  questionText: string,
+  choices: string[]
+): string {
+  const combinedText = (questionText + " " + choices.join(" ")).toLowerCase();
+
+  // ⑧ 関係法令・安全・品質管理
+  if (
+    combinedText.includes("道路運送車両法") ||
+    combinedText.includes("保安基準") ||
+    combinedText.includes("点検義務") ||
+    combinedText.includes("整備義務") ||
+    combinedText.includes("定期点検") ||
+    combinedText.includes("品質管理") ||
+    combinedText.includes("作業安全") ||
+    combinedText.includes("法的義務")
+  ) {
+    return "regulations-1";
+  }
+
+  // ⑦ 図面・配線図・資料の読解
+  if (
+    combinedText.includes("配線図") ||
+    combinedText.includes("回路図") ||
+    (combinedText.includes("図に示す") &&
+      (combinedText.includes("読み") || combinedText.includes("点検"))) ||
+    (combinedText.includes("図1") && combinedText.includes("図2"))
+  ) {
+    return "diagrams-1";
+  }
+
+  // ⑥ 工具・計測機器・診断機
+  if (
+    combinedText.includes("テスタ") ||
+    combinedText.includes("オシロスコープ") ||
+    combinedText.includes("診断器") ||
+    combinedText.includes("診断機") ||
+    combinedText.includes("測定器") ||
+    combinedText.includes("スキャンツール") ||
+    combinedText.includes("計測") ||
+    combinedText.includes("測定方法") ||
+    combinedText.includes("抵抗計")
+  ) {
+    return "tools-1";
+  }
+
+  // ⑤ 材料・油脂・燃料・環境対策
+  if (
+    combinedText.includes("材料") ||
+    combinedText.includes("油脂") ||
+    combinedText.includes("潤滑油") ||
+    combinedText.includes("作動油") ||
+    combinedText.includes("冷却液") ||
+    combinedText.includes("燃料の性質") ||
+    combinedText.includes("排出ガス") ||
+    combinedText.includes("環境規制") ||
+    combinedText.includes("金属材料") ||
+    combinedText.includes("樹脂材料") ||
+    combinedText.includes("cng")
+  ) {
+    return "materials-1";
+  }
+
+  // ④ 点検・整備・調整作業
+  if (
+    combinedText.includes("点検項目") ||
+    combinedText.includes("分解") ||
+    combinedText.includes("組付け") ||
+    combinedText.includes("調整値") ||
+    combinedText.includes("整備作業") ||
+    combinedText.includes("作業順") ||
+    combinedText.includes("作業手順") ||
+    combinedText.includes("取り付け")
+  ) {
+    return "maintenance-1";
+  }
+
+  // ③ 故障診断・トラブルシューティング
+  if (
+    combinedText.includes("故障診断") ||
+    combinedText.includes("不具合") ||
+    combinedText.includes("故障") ||
+    combinedText.includes("異常") ||
+    combinedText.includes("原因") ||
+    combinedText.includes("症状") ||
+    combinedText.includes("切り分け") ||
+    combinedText.includes("診断コード") ||
+    combinedText.includes("obd") ||
+    combinedText.includes("ダイアグノーシス") ||
+    combinedText.includes("異常検知")
+  ) {
+    return "diagnosis-1";
+  }
+
+  // ② 電気・電子装置／電子制御（ECU系）
+  if (
+    combinedText.includes("ecu") ||
+    combinedText.includes("電子制御") ||
+    combinedText.includes("センサ") ||
+    combinedText.includes("アクチュエータ") ||
+    combinedText.includes("can通信") ||
+    combinedText.includes("制御ロジック") ||
+    combinedText.includes("制御信号") ||
+    combinedText.includes("abs") ||
+    combinedText.includes("esc") ||
+    combinedText.includes("eps") ||
+    combinedText.includes("電子式") ||
+    combinedText.includes("制御回路") ||
+    combinedText.includes("パルス") ||
+    combinedText.includes("pwm")
+  ) {
+    return "electronics-1";
+  }
+
+  // ① 自動車構造・機能（基礎〜応用）（デフォルト）
+  // エンジン、動力伝達装置、走行装置、制動装置、車体構造など
+  return "structure-1";
+}
+
 // 過去問集からQuestion型に変換（解説なし）
 function loadQuestionSetFromJson(jsonData: QuestionSetJsonFile): Question[] {
   const { category, questions } = jsonData;
@@ -137,9 +257,6 @@ function loadQuestionSetFromJson(jsonData: QuestionSetJsonFile): Question[] {
 
   // certIdを設定（level-1-C は 1級自動車整備士小型）
   const certId = "auto-mechanic-1";
-
-  // デフォルトのcategoryId（全問題が同じ分野の場合）
-  const defaultCategoryId = "electrical-1";
 
   const now = new Date();
 
@@ -166,12 +283,15 @@ function loadQuestionSetFromJson(jsonData: QuestionSetJsonFile): Question[] {
     // 問題文から "Q01. " などのプレフィックスを削除（あれば）
     const questionText = q.question.replace(/^Q\d+\.\s*/, "").trim();
 
+    // 問題文と選択肢から分野を自動判定
+    const categoryId = detectCategoryFromQuestion(questionText, q.choices);
+
     return {
       id,
       certId,
       year,
       season,
-      categoryId: defaultCategoryId,
+      categoryId,
       questionNumber,
       questionText,
       questionSummary:

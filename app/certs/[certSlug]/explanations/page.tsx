@@ -42,11 +42,25 @@ export default async function ExplanationsPage({
     notFound();
   }
 
-  // 解説を取得
-  let explanations = getExplanationsByCert(cert.id);
+  // 全解説を取得（フィルター適用前）
+  const allExplanations = getExplanationsByCert(cert.id);
   const categories = getCategoriesByCert(cert.id);
 
+  // 年度のリストを取得（フィルター適用前の全解説から取得 - 回次と同じように常に全年度を表示）
+  const years = Array.from(
+    new Set(
+      allExplanations.map((exp) => {
+        const parts = exp.questionId.split("-");
+        if (parts.length < 5) return null;
+        return parseInt(parts[parts.length - 3]);
+      })
+    )
+  )
+    .filter((y) => y !== null)
+    .sort((a, b) => (b || 0) - (a || 0)) as number[];
+
   // フィルター適用
+  let explanations = allExplanations;
   if (year) {
     explanations = explanations.filter((exp) => {
       const parts = exp.questionId.split("-");
@@ -72,19 +86,6 @@ export default async function ExplanationsPage({
       return expSeason === season;
     });
   }
-
-  // 年度のリストを取得
-  const years = Array.from(
-    new Set(
-      getExplanationsByCert(cert.id).map((exp) => {
-        const parts = exp.questionId.split("-");
-        if (parts.length < 5) return null;
-        return parseInt(parts[parts.length - 3]);
-      })
-    )
-  )
-    .filter((y) => y !== null)
-    .sort((a, b) => (b || 0) - (a || 0)) as number[];
 
   return (
     <div className="min-h-screen bg-gray-50">
