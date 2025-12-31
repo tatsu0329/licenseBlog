@@ -1,7 +1,7 @@
 import { Category } from "../types";
 
 export const categories: Category[] = [
-  // 自動車整備士1級
+  // 1級自動車整備士
   {
     id: "engine-1",
     certId: "auto-mechanic-1",

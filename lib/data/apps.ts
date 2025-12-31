@@ -1,12 +1,12 @@
 import { App } from "../types";
 
-// 自動車整備士1級アプリ
+// 1級自動車整備士アプリ
 export const appAutoMechanic1: App = {
   id: "app-auto-mechanic-1",
   certId: "auto-mechanic-1",
-  name: "自動車整備士1級 過去問アプリ",
+  name: "1級自動車整備士 過去問アプリ",
   description:
-    "自動車整備士1級の過去問をスマートフォンで手軽に学習できるアプリです。詳しい解説、弱点分析、学習進捗管理などの機能を提供しています。",
+    "1級自動車整備士の過去問をスマートフォンで手軽に学習できるアプリです。詳しい解説、弱点分析、学習進捗管理などの機能を提供しています。",
   iconUrl: "/images/apps/auto-mechanic-1-icon.png",
   screenshots: [
     "/images/apps/auto-mechanic-1-screenshot1.png",

@@ -15,7 +15,7 @@ questions_{資格ID}_r{和暦年}_{回次}.ts
 ### 命名規則の詳細
 
 - **資格ID**: 資格を識別するID
-  - `auto_mechanic_1`: 自動車整備士1級
+  - `auto_mechanic_1`: 1級自動車整備士
   - `auto_mechanic_2`: 自動車整備士2級
   - `auto_mechanic_3`: 自動車整備士3級
   - `care_worker`: 介護福祉士
@@ -36,9 +36,9 @@ questions_{資格ID}_r{和暦年}_{回次}.ts
 
 **注意**: 現在はJSON形式（`.json`）を使用しています。TypeScript形式（`.ts`）は非推奨です。
 
-- `questions/auto_mechanic_1_r6_2.json`: 自動車整備士1級 令和6年度第2回
-- `questions/auto_mechanic_1_r6_1.json`: 自動車整備士1級 令和6年度第1回
-- `questions/auto_mechanic_1_r7_1.json`: 自動車整備士1級 令和7年度第1回
+- `questions/auto_mechanic_1_r6_2.json`: 1級自動車整備士 令和6年度第2回
+- `questions/auto_mechanic_1_r6_1.json`: 1級自動車整備士 令和6年度第1回
+- `questions/auto_mechanic_1_r7_1.json`: 1級自動車整備士 令和7年度第1回
 - `questions/care_worker_r6_1.json`: 介護福祉士 令和6年度第1回
 - `questions/uscpa_r6_2.json`: USCPA 令和6年度第2回
 

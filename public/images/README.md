@@ -3,7 +3,7 @@
 ## アプリ関連画像
 
 - `/images/apps/` - アプリのアイコンやスクリーンショット
-  - `auto-mechanic-1-icon.png` - 自動車整備士1級アプリのアイコン
+  - `auto-mechanic-1-icon.png` - 1級自動車整備士アプリのアイコン
   - `auto-mechanic-1-screenshot1.png` - スクリーンショット1
   - `auto-mechanic-1-screenshot2.png` - スクリーンショット2
   - `auto-mechanic-1-screenshot3.png` - スクリーンショット3

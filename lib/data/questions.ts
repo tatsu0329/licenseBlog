@@ -87,7 +87,7 @@ const questionsR6_2: Question[] = loadQuestionsFromJson(
   questionsR6_2Json as QuestionJsonFile
 );
 
-// 自動車整備士1級 - エンジン分野
+// 1級自動車整備士 - エンジン分野
 const questionAutoMechanic1Engine1: Question = {
   id: "auto-mechanic-1-2024-1-001",
   certId: "auto-mechanic-1",
@@ -151,7 +151,7 @@ const questionAutoMechanic1Engine1: Question = {
   difficulty: 4,
   tags: ["エンジン", "直噴", "燃料噴射", "エミッション", "1級"],
   relatedQuestionIds: [],
-  source: "自動車整備士1級 2024年6月試験 学科 エンジン（国土交通省）",
+  source: "1級自動車整備士 2024年6月試験 学科 エンジン（国土交通省）",
   sourceUrl: "https://www.mlit.go.jp/",
   officialPastQuestionUrl: "https://www.mlit.go.jp/jidosha/jidosha.html",
   permissionStatus: "pending",
@@ -159,7 +159,7 @@ const questionAutoMechanic1Engine1: Question = {
   updatedAt: new Date("2024-01-01"),
 };
 
-// 自動車整備士1級 - シャシ分野
+// 1級自動車整備士 - シャシ分野
 const questionAutoMechanic1Chassis1: Question = {
   id: "auto-mechanic-1-2024-1-002",
   certId: "auto-mechanic-1",
@@ -222,7 +222,7 @@ const questionAutoMechanic1Chassis1: Question = {
   difficulty: 4,
   tags: ["シャシ", "ABS", "ブレーキ", "安全装置", "1級"],
   relatedQuestionIds: [],
-  source: "自動車整備士1級 2024年6月試験 学科 シャシ（国土交通省）",
+  source: "1級自動車整備士 2024年6月試験 学科 シャシ（国土交通省）",
   sourceUrl: "https://www.mlit.go.jp/",
   officialPastQuestionUrl: "https://www.mlit.go.jp/jidosha/jidosha.html",
   permissionStatus: "pending",
@@ -230,7 +230,7 @@ const questionAutoMechanic1Chassis1: Question = {
   updatedAt: new Date("2024-01-01"),
 };
 
-// 自動車整備士1級 - 電気装置分野
+// 1級自動車整備士 - 電気装置分野
 const questionAutoMechanic1Electrical1: Question = {
   id: "auto-mechanic-1-2024-1-003",
   certId: "auto-mechanic-1",
@@ -298,7 +298,7 @@ const questionAutoMechanic1Electrical1: Question = {
   difficulty: 5,
   tags: ["電気装置", "ハイブリッド", "モータ", "EV", "1級"],
   relatedQuestionIds: [],
-  source: "自動車整備士1級 2024年6月試験 学科 電気装置（国土交通省）",
+  source: "1級自動車整備士 2024年6月試験 学科 電気装置（国土交通省）",
   sourceUrl: "https://www.mlit.go.jp/",
   officialPastQuestionUrl: "https://www.mlit.go.jp/jidosha/jidosha.html",
   permissionStatus: "pending",
@@ -306,7 +306,7 @@ const questionAutoMechanic1Electrical1: Question = {
   updatedAt: new Date("2024-01-01"),
 };
 
-// 自動車整備士1級 - 故障診断分野
+// 1級自動車整備士 - 故障診断分野
 const questionAutoMechanic1Diagnosis1: Question = {
   id: "auto-mechanic-1-2024-1-004",
   certId: "auto-mechanic-1",
@@ -377,7 +377,7 @@ const questionAutoMechanic1Diagnosis1: Question = {
   difficulty: 4,
   tags: ["故障診断", "OBD", "診断", "電子制御", "1級"],
   relatedQuestionIds: [],
-  source: "自動車整備士1級 2024年6月試験 学科 故障診断（国土交通省）",
+  source: "1級自動車整備士 2024年6月試験 学科 故障診断（国土交通省）",
   sourceUrl: "https://www.mlit.go.jp/",
   officialPastQuestionUrl: "https://www.mlit.go.jp/jidosha/jidosha.html",
   permissionStatus: "pending",
@@ -586,7 +586,7 @@ const questionUSCPA: Question = {
   updatedAt: new Date("2024-01-01"),
 };
 
-// ========== 2025年3月23日実施 自動車整備士1級 ==========
+// ========== 2025年3月23日実施 1級自動車整備士 ==========
 
 // 小特装分野（12）- No. 47: 定期点検基準
 const question2025_12_47: Question = {
@@ -674,7 +674,7 @@ const question2025_12_47: Question = {
   difficulty: 3,
   tags: ["点検基準", "道路運送車両法", "定期点検", "1級"],
   relatedQuestionIds: [],
-  source: "自動車整備士1級 2025年3月23日実施 学科試験 小特装（国土交通省）",
+  source: "1級自動車整備士 2025年3月23日実施 学科試験 小特装（国土交通省）",
   sourceUrl: "https://www.mlit.go.jp/",
   officialPastQuestionUrl: "https://www.mlit.go.jp/jidosha/jidosha.html",
   permissionStatus: "pending",
@@ -764,7 +764,7 @@ const question2025_12_48: Question = {
   difficulty: 4,
   tags: ["灯火装置", "保安基準", "電気装置", "1級"],
   relatedQuestionIds: [],
-  source: "自動車整備士1級 2025年3月23日実施 学科試験 小特装（国土交通省）",
+  source: "1級自動車整備士 2025年3月23日実施 学科試験 小特装（国土交通省）",
   sourceUrl: "https://www.mlit.go.jp/",
   officialPastQuestionUrl: "https://www.mlit.go.jp/jidosha/jidosha.html",
   permissionStatus: "pending",
@@ -864,7 +864,7 @@ const question2025_12_49: Question = {
   difficulty: 2,
   tags: ["道路運送車両法", "法規", "1級"],
   relatedQuestionIds: [],
-  source: "自動車整備士1級 2025年3月23日実施 学科試験 小特装（国土交通省）",
+  source: "1級自動車整備士 2025年3月23日実施 学科試験 小特装（国土交通省）",
   sourceUrl: "https://www.mlit.go.jp/",
   officialPastQuestionUrl: "https://www.mlit.go.jp/jidosha/jidosha.html",
   permissionStatus: "pending",
@@ -974,7 +974,7 @@ const question2025_12_50: Question = {
   difficulty: 4,
   tags: ["イモビライザ", "保安基準", "電気装置", "盗難防止", "1級"],
   relatedQuestionIds: [],
-  source: "自動車整備士1級 2025年3月23日実施 学科試験 小特装（国土交通省）",
+  source: "1級自動車整備士 2025年3月23日実施 学科試験 小特装（国土交通省）",
   sourceUrl: "https://www.mlit.go.jp/",
   officialPastQuestionUrl: "https://www.mlit.go.jp/jidosha/jidosha.html",
   permissionStatus: "pending",
@@ -987,7 +987,7 @@ const question2025_12_50: Question = {
 
 export function getAllQuestions(): Question[] {
   return [
-    // 自動車整備士1級
+    // 1級自動車整備士
     questionAutoMechanic1Engine1,
     questionAutoMechanic1Chassis1,
     questionAutoMechanic1Electrical1,

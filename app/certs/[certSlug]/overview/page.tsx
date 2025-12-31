@@ -72,10 +72,8 @@ export default async function OverviewPage({
             {cert.shortName}とは
           </h2>
           <div className="prose max-w-none text-gray-700">
-            <p className="leading-relaxed mb-4">{cert.description}</p>
-            <p className="leading-relaxed">
-              {cert.shortName}
-              は、自動車整備工場の主任技術者として、複雑な故障診断や技術的な判断を行うことができる資格です。整備工場の技術的な責任者としての役割を担い、より高度な整備技術が求められます。
+            <p className="leading-relaxed whitespace-pre-line">
+              {cert.description}
             </p>
           </div>
         </section>
@@ -83,11 +81,14 @@ export default async function OverviewPage({
         {/* 受験資格 */}
         {cert.examInfo?.eligibility && (
           <section className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">
               受験資格
             </h2>
+            <p className="text-xs text-gray-500 mb-4">
+              詳細は公式サイトでご確認ください。
+            </p>
             <div className="bg-blue-50 border-l-4 border-blue-500 p-4">
-              <p className="text-gray-700 leading-relaxed">
+              <p className="text-gray-700 leading-relaxed whitespace-pre-line">
                 {cert.examInfo.eligibility}
               </p>
             </div>
@@ -108,7 +109,46 @@ export default async function OverviewPage({
               </div>
               <p className="text-sm text-gray-600">
                 {cert.difficulty === 4
-                  ? "やや難しい（合格率45%前後）"
+                  ? (() => {
+                      // 最新の合格率を取得
+                      if (
+                        cert.examInfo?.passRateHistory &&
+                        cert.examInfo.passRateHistory.length > 0
+                      ) {
+                        const sortedHistory = [
+                          ...cert.examInfo.passRateHistory,
+                        ].sort((a, b) => b.year - a.year);
+                        const latest = sortedHistory[0];
+                        const latestData = latest.spring || latest.autumn;
+                        if (latestData?.passRate !== undefined) {
+                          return `やや難しい（合格率${latestData.passRate}%）`;
+                        }
+                      }
+                      // データがない場合は全期間の平均を計算
+                      if (
+                        cert.examInfo?.passRateHistory &&
+                        cert.examInfo.passRateHistory.length > 0
+                      ) {
+                        const allRates: number[] = [];
+                        cert.examInfo.passRateHistory.forEach((item) => {
+                          if (item.spring?.passRate !== undefined) {
+                            allRates.push(item.spring.passRate);
+                          }
+                          if (item.autumn?.passRate !== undefined) {
+                            allRates.push(item.autumn.passRate);
+                          }
+                        });
+                        if (allRates.length > 0) {
+                          const avgRate =
+                            allRates.reduce((sum, rate) => sum + rate, 0) /
+                            allRates.length;
+                          return `やや難しい（合格率平均${avgRate.toFixed(
+                            1
+                          )}%）`;
+                        }
+                      }
+                      return "やや難しい（合格率参考値なし）";
+                    })()
                   : cert.difficulty === 5
                   ? "非常に難しい"
                   : "普通"}
