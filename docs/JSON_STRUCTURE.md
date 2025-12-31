@@ -140,3 +140,4 @@ function loadQuestionsFromJson(jsonData: QuestionJsonFile): Question[] {
 - **IDの一意性**: 同じ問題集内で`questionNumber`が重複しないことを確認
 - **必須フィールド**: メタデータの必須フィールドは必ず設定すること
 
+

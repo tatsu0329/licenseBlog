@@ -86,3 +86,4 @@ export function getAppByCert(certId: string): App | undefined {
   return getAllApps().find((a) => a.certId === certId);
 }
 
+

@@ -29,3 +29,4 @@ export default function Diagram({ title, children, caption }: DiagramProps) {
   );
 }
 
+

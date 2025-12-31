@@ -226,6 +226,19 @@ export default async function CertPage({
             </>
           )}
 
+          {/* 記事セクション */}
+          <Link
+            href="/articles"
+            className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow border-2 border-purple-200"
+          >
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              📰 関連記事
+            </h3>
+            <p className="text-gray-600 text-sm">
+              合格ライン検証や試験分析などの記事
+            </p>
+          </Link>
+
           {!isAutoMechanic1 && (
             <Link
               href={`/certs/${cert.slug}/overview`}

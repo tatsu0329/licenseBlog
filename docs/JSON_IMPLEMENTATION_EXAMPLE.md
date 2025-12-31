@@ -121,3 +121,4 @@ export default async function QuestionPage({ params }: { params: Promise<...> })
 2. **ファイルの分離**: 資格・年度・回次ごとにファイルを分けられる
 3. **将来的な拡張**: Headless CMSへの移行が容易
 
+
