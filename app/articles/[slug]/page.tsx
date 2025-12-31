@@ -168,8 +168,8 @@ export default async function ArticlePage({
               ホーム
             </Link>
             <span className="mx-2">/</span>
-            <Link href="/articles" className="hover:text-gray-900">
-              記事一覧
+            <Link href="/certs" className="hover:text-gray-900">
+              資格一覧
             </Link>
             <span className="mx-2">/</span>
             <span className="text-gray-900">{article.title}</span>

@@ -179,7 +179,7 @@ export default async function KakomonPage({
                       ? "bg-purple-500 text-white"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
-                  title="第1回（春期）"
+                  title="第1回"
                 >
                   第1回
                 </Link>
@@ -190,7 +190,7 @@ export default async function KakomonPage({
                       ? "bg-purple-500 text-white"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
-                  title="第2回（秋期）"
+                  title="第2回"
                 >
                   第2回
                 </Link>

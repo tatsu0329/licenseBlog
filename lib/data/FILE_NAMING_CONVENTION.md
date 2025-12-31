@@ -28,17 +28,17 @@ questions_{資格ID}_r{和暦年}_{回次}.ts
   - `r8`: 令和8年度
   - 例: `r6`, `r7`, `r8`
 
-- **回次**: `1`（第1回/春期）または `2`（第2回/秋期）
-  - `1`: 第1回（春期）
-  - `2`: 第2回（秋期）
+- **回次**: `1`（第1回）または `2`（第2回）
+  - `1`: 第1回
+  - `2`: 第2回
 
 ### 例
 
 **注意**: 現在はJSON形式（`.json`）を使用しています。TypeScript形式（`.ts`）は非推奨です。
 
-- `questions/auto_mechanic_1_r6_2.json`: 自動車整備士1級 令和6年度第2回（2024年秋期）
-- `questions/auto_mechanic_1_r6_1.json`: 自動車整備士1級 令和6年度第1回（2024年春期）
-- `questions/auto_mechanic_1_r7_1.json`: 自動車整備士1級 令和7年度第1回（2025年春期）
+- `questions/auto_mechanic_1_r6_2.json`: 自動車整備士1級 令和6年度第2回
+- `questions/auto_mechanic_1_r6_1.json`: 自動車整備士1級 令和6年度第1回
+- `questions/auto_mechanic_1_r7_1.json`: 自動車整備士1級 令和7年度第1回
 - `questions/care_worker_r6_1.json`: 介護福祉士 令和6年度第1回
 - `questions/uscpa_r6_2.json`: USCPA 令和6年度第2回
 
@@ -62,8 +62,8 @@ import { Question } from "../types";
  * {分野名}（{問題数}問）
  * 
  * ファイル名規則: questions_{資格ID}_r{和暦年}_{回次}.ts
- * - r6-1: 令和6年度第1回（2024年春期）
- * - r6-2: 令和6年度第2回（2024年秋期）
+ * - r6-1: 令和6年度第1回
+ * - r6-2: 令和6年度第2回
  */
 
 // 問題1

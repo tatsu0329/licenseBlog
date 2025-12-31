@@ -35,28 +35,27 @@ export function formatExamPeriod(year: number, season: 1 | 2): string {
 }
 
 /**
- * 年度と回次を「令和○年○期」形式で表示（簡易版）
+ * 年度と回次を「令和○年第○回」形式で表示（簡易版）
  * @param year 西暦年（例: 2024, 2025）
- * @param season 回次（1=春期, 2=秋期）
- * @returns 表示文字列（例: "令和6年秋期", "令和7年春期"）
+ * @param season 回次（1=第1回, 2=第2回）
+ * @returns 表示文字列（例: "令和6年第2回", "令和7年第1回"）
  */
 export function formatExamPeriodSimple(year: number, season: 1 | 2): string {
   const reiwaYear = toReiwaYear(year);
-  const period = season === 1 ? "春期" : "秋期";
+  const period = season === 1 ? "第1回" : "第2回";
   return `令和${reiwaYear}年${period}`;
 }
 
 /**
- * 年度と回次を「令和○年度第○回（○期）」形式で表示（詳細版）
+ * 年度と回次を「令和○年度第○回」形式で表示（詳細版）
  * @param year 西暦年（例: 2024, 2025）
- * @param season 回次（1=春期, 2=秋期）
- * @returns 表示文字列（例: "令和6年度第2回（秋期）", "令和7年度第1回（春期）"）
+ * @param season 回次（1=第1回, 2=第2回）
+ * @returns 表示文字列（例: "令和6年度第2回", "令和7年度第1回"）
  */
 export function formatExamPeriodDetailed(year: number, season: 1 | 2): string {
   const reiwaYear = toReiwaYear(year);
   const periodNum = season === 1 ? "第1回" : "第2回";
-  const periodName = season === 1 ? "春期" : "秋期";
-  return `令和${reiwaYear}年度${periodNum}（${periodName}）`;
+  return `令和${reiwaYear}年度${periodNum}`;
 }
 
 /**

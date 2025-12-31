@@ -28,7 +28,7 @@
     "difficulty": 5,
     "tags": ["イグニション・コイル", "電気装置"],
     "relatedQuestionIds": [],
-    "source": "自動車整備士1級 令和6年度第2回（2024年秋期）学科試験 小特装（国土交通省）",
+    "source": "自動車整備士1級 令和6年度第2回学科試験 小特装（国土交通省）",
     "sourceUrl": "https://www.mlit.go.jp/",
     "officialPastQuestionUrl": "https://www.mlit.go.jp/jidosha/jidosha.html",
     "permissionStatus": "pending",

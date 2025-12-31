@@ -26,8 +26,8 @@ export type Cert = {
 export type ExamInfo = {
   eligibility: string; // 受験資格
   examDates: {
-    spring?: string; // 春期試験日（YYYY-MM-DD）
-    autumn?: string; // 秋期試験日
+    spring?: string; // 第1回試験日（YYYY-MM-DD）
+    autumn?: string; // 第2回試験日
   };
   passCriteria: string; // 合格基準（例: '60点以上'）
   passRateHistory: {
@@ -36,11 +36,13 @@ export type ExamInfo = {
       passRate?: number; // 合格率（%）
       examinees?: number; // 受験者数
       passers?: number; // 合格者数
+      examDate?: string; // 実施日（例: "R7.03.23実施" または "2025-03-23"）
     };
     autumn?: {
       passRate?: number; // 合格率（%）
       examinees?: number; // 受験者数
       passers?: number; // 合格者数
+      examDate?: string; // 実施日（例: "R7.03.23実施" または "2025-03-23"）
     };
   }[];
 };
@@ -60,7 +62,7 @@ export type Question = {
   id: string; // 問題ID（例: 'fp-2024-1-001'）
   certId: string;
   year: number; // 年度（例: 2024）
-  season: 1 | 2; // 1=春期, 2=秋期
+  season: 1 | 2; // 1=第1回, 2=第2回
   categoryId: string;
   questionNumber: string; // 問題番号（例: '001'）
   questionText?: string; // 問題文の要約・部分引用（全文掲載は避ける）- 非推奨、questionSummaryを優先

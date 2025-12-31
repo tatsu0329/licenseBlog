@@ -14,7 +14,7 @@
     "certId": "auto-mechanic-1",
     "year": 2024,
     "season": 2,
-    "source": "自動車整備士1級 令和6年度第2回（2024年秋期）学科試験 小特装（国土交通省）",
+    "source": "自動車整備士1級 令和6年度第2回学科試験 小特装（国土交通省）",
     "sourceUrl": "https://www.mlit.go.jp/",
     "officialPastQuestionUrl": "https://www.mlit.go.jp/jidosha/jidosha.html",
     "permissionStatus": "pending",
@@ -48,7 +48,7 @@
 |-----------|-----|------|------|
 | `certId` | string | 資格ID（例: `"auto-mechanic-1"`） | ✅ |
 | `year` | number | 年度（西暦、例: `2024`） | ✅ |
-| `season` | 1 \| 2 | 回次（1=第1回/春期、2=第2回/秋期） | ✅ |
+| `season` | 1 \| 2 | 回次（1=第1回、2=第2回） | ✅ |
 | `source` | string | 出典情報（試験実施団体など） | ✅ |
 | `sourceUrl` | string | 出典URL | ❌ |
 | `officialPastQuestionUrl` | string | 公式過去問ページのURL | ❌ |

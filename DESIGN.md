@@ -23,7 +23,7 @@ event: 'past_question_view'
 params: {
   cert_slug: 'fp', // 資格スラッグ
   year: '2024',
-  season: '1', // 1=春期, 2=秋期
+  season: '1', // 1=第1回, 2=第2回
   category: 'financial-planning',
   question_id: 'fp-2024-1-001'
 }
@@ -155,8 +155,8 @@ params: {
 
 # 過去問
 /certs/fp/kakomon → 過去問一覧（年度・分野で絞り込み可能）
-/certs/fp/kakomon/2024/1 → 2024年春期試験一覧
-/certs/fp/kakomon/2024/1/financial-planning → 2024年春期・ライフプランニング分野
+/certs/fp/kakomon/2024/1 → 2024年第1回試験一覧
+/certs/fp/kakomon/2024/1/financial-planning → 2024年第1回・ライフプランニング分野
 /certs/fp/kakomon/2024/1/financial-planning/fp-2024-1-001 → 問題詳細
 
 # アプリ・FAQ
@@ -290,7 +290,7 @@ params: {
 
 <検索・フィルター>
   - 年度選択（ドロップダウン）
-  - 回次選択（ラジオ: 春期/秋期）
+  - 回次選択（ラジオ: 第1回/第2回）
   - 分野選択（チェックボックス）
   - キーワード検索
 
@@ -592,8 +592,8 @@ type Cert = {
 type ExamInfo = {
   eligibility: string; // 受験資格
   examDates: {
-    spring?: string; // 春期試験日（YYYY-MM-DD）
-    autumn?: string; // 秋期試験日
+    spring?: string; // 第1回試験日（YYYY-MM-DD）
+    autumn?: string; // 第2回試験日
   };
   passCriteria: string; // 合格基準（例: '60点以上'）
   passRateHistory: {
@@ -618,7 +618,7 @@ type Question = {
   id: string; // 問題ID（例: 'fp-2024-1-001'）
   certId: string;
   year: number; // 年度（例: 2024）
-  season: 1 | 2; // 1=春期, 2=秋期
+  season: 1 | 2; // 1=第1回, 2=第2回
   categoryId: string;
   questionNumber: string; // 問題番号（例: '001'）
   questionText: string; // 問題文の要約・部分引用（全文掲載は避ける）

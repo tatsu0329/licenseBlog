@@ -3,6 +3,8 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getCert } from "@/lib/data/certs";
 import { getQuestionsByCert } from "@/lib/data/questions";
+import { getArticlesByCert } from "@/lib/data/articles";
+import ArticleList from "@/components/ArticleList";
 
 export async function generateMetadata({
   params,
@@ -45,6 +47,7 @@ export default async function CertPage({
   }
 
   const questions = getQuestionsByCert(cert.id);
+  const articles = getArticlesByCert(cert.id);
 
   // 機能フラグで表示を制御（後方互換性を保つため、featuresがない場合は空配列を扱う）
   const features = cert.features ?? [];
@@ -192,128 +195,122 @@ export default async function CertPage({
           </dl>
         </div>
 
-        {/* メインコンテンツ（高需要×高収益を優先） */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-          {/* 過去問（最優先：高需要×高収益） */}
-          <Link
-            href={`/certs/${cert.slug}/kakomon`}
-            className="group relative bg-gradient-to-br from-emerald-500 via-green-500 to-teal-600 rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all duration-300 text-white overflow-hidden transform hover:-translate-y-1"
-          >
-            <div className="absolute top-0 right-0 bg-emerald-700/80 backdrop-blur-sm text-white px-4 py-2 rounded-bl-2xl text-xs font-bold uppercase tracking-wide">
-              最重要
-            </div>
-            <div className="relative z-10">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-4xl">📝</span>
-                <h3 className="text-2xl font-bold tracking-tight">
-                  過去問・解説
-                </h3>
-              </div>
-              <p className="text-emerald-50 text-base mb-4 leading-relaxed">
-                詳細な解説で実力をアップ
-                {questions.length > 0 && (
-                  <span className="block mt-1 text-lg font-semibold">
-                    {questions.length}問掲載
-                  </span>
-                )}
-              </p>
-              <div className="flex items-center gap-2 text-emerald-50 text-sm font-medium mt-6 group-hover:translate-x-1 transition-transform">
-                <span>アプリで問題演習も可能</span>
-                <span className="text-lg">→</span>
-              </div>
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/0 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          </Link>
-
-          {/* 勉強ロードマップ（高需要×高収益） */}
-          <Link
-            href={`/certs/${cert.slug}/study`}
-            className="group relative bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all duration-300 text-white overflow-hidden transform hover:-translate-y-1"
-          >
-            <div className="absolute top-0 right-0 bg-blue-700/80 backdrop-blur-sm text-white px-4 py-2 rounded-bl-2xl text-xs font-bold uppercase tracking-wide">
-              人気
-            </div>
-            <div className="relative z-10">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-4xl">📚</span>
-                <h3 className="text-2xl font-bold tracking-tight">
-                  勉強方法・ロードマップ
-                </h3>
-              </div>
-              <p className="text-blue-50 text-base mb-4 leading-relaxed">
-                学習を始める前に確認すべきことから、最短合格を目指す学習ロードマップまで
-              </p>
-              <div className="flex items-center gap-2 text-blue-50 text-sm font-medium mt-6 group-hover:translate-x-1 transition-transform">
-                <span>診断ツールで学習計画作成</span>
-                <span className="text-lg">→</span>
-              </div>
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/0 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          </Link>
-        </div>
-
-        {/* その他コンテンツ */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-          {hasTrend && (
+        {/* メインコンテンツ：3カラムレイアウト */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-10">
+          {/* 左カラム：コンテンツ（縦配置） */}
+          <div className="lg:col-span-4 space-y-6">
+            {/* 過去問（最優先：高需要×高収益） */}
             <Link
-              href={`/certs/${cert.slug}/trend`}
-              className="group bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 text-white transform hover:-translate-y-1"
+              href={`/certs/${cert.slug}/kakomon`}
+              className="group relative bg-gradient-to-br from-emerald-500 via-green-500 to-teal-600 rounded-2xl shadow-xl p-6 md:p-7 hover:shadow-2xl transition-all duration-300 text-white overflow-hidden transform hover:-translate-y-1 block flex flex-col justify-between min-h-[220px]"
             >
-              <div className="flex items-center gap-3 mb-3">
-                <span className="text-3xl">📊</span>
-                <h3 className="text-xl font-bold tracking-tight">
-                  出題傾向・頻出分野
-                </h3>
+              <div className="absolute top-0 right-0 bg-emerald-700/80 backdrop-blur-sm text-white px-4 py-2 rounded-bl-2xl text-xs font-bold uppercase tracking-wide">
+                最重要
               </div>
-              <p className="text-purple-50 text-sm leading-relaxed">
-                過去10年のデータ分析と頻出分野ランキング
-              </p>
+              <div className="relative z-10 flex-1 flex flex-col">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="text-4xl">📝</span>
+                  <h3 className="text-2xl font-bold tracking-tight">
+                    過去問・解説
+                  </h3>
+                </div>
+                <p className="text-emerald-50 text-base mb-4 leading-relaxed flex-1">
+                  詳細な解説で実力をアップ
+                  {questions.length > 0 && (
+                    <span className="block mt-1 text-lg font-semibold">
+                      {questions.length}問掲載
+                    </span>
+                  )}
+                </p>
+                <div className="flex items-center gap-2 text-emerald-50 text-sm font-medium mt-auto group-hover:translate-x-1 transition-transform">
+                  <span>アプリで問題演習も可能</span>
+                  <span className="text-lg">→</span>
+                </div>
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/0 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </Link>
-          )}
 
-          <Link
-            href={`/certs/${cert.slug}/faq`}
-            className="group bg-white rounded-2xl shadow-md border border-gray-100 p-6 hover:shadow-xl hover:border-gray-200 transition-all duration-300 transform hover:-translate-y-1"
-          >
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-3xl">❓</span>
-              <h3 className="text-xl font-bold text-gray-900">よくある質問</h3>
-            </div>
-            <p className="text-gray-600 text-sm leading-relaxed">
-              試験や学習に関するよくある質問と回答
-            </p>
-          </Link>
-
-          {/* 記事セクション */}
-          {hasArticles && (
+            {/* 勉強ロードマップ（高需要×高収益） */}
             <Link
-              href="/articles"
-              className="group bg-white rounded-2xl shadow-md border-2 border-purple-200 p-6 hover:shadow-xl hover:border-purple-300 transition-all duration-300 transform hover:-translate-y-1"
+              href={`/certs/${cert.slug}/study`}
+              className="group relative bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 rounded-2xl shadow-xl p-6 md:p-7 hover:shadow-2xl transition-all duration-300 text-white overflow-hidden transform hover:-translate-y-1 block flex flex-col justify-between min-h-[220px]"
             >
-              <div className="flex items-center gap-3 mb-3">
-                <span className="text-3xl">📰</span>
-                <h3 className="text-xl font-bold text-gray-900">関連記事</h3>
+              <div className="absolute top-0 right-0 bg-blue-700/80 backdrop-blur-sm text-white px-4 py-2 rounded-bl-2xl text-xs font-bold uppercase tracking-wide">
+                人気
+              </div>
+              <div className="relative z-10 flex-1 flex flex-col">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="text-4xl">📚</span>
+                  <h3 className="text-2xl font-bold tracking-tight">
+                    勉強方法・ロードマップ
+                  </h3>
+                </div>
+                <p className="text-blue-50 text-base mb-4 leading-relaxed flex-1">
+                  学習を始める前に確認すべきことから、最短合格を目指す学習ロードマップまで
+                </p>
+                <div className="flex items-center gap-2 text-blue-50 text-sm font-medium mt-auto group-hover:translate-x-1 transition-transform">
+                  <span>診断ツールで学習計画作成</span>
+                  <span className="text-lg">→</span>
+                </div>
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/0 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </Link>
+
+            {/* 出題傾向（機能フラグで制御） */}
+            {hasTrend && (
+              <Link
+                href={`/certs/${cert.slug}/trend`}
+                className="group bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl shadow-lg p-5 md:p-6 hover:shadow-xl transition-all duration-300 text-white transform hover:-translate-y-1 block"
+              >
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="text-3xl">📊</span>
+                  <h3 className="text-xl font-bold tracking-tight">
+                    出題傾向・頻出分野
+                  </h3>
+                </div>
+                <p className="text-purple-50 text-sm leading-relaxed">
+                  過去10年のデータ分析と頻出分野ランキング
+                </p>
+              </Link>
+            )}
+
+            {/* FAQ */}
+            <Link
+              href={`/certs/${cert.slug}/faq`}
+              className="group bg-white rounded-2xl shadow-md border border-gray-100 p-5 md:p-6 hover:shadow-xl hover:border-gray-200 transition-all duration-300 transform hover:-translate-y-1 block"
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <span className="text-3xl">❓</span>
+                <h3 className="text-xl font-bold text-gray-900">
+                  よくある質問
+                </h3>
               </div>
               <p className="text-gray-600 text-sm leading-relaxed">
-                合格ライン検証や試験分析などの記事
+                試験や学習に関するよくある質問と回答
               </p>
             </Link>
-          )}
 
-          {!hasTrend && (
-            <Link
-              href={`/certs/${cert.slug}/overview`}
-              className="group bg-white rounded-2xl shadow-md border border-gray-100 p-6 hover:shadow-xl hover:border-gray-200 transition-all duration-300 transform hover:-translate-y-1"
-            >
-              <div className="flex items-center gap-3 mb-3">
-                <span className="text-3xl">📋</span>
-                <h3 className="text-xl font-bold text-gray-900">試験概要</h3>
-              </div>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                受験資格、難易度、勉強時間の詳細
-              </p>
-            </Link>
-          )}
+            {/* 試験概要（hasTrendがない場合のみ表示） */}
+            {!hasTrend && (
+              <Link
+                href={`/certs/${cert.slug}/overview`}
+                className="group bg-white rounded-2xl shadow-md border border-gray-100 p-5 md:p-6 hover:shadow-xl hover:border-gray-200 transition-all duration-300 transform hover:-translate-y-1 block"
+              >
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="text-3xl">📋</span>
+                  <h3 className="text-xl font-bold text-gray-900">試験概要</h3>
+                </div>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  受験資格、難易度、勉強時間の詳細
+                </p>
+              </Link>
+            )}
+          </div>
+
+          {/* 右カラム：記事一覧 */}
+          <div id="related-articles" className="lg:col-span-8 scroll-mt-24">
+            <ArticleList articles={articles} />
+          </div>
         </div>
 
         {/* アプリCTA（最後のCTA - 強） */}
@@ -330,19 +327,21 @@ export default async function CertPage({
                 無料で10問まで試せます。
               </span>
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/articles"
-                className="group px-8 py-4 bg-white text-indigo-600 rounded-xl hover:bg-blue-50 transition-all duration-300 font-bold text-lg shadow-lg hover:shadow-xl hover:scale-105"
-              >
-                <span className="flex items-center justify-center gap-2">
-                  関連記事を見る
-                  <span className="group-hover:translate-x-1 transition-transform">
-                    →
+            {articles.length > 0 && (
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <a
+                  href="#related-articles"
+                  className="group px-8 py-4 bg-white text-indigo-600 rounded-xl hover:bg-blue-50 transition-all duration-300 font-bold text-lg shadow-lg hover:shadow-xl hover:scale-105"
+                >
+                  <span className="flex items-center justify-center gap-2">
+                    関連記事を見る
+                    <span className="group-hover:translate-x-1 transition-transform">
+                      →
+                    </span>
                   </span>
-                </span>
-              </Link>
-            </div>
+                </a>
+              </div>
+            )}
           </div>
         </section>
       </main>

@@ -74,7 +74,8 @@ export default async function OverviewPage({
           <div className="prose max-w-none text-gray-700">
             <p className="leading-relaxed mb-4">{cert.description}</p>
             <p className="leading-relaxed">
-              {cert.shortName}は、自動車整備工場の主任技術者として、複雑な故障診断や技術的な判断を行うことができる資格です。整備工場の技術的な責任者としての役割を担い、より高度な整備技術が求められます。
+              {cert.shortName}
+              は、自動車整備工場の主任技術者として、複雑な故障診断や技術的な判断を行うことができる資格です。整備工場の技術的な責任者としての役割を担い、より高度な整備技術が求められます。
             </p>
           </div>
         </section>
@@ -116,81 +117,116 @@ export default async function OverviewPage({
             <div>
               <h3 className="font-semibold text-gray-900 mb-2">合格率</h3>
               <div className="text-3xl font-bold text-gray-900 mb-2">
-                {cert.passRate}%
+                {cert.passRate !== undefined
+                  ? `${cert.passRate}%`
+                  : cert.examInfo?.passRateHistory &&
+                    cert.examInfo.passRateHistory.length > 0
+                  ? (() => {
+                      const sortedHistory = [
+                        ...cert.examInfo.passRateHistory,
+                      ].sort((a, b) => b.year - a.year);
+                      const latest = sortedHistory[0];
+                      const latestData = latest.spring || latest.autumn;
+                      return latestData?.passRate !== undefined
+                        ? `${latestData.passRate}%`
+                        : "参考値あり";
+                    })()
+                  : "年度により変動"}
               </div>
               <p className="text-sm text-gray-600">
-                最新データ（{cert.examInfo?.passRateHistory[0]?.year}年）
+                {cert.examInfo?.passRateHistory &&
+                cert.examInfo.passRateHistory.length > 0
+                  ? (() => {
+                      const latest = [...cert.examInfo.passRateHistory].sort(
+                        (a, b) => b.year - a.year
+                      )[0];
+                      const latestPeriod = latest.spring
+                        ? formatExamPeriod(latest.year, 1)
+                        : latest.autumn
+                        ? formatExamPeriod(latest.year, 2)
+                        : null;
+                      return latestPeriod
+                        ? `参考値（最新：${latestPeriod}）`
+                        : "年度により変動";
+                    })()
+                  : "年度により変動"}
               </p>
             </div>
           </div>
         </section>
 
         {/* 合格率推移グラフ */}
-        {cert.examInfo?.passRateHistory && cert.examInfo.passRateHistory.length > 0 && (
-          <section className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <PassRateChart
-              data={cert.examInfo.passRateHistory}
-              title="合格率の推移（過去4年）"
-            />
-            <div className="mt-4 text-sm text-gray-600">
-              <p>
-                ※ より詳細な統計データが必要な場合は、試験実施団体の公式サイトをご確認ください。
-              </p>
-            </div>
-          </section>
-        )}
-
-        {/* 最新データのサマリー（簡潔版） */}
-        {cert.examInfo?.passRateHistory && cert.examInfo.passRateHistory.length > 0 && (() => {
-          const sortedHistory = [...cert.examInfo.passRateHistory].sort((a, b) => b.year - a.year);
-          const latest = sortedHistory[0];
-          const latestData = latest.spring || latest.autumn;
-          
-          if (!latestData) return null;
-          
-          return (
+        {cert.examInfo?.passRateHistory &&
+          cert.examInfo.passRateHistory.length > 0 && (
             <section className="bg-white rounded-lg shadow-md p-6 mb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                最新の試験データ
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                  <div className="text-center p-4 bg-gray-50 rounded-lg">
-                        <p className="text-sm text-gray-600 mb-1">
-                          {latest.spring ? formatExamPeriod(latest.year, 1) : latest.autumn ? formatExamPeriod(latest.year, 2) : ""}
-                        </p>
-                    <p className="text-2xl font-bold text-gray-900">
-                      {latestData.passRate !== undefined ? `${latestData.passRate}%` : "-"}
-                    </p>
-                    <p className="text-xs text-gray-500 mt-1">
-                      合格率
-                    </p>
-                  </div>
-                </div>
-                <div>
-                  <div className="text-center p-4 bg-gray-50 rounded-lg">
-                    <p className="text-2xl font-bold text-gray-900">
-                      {latestData.examinees?.toLocaleString() || "-"}
-                    </p>
-                    <p className="text-xs text-gray-500 mt-1">
-                      受験者数
-                    </p>
-                  </div>
-                </div>
-                <div>
-                  <div className="text-center p-4 bg-gray-50 rounded-lg">
-                    <p className="text-2xl font-bold text-gray-900">
-                      {latestData.passers?.toLocaleString() || "-"}
-                    </p>
-                    <p className="text-xs text-gray-500 mt-1">
-                      合格者数
-                    </p>
-                  </div>
-                </div>
+              <PassRateChart
+                data={cert.examInfo.passRateHistory}
+                title="合格率の推移（過去4年）"
+              />
+              <div className="mt-4 text-sm text-gray-600">
+                <p>
+                  ※
+                  より詳細な統計データが必要な場合は、試験実施団体の公式サイトをご確認ください。
+                </p>
               </div>
             </section>
-          );
-        })()}
+          )}
+
+        {/* 最新データのサマリー（簡潔版） */}
+        {cert.examInfo?.passRateHistory &&
+          cert.examInfo.passRateHistory.length > 0 &&
+          (() => {
+            const sortedHistory = [...cert.examInfo.passRateHistory].sort(
+              (a, b) => b.year - a.year
+            );
+            const latest = sortedHistory[0];
+            const latestData = latest.spring || latest.autumn;
+
+            if (!latestData) return null;
+
+            return (
+              <section className="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                  最新の試験データ
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <div className="text-center p-4 bg-gray-50 rounded-lg">
+                      <p className="text-sm text-gray-600 mb-1">
+                        {latest.spring
+                          ? formatExamPeriod(latest.year, 1)
+                          : latest.autumn
+                          ? formatExamPeriod(latest.year, 2)
+                          : ""}
+                      </p>
+                      <p className="text-2xl font-bold text-gray-900">
+                        {latestData.passRate !== undefined
+                          ? `${latestData.passRate}%`
+                          : "-"}
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">合格率</p>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-center p-4 bg-gray-50 rounded-lg">
+                      <p className="text-2xl font-bold text-gray-900">
+                        {latestData.examinees?.toLocaleString() || "-"}
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">受験者数</p>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-center p-4 bg-gray-50 rounded-lg">
+                      <p className="text-2xl font-bold text-gray-900">
+                        {latestData.passers?.toLocaleString() || "-"}
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">合格者数</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            );
+          })()}
 
         {/* 勉強時間の目安 */}
         {cert.studyHours && (
@@ -230,24 +266,38 @@ export default async function OverviewPage({
         {/* 試験日程・合格基準 */}
         {cert.examInfo && (
           <section className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">
               試験日程・合格基準
             </h2>
+            <p className="text-xs text-gray-500 mb-4">
+              詳細は各年度の試験実施要領および公式サイトでご確認ください。
+            </p>
             <dl className="space-y-4">
               <div>
                 <dt className="font-semibold text-gray-900 mb-1">試験日程</dt>
-                <dd className="text-gray-700">
-                  {cert.examInfo.examDates.spring && (
-                    <p>第1回（春期）: {cert.examInfo.examDates.spring}</p>
-                  )}
-                  {cert.examInfo.examDates.autumn && (
-                    <p>第2回（秋期）: {cert.examInfo.examDates.autumn}</p>
+                <dd className="text-gray-700 whitespace-pre-line">
+                  {cert.examInfo.examDates.spring ||
+                  cert.examInfo.examDates.autumn ? (
+                    <>
+                      {cert.examInfo.examDates.spring && (
+                        <p>第1回: {cert.examInfo.examDates.spring}</p>
+                      )}
+                      {cert.examInfo.examDates.autumn && (
+                        <p>第2回: {cert.examInfo.examDates.autumn}</p>
+                      )}
+                    </>
+                  ) : (
+                    <p className="text-gray-600">
+                      試験日は年度ごとに変動します。最新の試験日程は国土交通省の公式サイトでご確認ください。
+                    </p>
                   )}
                 </dd>
               </div>
               <div>
                 <dt className="font-semibold text-gray-900 mb-1">合格基準</dt>
-                <dd className="text-gray-700">{cert.examInfo.passCriteria}</dd>
+                <dd className="text-gray-700 whitespace-pre-line">
+                  {cert.examInfo.passCriteria}
+                </dd>
               </div>
             </dl>
           </section>
@@ -259,7 +309,8 @@ export default async function OverviewPage({
             💡 学習計画を立てる
           </h3>
           <p className="text-sm text-gray-700 mb-3">
-            {cert.shortName}の学習を効率的に進めるため、診断ツールで最適な学習計画を作成しましょう。
+            {cert.shortName}
+            の学習を効率的に進めるため、診断ツールで最適な学習計画を作成しましょう。
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <Link
@@ -311,4 +362,3 @@ export default async function OverviewPage({
     </div>
   );
 }
-

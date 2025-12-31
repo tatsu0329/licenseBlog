@@ -2,6 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+/* カスタムスクロールバー */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
+}
+
 /* グリッドパターンの背景 */
 .bg-grid-white\/10 {
   background-image: linear-gradient(

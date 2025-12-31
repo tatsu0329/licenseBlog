@@ -982,7 +982,7 @@ const question2025_12_50: Question = {
   updatedAt: new Date("2025-03-24"),
 };
 
-// 2024年秋期（令和6年度第2回）一級整備士の問題
+// 令和6年度第2回一級整備士の問題
 // JSONファイルから読み込み
 
 export function getAllQuestions(): Question[] {
@@ -992,7 +992,7 @@ export function getAllQuestions(): Question[] {
     questionAutoMechanic1Chassis1,
     questionAutoMechanic1Electrical1,
     questionAutoMechanic1Diagnosis1,
-    // 2024年秋期（令和6年度第2回）- JSONファイルから読み込み
+    // 令和6年度第2回 - JSONファイルから読み込み
     ...questionsR6_2,
     // 2025年3月23日実施分
     question2025_12_47,
