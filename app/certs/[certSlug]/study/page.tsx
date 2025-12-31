@@ -39,6 +39,9 @@ export default async function StudyPage({
     return <div>資格が見つかりません</div>;
   }
 
+  // 1級整備士の場合の判定
+  const isAutoMechanic1 = certSlug === "auto-mechanic-1";
+
   // 構造化データ（HowTo）
   const jsonLd = {
     "@context": "https://schema.org",
@@ -96,6 +99,65 @@ export default async function StudyPage({
         </header>
 
         <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* 学習を始める前に */}
+          <section className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              {cert.shortName}の学習を始める前に
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 border-l-4 border-blue-500 rounded-xl p-6 shadow-sm">
+                <h3 className="font-bold text-gray-900 mb-4 text-lg flex items-center gap-2">
+                  <span className="text-blue-600">✓</span>
+                  まず確認すべきこと
+                </h3>
+                <ul className="space-y-2 text-gray-700">
+                  <li className="flex items-start gap-2">
+                    <span className="text-blue-500 mt-1">•</span>
+                    <span>受験資格があるか確認</span>
+                  </li>
+                  {isAutoMechanic1 && (
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-500 mt-1">•</span>
+                      <span>2級取得後の実務経験年数</span>
+                    </li>
+                  )}
+                  <li className="flex items-start gap-2">
+                    <span className="text-blue-500 mt-1">•</span>
+                    <span>試験日程の確認</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-blue-500 mt-1">•</span>
+                    <span>合格基準の理解</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="bg-gradient-to-br from-emerald-50 to-emerald-100/50 border-l-4 border-emerald-500 rounded-xl p-6 shadow-sm">
+                <h3 className="font-bold text-gray-900 mb-4 text-lg flex items-center gap-2">
+                  <span className="text-emerald-600">→</span>
+                  学習の流れ
+                </h3>
+                <ol className="space-y-2 text-gray-700">
+                  <li className="flex items-start gap-2">
+                    <span className="font-semibold text-emerald-600">1.</span>
+                    <span>試験概要を理解する</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="font-semibold text-emerald-600">2.</span>
+                    <span>学習ロードマップを確認</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="font-semibold text-emerald-600">3.</span>
+                    <span>過去問で実力を把握</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="font-semibold text-emerald-600">4.</span>
+                    <span>分野別に学習を進める</span>
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </section>
+
           {/* 全体像 */}
           <section className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 mb-6 text-white">
             <h2 className="text-xl font-semibold mb-4">全体像：何から何まであるか</h2>
@@ -489,7 +551,7 @@ export default async function StudyPage({
                 過去問をスキマ時間で解けるアプリ
               </p>
               <Link
-                href={`/certs/${cert.slug}/app`}
+                href={certSlug === "auto-mechanic-1" ? "/articles/auto-mechanic-1-app-introduction" : "/articles"}
                 className="inline-block px-4 py-2 bg-white text-green-600 rounded-lg hover:bg-green-50 transition-colors font-semibold text-sm"
               >
                 アプリ詳細を見る →

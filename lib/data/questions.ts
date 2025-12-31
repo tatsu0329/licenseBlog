@@ -983,9 +983,7 @@ const question2025_12_50: Question = {
 };
 
 // 2024年秋期（令和6年度第2回）一級整備士の問題
-// JSONファイルから読み込み（移行中）
-// 旧TypeScriptファイルは段階的に削除予定
-// import { questions2024Autumn } from "./questions_auto_mechanic_1_r6_2";
+// JSONファイルから読み込み
 
 export function getAllQuestions(): Question[] {
   return [

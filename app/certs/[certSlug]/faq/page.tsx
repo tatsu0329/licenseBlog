@@ -166,7 +166,7 @@ export default async function FAQPage({
                 </p>
               </Link>
               <Link
-                href={`/certs/${cert.slug}/app`}
+                href={certSlug === "auto-mechanic-1" ? "/articles/auto-mechanic-1-app-introduction" : "/articles"}
                 className="p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
               >
                 <h3 className="font-semibold text-gray-900 mb-1">

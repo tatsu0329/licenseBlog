@@ -274,7 +274,7 @@ export default async function TrendPage({
             より詳しいデータはアプリのプレミアムプランでご利用いただけます。
           </p>
           <Link
-            href={`/certs/${cert.slug}/app`}
+            href={certSlug === "auto-mechanic-1" ? "/articles/auto-mechanic-1-app-introduction" : "/articles"}
             className="inline-block px-6 py-3 bg-white text-purple-600 rounded-lg hover:bg-purple-50 transition-colors font-semibold text-sm"
           >
             プレミアムプランを確認する →

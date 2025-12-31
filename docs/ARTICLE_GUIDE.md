@@ -13,17 +13,18 @@
 
 ## 記事の追加方法
 
-### 1. JSONファイルの作成
+### 1. JSON ファイルの作成
 
-`lib/data/articles/` ディレクトリに新しいJSONファイルを作成します。
+`lib/data/articles/` ディレクトリに新しい JSON ファイルを作成します。
 
 ファイル名の例：
+
 - `auto_mechanic_1_r6_2_pass_line.json`（合格ライン検証記事）
 - `auto_mechanic_1_r7_1_analysis.json`（試験分析記事）
 
 ### 2. 記事データの記述
 
-以下の形式でJSONファイルを作成します：
+以下の形式で JSON ファイルを作成します：
 
 ```json
 {
@@ -33,14 +34,8 @@
   "excerpt": "記事の要約（SEO用、150文字程度推奨）",
   "featuredImageUrl": null,
   "author": "著者名（オプション）",
-  "tags": [
-    "タグ1",
-    "タグ2",
-    "タグ3"
-  ],
-  "relatedCertIds": [
-    "auto-mechanic-1"
-  ],
+  "tags": ["タグ1", "タグ2", "タグ3"],
+  "relatedCertIds": ["auto-mechanic-1"],
   "relatedQuestionIds": [],
   "publishedAt": "2024-10-01T00:00:00.000Z",
   "updatedAt": "2024-10-01T00:00:00.000Z",
@@ -50,7 +45,7 @@
 
 ### 3. 記事データの読み込み
 
-`lib/data/articles.ts` に、作成したJSONファイルをインポートして `getAllArticles` 関数に追加します：
+`lib/data/articles.ts` に、作成した JSON ファイルをインポートして `getAllArticles` 関数に追加します：
 
 ```typescript
 import newArticle from "./articles/new_article.json";
@@ -58,16 +53,16 @@ import newArticle from "./articles/new_article.json";
 export function getAllArticles(): Article[] {
   const articles: ArticleJson[] = [
     autoMechanic1R6_2PassLineArticle as ArticleJson,
-    newArticle as ArticleJson,  // 追加
+    newArticle as ArticleJson, // 追加
   ];
 
   return articles.map(parseArticleDates);
 }
 ```
 
-## Markdown記法のサポート
+## Markdown 記法のサポート
 
-記事本文では、以下のMarkdown記法が使用できます：
+記事本文では、以下の Markdown 記法が使用できます：
 
 - **見出し**: `#`, `##`, `###`
 - **段落**: 空行で区切る
@@ -94,15 +89,8 @@ export function getAllArticles(): Article[] {
   "slug": "cert-name-year-season-pass-line-verification",
   "title": "[資格名] [年度回次]の合格ラインを検証しました",
   "excerpt": "[年度回次]の[資格名]試験の合格ラインを、過去のデータと解答速報の結果を基に検証しました。",
-  "tags": [
-    "[資格名]",
-    "合格ライン",
-    "合格率",
-    "[年度回次]"
-  ],
-  "relatedCertIds": [
-    "cert-id"
-  ],
+  "tags": ["[資格名]", "合格ライン", "合格率", "[年度回次]"],
+  "relatedCertIds": ["cert-id"],
   "content": "# [資格名] [年度回次]の合格ラインを検証しました\n\n## 過去の合格基準点と合格率\n\n| 開催年度 | 回次 | 合格基準点 | 合格率 | 合格者数／受験者数 |\n|---------|------|----------|-------|-----------------|\n| ... | ... | ... | ... | ... |\n\n## 検証結果\n\n..."
 }
 ```
@@ -110,18 +98,17 @@ export function getAllArticles(): Article[] {
 ## 注意事項
 
 1. **スラッグの重複**: 同じスラッグの記事は作成しないでください
-2. **IDの一意性**: 記事IDは必ず一意にしてください
-3. **関連資格**: `relatedCertIds` には、関連する資格のIDを追加してください
-4. **公開日時**: `publishedAt` はUTC時刻で指定してください
-5. **Markdownの表**: 完全なMarkdownパーサーではないため、複雑な表はシンプルに記述してください
+2. **ID の一意性**: 記事 ID は必ず一意にしてください
+3. **関連資格**: `relatedCertIds` には、関連する資格の ID を追加してください
+4. **公開日時**: `publishedAt` は UTC 時刻で指定してください
+5. **Markdown の表**: 完全な Markdown パーサーではないため、複雑な表はシンプルに記述してください
 
 ## 記事の更新
 
 記事を更新する場合は：
 
-1. JSONファイルの `content` を修正
+1. JSON ファイルの `content` を修正
 2. `updatedAt` を更新（現在時刻に）
 3. ビルドまたは再デプロイ
 
-記事の履歴管理が必要な場合は、Gitのコミット履歴を活用してください。
-
+記事の履歴管理が必要な場合は、Git のコミット履歴を活用してください。

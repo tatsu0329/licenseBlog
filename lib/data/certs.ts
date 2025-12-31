@@ -74,6 +74,7 @@ const certAutoMechanic1: Cert = {
   },
   relatedCertIds: ["auto-mechanic-2"],
   tags: ["自動車", "整備", "1級", "国家資格", "技術", "主任技術者"],
+  features: ["trend", "articles"], // 出題傾向分析と記事機能を有効化
   publishedAt: new Date("2024-01-01"),
   updatedAt: new Date("2024-01-01"),
 };

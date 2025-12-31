@@ -17,6 +17,7 @@ export type Cert = {
   examInfo?: ExamInfo;
   relatedCertIds: string[]; // 関連資格ID
   tags: string[]; // タグ（SEO用）
+  features?: string[]; // 機能フラグ（例: ["trend", "articles"]）
   publishedAt: Date;
   updatedAt: Date;
 };

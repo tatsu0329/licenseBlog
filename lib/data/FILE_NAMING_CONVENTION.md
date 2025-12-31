@@ -2,6 +2,12 @@
 
 ## ファイル名形式
 
+**現在の形式（JSON）**:
+```
+questions/{資格ID}_r{和暦年}_{回次}.json
+```
+
+**旧形式（TypeScript、非推奨）**:
 ```
 questions_{資格ID}_r{和暦年}_{回次}.ts
 ```
@@ -28,11 +34,13 @@ questions_{資格ID}_r{和暦年}_{回次}.ts
 
 ### 例
 
-- `questions_auto_mechanic_1_r6_2.ts`: 自動車整備士1級 令和6年度第2回（2024年秋期）
-- `questions_auto_mechanic_1_r6_1.ts`: 自動車整備士1級 令和6年度第1回（2024年春期）
-- `questions_auto_mechanic_1_r7_1.ts`: 自動車整備士1級 令和7年度第1回（2025年春期）
-- `questions_care_worker_r6_1.ts`: 介護福祉士 令和6年度第1回
-- `questions_uscpa_r6_2.ts`: USCPA 令和6年度第2回
+**注意**: 現在はJSON形式（`.json`）を使用しています。TypeScript形式（`.ts`）は非推奨です。
+
+- `questions/auto_mechanic_1_r6_2.json`: 自動車整備士1級 令和6年度第2回（2024年秋期）
+- `questions/auto_mechanic_1_r6_1.json`: 自動車整備士1級 令和6年度第1回（2024年春期）
+- `questions/auto_mechanic_1_r7_1.json`: 自動車整備士1級 令和7年度第1回（2025年春期）
+- `questions/care_worker_r6_1.json`: 介護福祉士 令和6年度第1回
+- `questions/uscpa_r6_2.json`: USCPA 令和6年度第2回
 
 ### 和暦と西暦の対応表（参考）
 
@@ -83,15 +91,20 @@ export const questions2024Autumn: Question[] = [
 `lib/data/questions.ts` でインポート：
 
 ```typescript
-// 2024年秋期（令和6年度第2回）一級整備士の問題をインポート
-import { questions2024Autumn } from "./questions_auto_mechanic_1_r6_2";
+// JSONファイルから読み込み
+import questionsR6_2Json from "./questions/auto_mechanic_1_r6_2.json";
+
+// loadQuestionsFromJson関数を使用して変換
+const questionsR6_2 = loadQuestionsFromJson(questionsR6_2Json);
 
 export function getAllQuestions(): Question[] {
   return [
     // ...
-    ...questions2024Autumn,
+    ...questionsR6_2,
     // ...
   ];
 }
 ```
+
+詳細は `lib/data/questions.ts` を参照してください。
 

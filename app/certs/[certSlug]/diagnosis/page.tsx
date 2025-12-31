@@ -71,7 +71,7 @@ export default function DiagnosisPage() {
             💎 より詳細な診断結果と学習計画を保存するには、プレミアムプランに登録してください
           </p>
           <Link
-            href={`/certs/${certSlug}/app`}
+            href={certSlug === "auto-mechanic-1" ? "/articles/auto-mechanic-1-app-introduction" : "/articles"}
             className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold"
           >
             アプリで詳細診断を受ける →
@@ -298,7 +298,7 @@ function WeakAreaDiagnosis({ certSlug }: { certSlug: string }) {
           </ol>
         </div>
         <Link
-          href={`/certs/${certSlug}/app`}
+          href={certSlug === "auto-mechanic-1" ? "/articles/auto-mechanic-1-app-introduction" : "/articles"}
           className="block w-full px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold text-center"
         >
           アプリで苦手分野を診断する →

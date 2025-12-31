@@ -171,7 +171,7 @@ export default async function QuestionPage({
                       </p>
                     </div>
                     <Link
-                      href={`/certs/${certSlug}/app`}
+                      href={certSlug === "auto-mechanic-1" ? "/articles/auto-mechanic-1-app-introduction" : "/articles"}
                       className="px-5 py-2 bg-white text-green-600 rounded-lg hover:bg-green-50 transition-colors font-semibold whitespace-nowrap"
                     >
                       アプリを見る →
@@ -248,7 +248,7 @@ export default async function QuestionPage({
                     </p>
                   </div>
                   <Link
-                    href={`/certs/${certSlug}/app`}
+                    href={certSlug === "auto-mechanic-1" ? "/articles/auto-mechanic-1-app-introduction" : "/articles"}
                     className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold whitespace-nowrap text-sm"
                   >
                     アプリで演習 →

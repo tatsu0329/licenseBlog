@@ -77,7 +77,7 @@ export default async function KakomonPage({
               </p>
             </div>
             <Link
-              href={`/certs/${cert.slug}/app`}
+              href={certSlug === "auto-mechanic-1" ? "/articles/auto-mechanic-1-app-introduction" : "/articles"}
               className="px-6 py-3 bg-white text-green-600 rounded-lg hover:bg-green-50 transition-colors font-semibold whitespace-nowrap"
             >
               アプリを見る →
@@ -263,7 +263,7 @@ export default async function KakomonPage({
               無料で10問まで試せます。
             </p>
             <Link
-              href={`/certs/${cert.slug}/app`}
+              href={certSlug === "auto-mechanic-1" ? "/articles/auto-mechanic-1-app-introduction" : "/articles"}
               className="inline-block px-8 py-3 bg-white text-blue-600 rounded-lg hover:bg-blue-50 transition-colors font-bold text-lg"
             >
               アプリ詳細を見る →
