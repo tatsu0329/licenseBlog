@@ -4,6 +4,7 @@ import { getCert } from "@/lib/data/certs";
 import PassRateChart from "@/components/charts/PassRateChart";
 import ExamStatsTable from "@/components/charts/ExamStatsTable";
 import { formatExamPeriod } from "@/lib/utils/date";
+import BackButton from "@/components/BackButton";
 
 export async function generateMetadata({
   params,
@@ -42,9 +43,14 @@ export default async function OverviewPage({
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* フローティング戻るボタン */}
+      <BackButton variant="gradient" floating position="bottom-left" />
+      
       <header className="bg-white shadow-sm">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <nav className="text-sm text-gray-600 mb-2">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <nav className="text-sm text-gray-600 mb-2 flex items-center">
+              <BackButton variant="minimal" className="mr-4" />
+              <span className="mx-2">|</span>
             <Link href="/" className="hover:text-gray-900">
               ホーム
             </Link>

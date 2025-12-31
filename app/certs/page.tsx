@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getAllCerts } from "@/lib/data/certs";
+import BackButton from "@/components/BackButton";
 
 export default function CertsPage() {
   const certs = getAllCerts();
@@ -50,9 +51,14 @@ export default function CertsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* フローティング戻るボタン */}
+      <BackButton variant="gradient" floating position="bottom-left" />
+      
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <nav className="text-sm text-gray-600 mb-2">
+          <nav className="text-sm text-gray-600 mb-2 flex items-center">
+            <BackButton variant="minimal" className="mr-4" />
+            <span className="mx-2">|</span>
             <Link href="/" className="hover:text-gray-900">
               ホーム
             </Link>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState } from "react";
+import BackButton from "@/components/BackButton";
 
 export default function DiagnosisPage() {
   const params = useParams();
@@ -13,7 +14,13 @@ export default function DiagnosisPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* フローティング戻るボタン */}
+      <BackButton variant="gradient" floating position="bottom-left" />
+      
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-6 flex items-center">
+          <BackButton variant="minimal" />
+        </div>
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">
             学習診断ツール

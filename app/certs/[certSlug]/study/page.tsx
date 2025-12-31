@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { getCert } from "@/lib/data/certs";
 import { getCategoriesByCert } from "@/lib/data/categories";
+import BackButton from "@/components/BackButton";
 
 export async function generateMetadata({
   params,
@@ -36,11 +38,11 @@ export default async function StudyPage({
   const categories = cert ? getCategoriesByCert(cert.id) : [];
 
   if (!cert) {
-    return <div>資格が見つかりません</div>;
+    notFound();
   }
 
-  // 1級整備士の場合の判定
-  const isAutoMechanic1 = certSlug === "auto-mechanic-1";
+  // 特徴フラグの取得
+  const features = cert.features ?? [];
 
   // 構造化データ（HowTo）
   const jsonLd = {
@@ -75,9 +77,14 @@ export default async function StudyPage({
       />
 
       <div className="min-h-screen bg-gray-50">
+        {/* フローティング戻るボタン */}
+        <BackButton variant="gradient" floating position="bottom-left" />
+
         <header className="bg-white shadow-sm">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <nav className="text-sm text-gray-600 mb-2">
+            <nav className="text-sm text-gray-600 mb-2 flex items-center">
+              <BackButton variant="minimal" className="mr-4" />
+              <span className="mx-2">|</span>
               <Link href="/" className="hover:text-gray-900">
                 ホーム
               </Link>
@@ -86,7 +93,10 @@ export default async function StudyPage({
                 資格一覧
               </Link>
               <span className="mx-2">/</span>
-              <Link href={`/certs/${cert.slug}`} className="hover:text-gray-900">
+              <Link
+                href={`/certs/${cert.slug}`}
+                className="hover:text-gray-900"
+              >
                 {cert.shortName}
               </Link>
               <span className="mx-2">/</span>
@@ -115,7 +125,7 @@ export default async function StudyPage({
                     <span className="text-blue-500 mt-1">•</span>
                     <span>受験資格があるか確認</span>
                   </li>
-                  {isAutoMechanic1 && (
+                  {features.includes("trend") && (
                     <li className="flex items-start gap-2">
                       <span className="text-blue-500 mt-1">•</span>
                       <span>2級取得後の実務経験年数</span>
@@ -160,11 +170,24 @@ export default async function StudyPage({
 
           {/* 全体像 */}
           <section className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 mb-6 text-white">
-            <h2 className="text-xl font-semibold mb-4">全体像：何から何まであるか</h2>
+            <h2 className="text-xl font-semibold mb-4">
+              全体像：何から何まであるか
+            </h2>
             <p className="mb-4 leading-relaxed">
-              {cert.shortName}の試験は、学科試験と実技試験の2つから構成されます。
-              学科試験では、エンジン、シャシ、電気装置、故障診断の4分野から出題され、
-              実技試験では実際の作業手順や測定器の使用方法が問われます。
+              {cert.shortName}
+              の試験は、学科試験（筆記・口述）と実技試験から構成されます。
+              {categories.length > 0 ? (
+                <>
+                  学科試験では、{categories.length}つの分野から出題され、
+                  自動車の構造・機能から電子制御、故障診断、整備作業まで幅広い知識が問われます。
+                  実技試験では、実際の作業手順や測定器の使用方法が問われます。
+                </>
+              ) : (
+                <>
+                  学科試験では、自動車整備に関する幅広い知識が問われ、
+                  実技試験では実際の作業手順や測定器の使用方法が問われます。
+                </>
+              )}
             </p>
             <div className="bg-white/20 rounded-lg p-4">
               <p className="font-semibold mb-2">合格までの大まかな流れ</p>
@@ -187,12 +210,36 @@ export default async function StudyPage({
                 {categories
                   .sort((a, b) => a.order - b.order)
                   .map((category) => {
-                    const importance =
-                      category.slug === "engine" || category.slug === "electrical"
-                        ? 3
-                        : category.slug === "chassis"
-                        ? 2
-                        : 1;
+                    // 新しい8カテゴリに対応した重要度判定
+                    let importance = 1;
+                    if (category.certId === "auto-mechanic-1") {
+                      // 1級自動車整備士の場合
+                      if (
+                        category.slug === "structure" ||
+                        category.slug === "electronics"
+                      ) {
+                        importance = 3; // 最重要
+                      } else if (
+                        category.slug === "diagnosis" ||
+                        category.slug === "maintenance"
+                      ) {
+                        importance = 2; // 重要
+                      } else {
+                        importance = 1; // 普通
+                      }
+                    } else {
+                      // その他の資格の場合（従来の判定）
+                      if (
+                        category.slug === "engine" ||
+                        category.slug === "electrical"
+                      ) {
+                        importance = 3;
+                      } else if (category.slug === "chassis") {
+                        importance = 2;
+                      } else {
+                        importance = 1;
+                      }
+                    }
                     return (
                       <div
                         key={category.id}
@@ -238,9 +285,7 @@ export default async function StudyPage({
                 </p>
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900 mb-2">
-                  学習の流れ
-                </h3>
+                <h3 className="font-semibold text-gray-900 mb-2">学習の流れ</h3>
                 <ol className="list-decimal list-inside space-y-2 text-gray-700">
                   <li>直近3年分の過去問を1回分解く（現状把握）</li>
                   <li>間違えた問題の分野を特定</li>
@@ -263,10 +308,26 @@ export default async function StudyPage({
                   ✅ 必須分野（優先度：最高）
                 </h3>
                 <ul className="list-disc list-inside text-green-800 text-sm space-y-1">
-                  <li>エンジンの基本構造・動作原理</li>
-                  <li>電気装置の基礎（バッテリー、充電系）</li>
-                  <li>故障診断の基本手順</li>
-                  <li>測定器の使い方</li>
+                  {categories
+                    .filter((cat) => {
+                      if (cat.certId === "auto-mechanic-1") {
+                        return (
+                          cat.slug === "structure" || cat.slug === "electronics"
+                        );
+                      }
+                      return cat.slug === "engine" || cat.slug === "electrical";
+                    })
+                    .map((cat) => (
+                      <li key={cat.id}>{cat.name}</li>
+                    ))}
+                  {categories.length === 0 && (
+                    <>
+                      <li>エンジンの基本構造・動作原理</li>
+                      <li>電気装置の基礎（バッテリー、充電系）</li>
+                      <li>故障診断の基本手順</li>
+                      <li>測定器の使い方</li>
+                    </>
+                  )}
                 </ul>
                 <p className="text-green-700 text-xs mt-3">
                   ※ これらの分野は確実に得点源にすべき
@@ -277,9 +338,29 @@ export default async function StudyPage({
                   ⚠️ 時間があれば（優先度：中）
                 </h3>
                 <ul className="list-disc list-inside text-yellow-800 text-sm space-y-1">
-                  <li>最新技術（EV、ハイブリッド）の詳細</li>
-                  <li>特殊な故障事例</li>
-                  <li>法規の細かな条文</li>
+                  {categories
+                    .filter((cat) => {
+                      if (cat.certId === "auto-mechanic-1") {
+                        return cat.slug === "regulations";
+                      }
+                      return false;
+                    })
+                    .map((cat) => (
+                      <li key={cat.id}>{cat.name}の細かな条文</li>
+                    ))}
+                  {categories.length > 0 && cert.id === "auto-mechanic-1" && (
+                    <>
+                      <li>最新技術（EV、ハイブリッド）の詳細</li>
+                      <li>特殊な故障事例</li>
+                    </>
+                  )}
+                  {categories.length === 0 && (
+                    <>
+                      <li>最新技術（EV、ハイブリッド）の詳細</li>
+                      <li>特殊な故障事例</li>
+                      <li>法規の細かな条文</li>
+                    </>
+                  )}
                 </ul>
                 <p className="text-yellow-700 text-xs mt-3">
                   ※ まずは必須分野を完璧にしてから
@@ -299,7 +380,8 @@ export default async function StudyPage({
                   ステップ1: 基礎知識の習得（2-3ヶ月）
                 </h3>
                 <p className="text-gray-700 text-sm mb-2">
-                  テキストや参考書を使用して、{cert.shortName}の基礎知識を体系的に学習します。
+                  テキストや参考書を使用して、{cert.shortName}
+                  の基礎知識を体系的に学習します。
                 </p>
                 <ul className="list-disc list-inside text-gray-600 text-sm space-y-1">
                   <li>公式テキストを1冊通読する</li>
@@ -497,7 +579,9 @@ export default async function StudyPage({
             </h2>
             <div className="space-y-4">
               <div>
-                <h3 className="font-semibold text-gray-900 mb-2">公式テキスト・参考書</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">
+                  公式テキスト・参考書
+                </h3>
                 <ul className="list-disc list-inside text-gray-700 text-sm space-y-1">
                   <li>国土交通省発行の公式テキスト</li>
                   <li>各出版社の参考書（基礎から応用まで）</li>
@@ -515,7 +599,9 @@ export default async function StudyPage({
               </div>
 
               <div>
-                <h3 className="font-semibold text-gray-900 mb-2">学習アプリ・オンライン講座</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">
+                  学習アプリ・オンライン講座
+                </h3>
                 <ul className="list-disc list-inside text-gray-700 text-sm space-y-1">
                   <li>スマートフォンアプリでスキマ時間を活用</li>
                   <li>オンライン講座で動画学習</li>
@@ -525,13 +611,10 @@ export default async function StudyPage({
             </div>
           </section>
 
-
           {/* CTA：診断ツール・アプリDL */}
           <section className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg shadow-lg p-6 text-white">
-              <h2 className="text-lg font-bold mb-2">
-                🔍 学習診断ツール
-              </h2>
+              <h2 className="text-lg font-bold mb-2">🔍 学習診断ツール</h2>
               <p className="text-blue-100 text-sm mb-4">
                 勉強時間・合格可能性・苦手分野を診断
               </p>
@@ -551,7 +634,12 @@ export default async function StudyPage({
                 過去問をスキマ時間で解けるアプリ
               </p>
               <Link
-                href={certSlug === "auto-mechanic-1" ? "/articles/auto-mechanic-1-app-introduction" : "/articles"}
+                href={
+                  features.includes("articles") &&
+                  certSlug === "auto-mechanic-1"
+                    ? "/articles/auto-mechanic-1-app-introduction"
+                    : "/articles"
+                }
                 className="inline-block px-4 py-2 bg-white text-green-600 rounded-lg hover:bg-green-50 transition-colors font-semibold text-sm"
               >
                 アプリ詳細を見る →
@@ -574,20 +662,23 @@ export default async function StudyPage({
               PDFをダウンロード（準備中）
             </button>
             <p className="text-xs text-gray-600 mt-2">
-              ※ PDFダウンロード機能は準備中です。アプリでは詳細な学習計画を保存・管理できます。
+              ※
+              PDFダウンロード機能は準備中です。アプリでは詳細な学習計画を保存・管理できます。
             </p>
           </section>
 
           {/* 関連リンク */}
           <section className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">関連リンク</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              関連リンク
+            </h2>
             <div className="space-y-3">
               <Link
                 href={`/certs/${cert.slug}/kakomon`}
                 className="block p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors"
               >
                 <span className="text-blue-600 hover:text-blue-800">
-                  ← {cert.shortName}の過去問解説一覧
+                  ← {cert.shortName}の過去問一覧
                 </span>
               </Link>
               <Link
@@ -605,4 +696,3 @@ export default async function StudyPage({
     </>
   );
 }
-

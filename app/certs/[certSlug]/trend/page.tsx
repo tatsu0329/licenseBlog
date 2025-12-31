@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { getCert } from "@/lib/data/certs";
 import { getQuestionsByCert } from "@/lib/data/questions";
 import { getCategoriesByCert } from "@/lib/data/categories";
 import { formatExamPeriod } from "@/lib/utils/date";
+import BackButton from "@/components/BackButton";
 
 export async function generateMetadata({
   params,
@@ -39,8 +41,11 @@ export default async function TrendPage({
   const categories = cert ? getCategoriesByCert(cert.id) : [];
 
   if (!cert) {
-    return <div>資格が見つかりません</div>;
+    notFound();
   }
+
+  // 特徴フラグの取得
+  const features = cert.features ?? [];
 
   // 分野別の問題数を集計（サンプルデータ）
   const categoryStats = categories.map((category) => {
@@ -52,18 +57,26 @@ export default async function TrendPage({
     };
   }).sort((a, b) => b.count - a.count);
 
-  // 年度別の問題数（サンプル）
+  // 年度別の問題数（年度順にソート）
   const yearStats = questions.reduce((acc, q) => {
     const key = formatExamPeriod(q.year, q.season);
-    acc[key] = (acc[key] || 0) + 1;
+    if (!acc[key]) {
+      acc[key] = { count: 0, year: q.year, season: q.season };
+    }
+    acc[key].count += 1;
     return acc;
-  }, {} as Record<string, number>);
+  }, {} as Record<string, { count: number; year: number; season: 1 | 2 }>);
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* フローティング戻るボタン */}
+      <BackButton variant="gradient" floating position="bottom-left" />
+      
       <header className="bg-white shadow-sm">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <nav className="text-sm text-gray-600 mb-2">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <nav className="text-sm text-gray-600 mb-2 flex items-center">
+              <BackButton variant="minimal" className="mr-4" />
+              <span className="mx-2">|</span>
             <Link href="/" className="hover:text-gray-900">
               ホーム
             </Link>
@@ -140,14 +153,20 @@ export default async function TrendPage({
             </h2>
             <div className="space-y-3">
               {Object.entries(yearStats)
-                .sort((a, b) => b[0].localeCompare(a[0]))
-                .map(([year, count]) => (
+                .sort((a, b) => {
+                  // 年度と回次でソート（新しい年度が上）
+                  if (b[1].year !== a[1].year) {
+                    return b[1].year - a[1].year;
+                  }
+                  return b[1].season - a[1].season;
+                })
+                .map(([year, stat], index) => (
                   <div
-                    key={year}
+                    key={`${stat.year}-${stat.season}-${index}`}
                     className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
                   >
-                    <span className="font-medium text-gray-900">{year}</span>
-                    <span className="text-gray-600">{count}問</span>
+                    <span key={`year-label-${stat.year}-${stat.season}-${index}`} className="font-medium text-gray-900">{year}</span>
+                    <span key={`count-label-${stat.year}-${stat.season}-${index}`} className="text-gray-600">{stat.count}問</span>
                   </div>
                 ))}
             </div>
@@ -274,7 +293,11 @@ export default async function TrendPage({
             より詳しいデータはアプリのプレミアムプランでご利用いただけます。
           </p>
           <Link
-            href={certSlug === "auto-mechanic-1" ? "/articles/auto-mechanic-1-app-introduction" : "/articles"}
+            href={
+              features.includes("articles") && certSlug === "auto-mechanic-1"
+                ? "/articles/auto-mechanic-1-app-introduction"
+                : "/articles"
+            }
             className="inline-block px-6 py-3 bg-white text-purple-600 rounded-lg hover:bg-purple-50 transition-colors font-semibold text-sm"
           >
             プレミアムプランを確認する →
@@ -303,7 +326,7 @@ export default async function TrendPage({
               className="p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors"
             >
               <h3 className="font-semibold text-gray-900 mb-1">
-                📝 過去問解説
+                📝 過去問一覧
               </h3>
               <p className="text-sm text-gray-600">
                 頻出分野の問題を重点的に演習

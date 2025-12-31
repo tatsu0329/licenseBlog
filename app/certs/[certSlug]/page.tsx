@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getCert } from "@/lib/data/certs";
 import { getQuestionsByCert } from "@/lib/data/questions";
 import { getArticlesByCert } from "@/lib/data/articles";
+import BackButton from "@/components/BackButton";
 import ArticleList from "@/components/ArticleList";
 
 export async function generateMetadata({
@@ -62,10 +63,14 @@ export default async function CertPage({
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50">
+      {/* フローティング戻るボタン */}
+      <BackButton variant="gradient" floating position="bottom-left" />
+
       {/* ヘッダー */}
       <header className="bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-100 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <nav className="flex items-center text-sm text-gray-600 mb-3">
+            <BackButton variant="minimal" className="mr-4" />
             <Link href="/" className="hover:text-blue-600 transition-colors">
               ホーム
             </Link>
@@ -82,7 +87,19 @@ export default async function CertPage({
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
             {cert.name}
           </h1>
-          <p className="text-gray-600 mt-2 text-lg">{cert.description}</p>
+          <div className="mt-2">
+            <p className="text-gray-600 text-lg leading-relaxed">
+              {cert.description.split("\n\n")[0].substring(0, 120)}
+              {cert.description.split("\n\n")[0].length > 120 ? "..." : ""}
+            </p>
+            <Link
+              href={`/certs/${cert.slug}/overview`}
+              className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-700 text-sm font-medium mt-2 transition-colors"
+            >
+              詳細を見る
+              <span>→</span>
+            </Link>
+          </div>
         </div>
       </header>
 

@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { getArticleBySlug, getArticlesByCert } from "@/lib/data/articles";
 import { getCert } from "@/lib/data/certs";
 import { Metadata } from "next";
+import React from "react";
+import BackButton from "@/components/BackButton";
 
 export async function generateMetadata({
   params,
@@ -33,6 +35,47 @@ export async function generateMetadata({
   };
 }
 
+// 太字（**text**）を処理するヘルパー関数
+function processBold(text: string, keyPrefix: string): React.ReactNode {
+  const parts: React.ReactNode[] = [];
+  let lastIndex = 0;
+  const boldRegex = /\*\*(.+?)\*\*/g;
+  let match;
+  let matchIndex = 0;
+
+  while ((match = boldRegex.exec(text)) !== null) {
+    // 太字の前のテキスト
+    if (match.index > lastIndex) {
+      parts.push(text.substring(lastIndex, match.index));
+    }
+    // 太字のテキスト
+    parts.push(
+      <strong key={`${keyPrefix}-bold-${matchIndex}`} className="font-semibold text-gray-900">
+        {match[1]}
+      </strong>
+    );
+    lastIndex = match.index + match[0].length;
+    matchIndex++;
+  }
+
+  // 残りのテキスト
+  if (lastIndex < text.length) {
+    parts.push(text.substring(lastIndex));
+  }
+
+  // 太字が含まれていない場合は文字列をそのまま返す
+  if (parts.length === 0) {
+    return text;
+  }
+
+  // 太字が1つも見つからなかった場合（最初からlastIndexが0でpartsが空）
+  if (matchIndex === 0) {
+    return text;
+  }
+
+  return <>{parts}</>;
+}
+
 // シンプルなMarkdownレンダリング（改行と見出しを処理）
 function renderMarkdown(content: string): React.ReactNode {
   const lines = content.split("\n");
@@ -45,9 +88,10 @@ function renderMarkdown(content: string): React.ReactNode {
     // 見出し（#で始まる行）
     if (trimmed.startsWith("# ")) {
       if (currentParagraph.length > 0) {
+        const paragraphText = currentParagraph.join("\n");
         elements.push(
           <p key={`p-${index}`} className="mb-4 leading-relaxed text-gray-700">
-            {currentParagraph.join("\n")}
+            {processBold(paragraphText, `p-${index}`)}
           </p>
         );
         currentParagraph = [];
@@ -59,9 +103,10 @@ function renderMarkdown(content: string): React.ReactNode {
       );
     } else if (trimmed.startsWith("## ")) {
       if (currentParagraph.length > 0) {
+        const paragraphText = currentParagraph.join("\n");
         elements.push(
           <p key={`p-${index}`} className="mb-4 leading-relaxed text-gray-700">
-            {currentParagraph.join("\n")}
+            {processBold(paragraphText, `p-${index}`)}
           </p>
         );
         currentParagraph = [];
@@ -73,9 +118,10 @@ function renderMarkdown(content: string): React.ReactNode {
       );
     } else if (trimmed.startsWith("### ")) {
       if (currentParagraph.length > 0) {
+        const paragraphText = currentParagraph.join("\n");
         elements.push(
           <p key={`p-${index}`} className="mb-4 leading-relaxed text-gray-700">
-            {currentParagraph.join("\n")}
+            {processBold(paragraphText, `p-${index}`)}
           </p>
         );
         currentParagraph = [];
@@ -88,9 +134,10 @@ function renderMarkdown(content: string): React.ReactNode {
     } else if (trimmed === "") {
       // 空行
       if (currentParagraph.length > 0) {
+        const paragraphText = currentParagraph.join("\n");
         elements.push(
           <p key={`p-${index}`} className="mb-4 leading-relaxed text-gray-700">
-            {currentParagraph.join("\n")}
+            {processBold(paragraphText, `p-${index}`)}
           </p>
         );
         currentParagraph = [];
@@ -98,9 +145,10 @@ function renderMarkdown(content: string): React.ReactNode {
     } else if (trimmed.startsWith("|")) {
       // テーブル行
       if (currentParagraph.length > 0) {
+        const paragraphText = currentParagraph.join("\n");
         elements.push(
           <p key={`p-${index}`} className="mb-4 leading-relaxed text-gray-700">
-            {currentParagraph.join("\n")}
+            {processBold(paragraphText, `p-${index}`)}
           </p>
         );
         currentParagraph = [];
@@ -115,8 +163,8 @@ function renderMarkdown(content: string): React.ReactNode {
         elements.push(
           <div key={`table-row-${index}`} className="flex gap-2 mb-1">
             {cells.map((cell, cellIndex) => (
-              <div key={cellIndex} className="flex-1 p-2 border border-gray-300">
-                {cell}
+              <div key={`table-row-${index}-cell-${cellIndex}`} className="flex-1 p-2 border border-gray-300">
+                {processBold(cell, `table-row-${index}-cell-${cellIndex}`)}
               </div>
             ))}
           </div>
@@ -128,9 +176,10 @@ function renderMarkdown(content: string): React.ReactNode {
   });
 
   if (currentParagraph.length > 0) {
+    const paragraphText = currentParagraph.join("\n");
     elements.push(
       <p key="p-final" className="mb-4 leading-relaxed text-gray-700">
-        {currentParagraph.join("\n")}
+        {processBold(paragraphText, "p-final")}
       </p>
     );
   }
@@ -161,9 +210,14 @@ export default async function ArticlePage({
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* フローティング戻るボタン */}
+      <BackButton variant="gradient" floating position="bottom-left" />
+      
       <header className="bg-white shadow-sm">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <nav className="text-sm text-gray-600 mb-2">
+          <nav className="text-sm text-gray-600 mb-2 flex items-center">
+            <BackButton variant="minimal" className="mr-4" />
+            <span className="mx-2">|</span>
             <Link href="/" className="hover:text-gray-900">
               ホーム
             </Link>

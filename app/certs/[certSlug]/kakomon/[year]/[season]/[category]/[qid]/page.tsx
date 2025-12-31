@@ -8,6 +8,7 @@ import { getCategory } from "@/lib/data/categories";
 import QuestionImage from "@/components/images/QuestionImage";
 import QuestionExplanation from "@/components/QuestionExplanation";
 import { formatExamPeriod, formatExamPeriodDetailed } from "@/lib/utils/date";
+import BackButton from "@/components/BackButton";
 
 // 動的メタデータ生成
 export async function generateMetadata({
@@ -98,33 +99,39 @@ export default async function QuestionPage({
       />
 
       <div className="min-h-screen bg-gray-50">
+        {/* フローティング戻るボタン */}
+        <BackButton variant="gradient" floating position="bottom-left" />
+        
         <header className="bg-white shadow-sm">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <nav className="text-sm text-gray-600 mb-2">
-              <Link href="/" className="hover:text-gray-900">
+            <nav className="text-sm text-gray-600 mb-2 flex items-center">
+              <BackButton variant="minimal" className="mr-4" />
+              <span className="mx-2">|</span>
+              <Link key="breadcrumb-home" href="/" className="hover:text-gray-900">
                 ホーム
               </Link>
-              <span className="mx-2">/</span>
-              <Link href="/certs" className="hover:text-gray-900">
+              <span key="breadcrumb-separator-1" className="mx-2">/</span>
+              <Link key="breadcrumb-certs" href="/certs" className="hover:text-gray-900">
                 資格一覧
               </Link>
-              <span className="mx-2">/</span>
-              <Link href={`/certs/${cert.slug}`} className="hover:text-gray-900">
+              <span key="breadcrumb-separator-2" className="mx-2">/</span>
+              <Link key={`breadcrumb-cert-${cert.slug}`} href={`/certs/${cert.slug}`} className="hover:text-gray-900">
                 {cert.shortName}
               </Link>
-              <span className="mx-2">/</span>
+              <span key="breadcrumb-separator-3" className="mx-2">/</span>
               <Link
+                key={`breadcrumb-kakomon-${cert.slug}`}
                 href={`/certs/${cert.slug}/kakomon`}
                 className="hover:text-gray-900"
               >
                 過去問
               </Link>
-              <span className="mx-2">/</span>
-              <span>{examPeriod}</span>
-              <span className="mx-2">/</span>
-              <span>{category?.name || categorySlug}</span>
-              <span className="mx-2">/</span>
-              <span>問題{question.questionNumber}</span>
+              <span key="breadcrumb-separator-4" className="mx-2">/</span>
+              <span key={`breadcrumb-exam-period-${yearNum}-${seasonNum}`}>{examPeriod}</span>
+              <span key="breadcrumb-separator-5" className="mx-2">/</span>
+              <span key={`breadcrumb-category-${category?.id || categorySlug}`}>{category?.name || categorySlug}</span>
+              <span key="breadcrumb-separator-6" className="mx-2">/</span>
+              <span key={`breadcrumb-question-${question.questionNumber}`}>問題{question.questionNumber}</span>
             </nav>
           </div>
         </header>
@@ -133,13 +140,13 @@ export default async function QuestionPage({
           {/* 問題ヘッダー */}
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
             <div className="flex items-center gap-2 mb-4">
-              <span className="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded">
+              <span key={`badge-exam-period-${yearNum}-${seasonNum}`} className="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded">
                 {examPeriod}
               </span>
-              <span className="px-3 py-1 bg-gray-100 text-gray-800 text-sm font-medium rounded">
+              <span key={`badge-category-${category?.id || categorySlug}`} className="px-3 py-1 bg-gray-100 text-gray-800 text-sm font-medium rounded">
                 {category?.name || categorySlug}
               </span>
-              <span className="px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded">
+              <span key={`badge-question-${question.questionNumber}`} className="px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded">
                 問題{question.questionNumber}
               </span>
             </div>

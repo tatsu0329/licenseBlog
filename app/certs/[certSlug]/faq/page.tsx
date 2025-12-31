@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { getCert } from "@/lib/data/certs";
 import { getFAQsByCert } from "@/lib/data/faqs";
+import BackButton from "@/components/BackButton";
 
 export async function generateMetadata({
   params,
@@ -36,8 +38,11 @@ export default async function FAQPage({
   const faqs = cert ? getFAQsByCert(cert.id) : [];
 
   if (!cert) {
-    return <div>資格が見つかりません</div>;
+    notFound();
   }
+
+  // 特徴フラグの取得
+  const features = cert.features ?? [];
 
   // 構造化データ（FAQPage）
   const jsonLd = {
@@ -71,9 +76,14 @@ export default async function FAQPage({
       />
 
       <div className="min-h-screen bg-gray-50">
+        {/* フローティング戻るボタン */}
+        <BackButton variant="gradient" floating position="bottom-left" />
+        
         <header className="bg-white shadow-sm">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <nav className="text-sm text-gray-600 mb-2">
+            <nav className="text-sm text-gray-600 mb-2 flex items-center">
+              <BackButton variant="minimal" className="mr-4" />
+              <span className="mx-2">|</span>
               <Link href="/" className="hover:text-gray-900">
                 ホーム
               </Link>
@@ -159,14 +169,18 @@ export default async function FAQPage({
                 className="p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors"
               >
                 <h3 className="font-semibold text-gray-900 mb-1">
-                  📝 過去問解説
+                  📝 過去問一覧
                 </h3>
                 <p className="text-sm text-gray-600">
                   過去問で実力を確認
                 </p>
               </Link>
               <Link
-                href={certSlug === "auto-mechanic-1" ? "/articles/auto-mechanic-1-app-introduction" : "/articles"}
+                href={
+                  features.includes("articles") && certSlug === "auto-mechanic-1"
+                    ? "/articles/auto-mechanic-1-app-introduction"
+                    : "/articles"
+                }
                 className="p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
               >
                 <h3 className="font-semibold text-gray-900 mb-1">
