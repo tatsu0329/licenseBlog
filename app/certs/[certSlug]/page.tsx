@@ -151,7 +151,21 @@ export default async function CertPage({
                 合格率
               </dt>
               <dd className="text-3xl font-bold text-gray-900">
-                {cert.passRate !== undefined ? `${cert.passRate}%` : "未公開"}
+                {cert.passRate !== undefined
+                  ? `${cert.passRate}%`
+                  : cert.examInfo?.passRateHistory &&
+                    cert.examInfo.passRateHistory.length > 0
+                  ? (() => {
+                      const sortedHistory = [
+                        ...cert.examInfo.passRateHistory,
+                      ].sort((a, b) => b.year - a.year);
+                      const latest = sortedHistory[0];
+                      const latestData = latest.spring || latest.autumn;
+                      return latestData?.passRate !== undefined
+                        ? `${latestData.passRate}%`
+                        : "未公開";
+                    })()
+                  : "未公開"}
               </dd>
             </div>
             <div className="space-y-2">
@@ -166,10 +180,27 @@ export default async function CertPage({
                       人
                     </span>
                   </>
+                ) : cert.examInfo?.passRateHistory &&
+                  cert.examInfo.passRateHistory.length > 0 ? (
+                  (() => {
+                    const sortedHistory = [
+                      ...cert.examInfo.passRateHistory,
+                    ].sort((a, b) => b.year - a.year);
+                    const latest = sortedHistory[0];
+                    const latestData = latest.spring || latest.autumn;
+                    return latestData?.examinees !== undefined ? (
+                      <>
+                        {latestData.examinees.toLocaleString()}
+                        <span className="text-lg text-gray-600 font-normal">
+                          人
+                        </span>
+                      </>
+                    ) : (
+                      "未公開"
+                    );
+                  })()
                 ) : (
-                  <span className="text-lg text-gray-600 font-normal">
-                    未公開
-                  </span>
+                  "未公開"
                 )}
               </dd>
             </div>
