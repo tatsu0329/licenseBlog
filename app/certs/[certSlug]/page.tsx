@@ -230,10 +230,10 @@ export default async function CertPage({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-10">
           {/* 左カラム：コンテンツ（縦配置） */}
           <div className="lg:col-span-4 space-y-6">
-            {/* 過去問（最優先：高需要×高収益） */}
+            {/* 過去問及び解答集 */}
             <Link
               href={`/certs/${cert.slug}/kakomon`}
-              className="group relative bg-gradient-to-br from-emerald-500 via-green-500 to-teal-600 rounded-2xl shadow-xl p-6 md:p-7 hover:shadow-2xl transition-all duration-300 text-white overflow-hidden transform hover:-translate-y-1 block flex flex-col justify-between min-h-[220px]"
+              className="group relative bg-gradient-to-br from-emerald-500 via-green-500 to-teal-600 rounded-2xl shadow-xl p-6 md:p-7 hover:shadow-2xl transition-all duration-300 text-white overflow-hidden transform hover:-translate-y-1 block flex flex-col justify-between min-h-[200px]"
             >
               <div className="absolute top-0 right-0 bg-emerald-700/80 backdrop-blur-sm text-white px-4 py-2 rounded-bl-2xl text-xs font-bold uppercase tracking-wide">
                 最重要
@@ -242,11 +242,11 @@ export default async function CertPage({
                 <div className="flex items-center gap-3 mb-3">
                   <span className="text-4xl">📝</span>
                   <h3 className="text-2xl font-bold tracking-tight">
-                    過去問・解説
+                    過去問及び解説集
                   </h3>
                 </div>
                 <p className="text-emerald-50 text-base mb-4 leading-relaxed flex-1">
-                  詳細な解説で実力をアップ
+                  問題と正解を確認して実力を把握
                   {questions.length > 0 && (
                     <span className="block mt-1 text-lg font-semibold">
                       {questions.length}問掲載
@@ -264,22 +264,22 @@ export default async function CertPage({
             {/* 勉強ロードマップ（高需要×高収益） */}
             <Link
               href={`/certs/${cert.slug}/study`}
-              className="group relative bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 rounded-2xl shadow-xl p-6 md:p-7 hover:shadow-2xl transition-all duration-300 text-white overflow-hidden transform hover:-translate-y-1 block flex flex-col justify-between min-h-[220px]"
+              className="group relative bg-gradient-to-br from-amber-500 via-orange-500 to-red-600 rounded-2xl shadow-xl p-6 md:p-7 hover:shadow-2xl transition-all duration-300 text-white overflow-hidden transform hover:-translate-y-1 block flex flex-col justify-between min-h-[200px]"
             >
-              <div className="absolute top-0 right-0 bg-blue-700/80 backdrop-blur-sm text-white px-4 py-2 rounded-bl-2xl text-xs font-bold uppercase tracking-wide">
+              <div className="absolute top-0 right-0 bg-amber-700/80 backdrop-blur-sm text-white px-4 py-2 rounded-bl-2xl text-xs font-bold uppercase tracking-wide">
                 人気
               </div>
               <div className="relative z-10 flex-1 flex flex-col">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="text-4xl">📚</span>
+                  <span className="text-4xl">📖</span>
                   <h3 className="text-2xl font-bold tracking-tight">
                     勉強方法・ロードマップ
                   </h3>
                 </div>
-                <p className="text-blue-50 text-base mb-4 leading-relaxed flex-1">
+                <p className="text-amber-50 text-base mb-4 leading-relaxed flex-1">
                   学習を始める前に確認すべきことから、最短合格を目指す学習ロードマップまで
                 </p>
-                <div className="flex items-center gap-2 text-blue-50 text-sm font-medium mt-auto group-hover:translate-x-1 transition-transform">
+                <div className="flex items-center gap-2 text-amber-50 text-sm font-medium mt-auto group-hover:translate-x-1 transition-transform">
                   <span>診断ツールで学習計画作成</span>
                   <span className="text-lg">→</span>
                 </div>

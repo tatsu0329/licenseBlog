@@ -1,7 +1,14 @@
 import { Question } from "../types";
 
-// JSONファイルからの読み込み（移行中）
-import questionsR6_2Json from "./questions/auto_mechanic_1_r6_2.json";
+// 過去問集の読み込み（問題文・選択肢・正解のみ）
+import questions2021_2Json from "./questions/level-1-C-2021-2.json";
+import questions2022_2Json from "./questions/level-1-C-2022-2.json";
+import questions2023_2Json from "./questions/level-1-C-2023-2.json";
+import questions2024_2Json from "./questions/level-1-C-2024-2.json";
+
+// 解説集の読み込み（解説のみ）
+// 注意: 解説集は別途実装が必要。現在は過去問集のみを使用
+// import explanationsR6_2Json from "./explanations/auto_mechanic_1_r6_2.json";
 
 // Date型を変換するヘルパー関数
 function parseQuestionDates(question: any): Question {
@@ -82,10 +89,171 @@ function loadQuestionsFromJson(jsonData: QuestionJsonFile): Question[] {
   });
 }
 
-// JSONファイルから読み込んだデータを変換
-const questionsR6_2: Question[] = loadQuestionsFromJson(
-  questionsR6_2Json as QuestionJsonFile
+// 過去問集の型定義（問題文・選択肢・正解のみ、解説なし）
+interface QuestionSetJsonFile {
+  category: {
+    level: string;
+    fuelType: string;
+    year: string; // "2021-2" 形式
+  };
+  questions: Array<{
+    id: string; // "No.1", "No.2" など
+    question: string;
+    choices: string[]; // ["(1).選択肢1", "(2).選択肢2", ...]
+    answerIndex: number; // 0-based (0-3)
+    images?: string[]; // 問題文の画像
+  }>;
+}
+
+// 解説集の型定義（解説のみ）
+interface ExplanationSetJsonFile {
+  metadata: {
+    certId: string;
+    year: number;
+    season: 1 | 2;
+    publishedAt: string;
+    updatedAt: string;
+  };
+  explanations: Array<{
+    questionId: string;
+    questionNumber: string;
+    explanation: string;
+    explanationDetail?: string;
+    explanationImages?: string[]; // 解説の画像
+    difficulty?: 1 | 2 | 3 | 4 | 5;
+    tags?: string[];
+    relatedQuestionIds?: string[];
+  }>;
+}
+
+// 過去問集からQuestion型に変換（解説なし）
+function loadQuestionSetFromJson(jsonData: QuestionSetJsonFile): Question[] {
+  const { category, questions } = jsonData;
+
+  // "2021-2" 形式から年度と回次を抽出
+  const [yearStr, seasonStr] = category.year.split("-");
+  const year = parseInt(yearStr);
+  const season = parseInt(seasonStr) as 1 | 2;
+
+  // certIdを設定（level-1-C は 1級自動車整備士小型）
+  const certId = "auto-mechanic-1";
+
+  // デフォルトのcategoryId（全問題が同じ分野の場合）
+  const defaultCategoryId = "electrical-1";
+
+  const now = new Date();
+
+  return questions.map((q) => {
+    // "No.1" → "001" に変換
+    const questionNumber = q.id.replace("No.", "").padStart(3, "0");
+
+    // 問題IDを生成: certId-year-season-questionNumber
+    const id = `${certId}-${year}-${season}-${questionNumber}`;
+
+    // choicesを {number, text} 形式に変換
+    const choices = q.choices.map((choice, index) => {
+      // "(1).選択肢1" 形式から "(1)." を削除してテキストのみ抽出
+      const text = choice.replace(/^\(\d+\)\.\s*/, "").trim();
+      return {
+        number: (index + 1) as 1 | 2 | 3 | 4,
+        text,
+      };
+    });
+
+    // answerIndex (0-based) → correctAnswer (1-based)
+    const correctAnswer = (q.answerIndex + 1) as 1 | 2 | 3 | 4;
+
+    // 問題文から "Q01. " などのプレフィックスを削除（あれば）
+    const questionText = q.question.replace(/^Q\d+\.\s*/, "").trim();
+
+    return {
+      id,
+      certId,
+      year,
+      season,
+      categoryId: defaultCategoryId,
+      questionNumber,
+      questionText,
+      questionSummary:
+        questionText.length > 100
+          ? questionText.substring(0, 100) + "..."
+          : questionText,
+      choices,
+      correctAnswer,
+      // 解説は解説集からマージされるまで空（過去問集では解説なし）
+      explanation: "",
+      explanationDetail: undefined,
+      // 問題画像は暫定的に explanationImages に格納
+      // 注意: 過去問集では問題画像として表示、解説集とマージ後は解説画像と区別して扱う
+      explanationImages: q.images || [],
+      difficulty: undefined,
+      tags: [],
+      relatedQuestionIds: [],
+      source: `1級自動車整備士 ${year}年度第${season}回学科試験 ${category.level} ${category.fuelType}（国土交通省）`,
+      sourceUrl: "https://www.mlit.go.jp/",
+      officialPastQuestionUrl: "https://www.mlit.go.jp/jidosha/jidosha.html",
+      permissionStatus: "pending" as const,
+      publishedAt: now,
+      updatedAt: now,
+    };
+  });
+}
+
+// 過去問集と解説集をマージする関数
+// 注意: 現在は未使用。解説集が正しい形式で提供された際に使用
+function mergeQuestionsAndExplanations(
+  questions: Question[],
+  explanationSet: ExplanationSetJsonFile
+): Question[] {
+  // 安全に解説データを取得（存在チェック）
+  if (!explanationSet || !explanationSet.explanations) {
+    return questions;
+  }
+
+  const explanationMap = new Map(
+    explanationSet.explanations.map((exp) => [exp.questionId, exp])
+  );
+
+  return questions.map((q) => {
+    const explanation = explanationMap.get(q.id);
+
+    return {
+      ...q,
+      // 解説をマージ
+      explanation: explanation?.explanation || "",
+      explanationDetail: explanation?.explanationDetail,
+      // 問題画像と解説画像を統合（問題画像は既に explanationImages に入っている）
+      explanationImages: [
+        ...(q.explanationImages || []), // 問題画像
+        ...(explanation?.explanationImages || []), // 解説画像
+      ],
+      difficulty: explanation?.difficulty,
+      tags: explanation?.tags || [],
+      relatedQuestionIds: explanation?.relatedQuestionIds || [],
+    };
+  });
+}
+
+// 過去問集を読み込み（問題文・選択肢・正解のみ、解説は含まない）
+const questionSet2021_2 = loadQuestionSetFromJson(
+  questions2021_2Json as QuestionSetJsonFile
 );
+const questionSet2022_2 = loadQuestionSetFromJson(
+  questions2022_2Json as QuestionSetJsonFile
+);
+const questionSet2023_2 = loadQuestionSetFromJson(
+  questions2023_2Json as QuestionSetJsonFile
+);
+const questionSet2024_2 = loadQuestionSetFromJson(
+  questions2024_2Json as QuestionSetJsonFile
+);
+
+// 過去問集のみを返す（解説は含まない）
+// 解説は解説集ページで別途表示されるため、ここではマージしない
+const questions2021_2: Question[] = questionSet2021_2;
+const questions2022_2: Question[] = questionSet2022_2;
+const questions2023_2: Question[] = questionSet2023_2;
+const questions2024_2: Question[] = questionSet2024_2;
 
 // 1級自動車整備士 - エンジン分野
 const questionAutoMechanic1Engine1: Question = {
@@ -987,24 +1155,15 @@ const question2025_12_50: Question = {
 
 export function getAllQuestions(): Question[] {
   return [
-    // 1級自動車整備士
-    questionAutoMechanic1Engine1,
-    questionAutoMechanic1Chassis1,
-    questionAutoMechanic1Electrical1,
-    questionAutoMechanic1Diagnosis1,
-    // 令和6年度第2回 - JSONファイルから読み込み
-    ...questionsR6_2,
-    // 2025年3月23日実施分
-    question2025_12_47,
-    question2025_12_48,
-    question2025_12_49,
-    question2025_12_50,
-    // 自動車整備士3級
-    questionAutoMechanic3,
-    // 介護福祉士
-    questionCareWorker,
-    // USCPA
-    questionUSCPA,
+    // JSONファイルからの読み込み（過去問集のみ）
+    // 2021年度第2回 - 過去問集JSONファイルから読み込み
+    ...questions2021_2,
+    // 2022年度第2回
+    ...questions2022_2,
+    // 2023年度第2回
+    ...questions2023_2,
+    // 2024年度第2回
+    ...questions2024_2,
   ];
 }
 

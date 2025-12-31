@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
 import { getQuestion } from "@/lib/data/questions";
+import { getExplanationByQuestionId } from "@/lib/data/explanations";
 import { getCert } from "@/lib/data/certs";
 import { getCategory } from "@/lib/data/categories";
 import QuestionImage from "@/components/images/QuestionImage";
@@ -30,9 +31,17 @@ export async function generateMetadata({
 
   const questionDisplayText = question.questionSummary || question.questionText || question.questionTheme || "問題";
   
+  // 解説があるかどうかでタイトルと説明を分ける
+  const explanation = getExplanationByQuestionId(qid);
+  const hasExplanation = explanation !== undefined;
+  
   return {
-    title: `${cert.shortName} ${examPeriod} 過去問解説 ${question.questionNumber}`,
-    description: `${questionDisplayText.substring(0, 100)}... 正解と解説はこちら`,
+    title: hasExplanation 
+      ? `${cert.shortName} ${examPeriod} 過去問解説 ${question.questionNumber}`
+      : `${cert.shortName} ${examPeriod} 過去問 ${question.questionNumber}`,
+    description: hasExplanation
+      ? `${questionDisplayText.substring(0, 100)}... 正解と解説はこちら`
+      : `${questionDisplayText.substring(0, 100)}... 正解はこちら`,
     alternates: {
       canonical: `/certs/${certSlug}/kakomon/${year}/${season}/${category}/${qid}`,
     },
@@ -48,6 +57,8 @@ export default async function QuestionPage({
         const question = getQuestion(qid);
         const cert = getCert(certSlug);
         const category = question ? getCategory(question.categoryId) : null;
+        // 解説がある場合は取得（解説がない場合はnull）
+        const explanation = question ? getExplanationByQuestionId(qid) : null;
 
         if (!question || !cert) {
           return <div>問題が見つかりません</div>;
@@ -65,10 +76,13 @@ export default async function QuestionPage({
     "@type": "Question",
     name: questionDisplayText,
     text: questionDisplayText,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: question.explanation,
-    },
+    // 解説がある場合のみacceptedAnswerを追加
+    ...(explanation && {
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: explanation.explanation,
+      },
+    }),
     dateCreated: question.publishedAt.toISOString(),
     author: {
       "@type": "Organization",
@@ -131,7 +145,7 @@ export default async function QuestionPage({
             </div>
             <h1 className="text-2xl font-bold text-gray-900 mb-4">
               {cert.shortName} {examPeriodDetailed} {category?.name || categorySlug}{" "}
-              問題{question.questionNumber} 過去問解説
+              問題{question.questionNumber} {explanation ? '過去問解説' : '過去問'}
             </h1>
           </div>
 
@@ -184,6 +198,20 @@ export default async function QuestionPage({
                   {question.questionSummary || question.questionText || question.questionTheme || "問題"}
                 </blockquote>
 
+                {/* 問題文の画像（過去問集の場合、explanationImagesに問題画像が含まれる） */}
+                {question.explanationImages && question.explanationImages.length > 0 && !question.explanation && (
+                  <div className="mt-4 mb-4 space-y-4">
+                    {question.explanationImages.map((imageUrl, index) => (
+                      <QuestionImage
+                        key={imageUrl}
+                        src={imageUrl}
+                        alt={`問題図 ${index + 1}`}
+                        caption={`図${index + 1}: 問題図`}
+                      />
+                    ))}
+                  </div>
+                )}
+
             {/* 選択肢 */}
             <h3 className="text-lg font-semibold text-gray-900 mb-3 mt-6">
               選択肢
@@ -212,32 +240,39 @@ export default async function QuestionPage({
               </p>
             </div>
 
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">解説</h2>
-            <div className="prose max-w-none">
-              <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                {question.explanation}
-              </p>
-              
-              {/* 解説画像 */}
-              {question.explanationImages && question.explanationImages.length > 0 && (
-                <div className="mt-6 space-y-4">
-                  {question.explanationImages.map((imageUrl, index) => (
-                    <QuestionImage
-                      key={imageUrl}
-                      src={imageUrl}
-                      alt={`解説図 ${index + 1}`}
-                      caption={`図${index + 1}: 解説図`}
-                    />
-                  ))}
+            {/* 解説セクション（解説がある場合のみ表示） */}
+            {explanation && (
+              <>
+                <h2 className="text-xl font-semibold text-gray-900 mb-4">解説</h2>
+                <div className="prose max-w-none">
+                  <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                    {explanation.explanation}
+                  </p>
+                  
+                  {/* 解説画像 */}
+                  {explanation.explanationImages && explanation.explanationImages.length > 0 && (
+                    <div className="mt-6 space-y-4">
+                      {explanation.explanationImages.map((imageUrl, index) => (
+                        <QuestionImage
+                          key={imageUrl}
+                          src={imageUrl}
+                          alt={`解説図 ${index + 1}`}
+                          caption={`図${index + 1}: 解説図`}
+                        />
+                      ))}
+                    </div>
+                  )}
+
+                  {/* 解説詳細（Markdown形式） */}
+                  {explanation.explanationDetail && explanation.explanationDetail.trim().length > 0 && (
+                    <QuestionExplanation explanationDetail={explanation.explanationDetail} />
+                  )}
                 </div>
-              )}
+              </>
+            )}
 
-              {question.explanationDetail && (
-                <QuestionExplanation explanationDetail={question.explanationDetail} />
-              )}
-
-              {/* アプリCTA（中 - 解説の下） */}
-              <div className="mt-6 bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+            {/* アプリCTA（中 - 解説の下） */}
+            <div className="mt-6 bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                   <div>
                     <p className="font-semibold text-gray-900 mb-1">
@@ -254,7 +289,6 @@ export default async function QuestionPage({
                     アプリで演習 →
                   </Link>
                 </div>
-              </div>
             </div>
           </section>
 

@@ -360,3 +360,4 @@ function parseQuestionDates(question: any): Question {
 | **ビルド時間**   | ✅ 速い         | ✅ 速い（実用的には問題なし） |
 
 **結論**: JSON ファイル方式でも、サーバーサイドで読み込む限り、SEO 対策上問題ありません。
+
