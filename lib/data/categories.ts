@@ -74,7 +74,7 @@ export const categories: Category[] = [
     slug: "engine",
     name: "エンジン",
     order: 1,
-    description: "エンジンの整備に関する分野",
+    description: "エンジンの整備に関する分野（問題1～15）",
   },
   {
     id: "chassis-2",
@@ -82,7 +82,23 @@ export const categories: Category[] = [
     slug: "chassis",
     name: "シャシ",
     order: 2,
-    description: "シャシの整備に関する分野",
+    description: "シャシの整備に関する分野（問題16～30）",
+  },
+  {
+    id: "tools-equipment-2",
+    certId: "auto-mechanic-2",
+    slug: "tools-equipment",
+    name: "整備機器等",
+    order: 3,
+    description: "整備機器等に関する分野（問題31～35）",
+  },
+  {
+    id: "regulations-2",
+    certId: "auto-mechanic-2",
+    slug: "regulations",
+    name: "法規",
+    order: 4,
+    description: "法規に関する分野（問題36～40）",
   },
   // 自動車整備士3級
   {

@@ -265,32 +265,22 @@ function detectCategoryFromQuestion(
 }
 
 // 2級整備士の問題文から分野を判定する関数
-function detectCategoryFromQuestionLevel2(
-  questionText: string,
-  choices: string[]
-): string {
-  const combinedText = (questionText + " " + choices.join(" ")).toLowerCase();
+// 2級整備士の問題番号に基づいて分野を判定
+function detectCategoryFromQuestionLevel2(questionNumber: string): string {
+  // 問題番号を数値に変換（"001" → 1）
+  const num = parseInt(questionNumber, 10);
 
-  // シャシ系の判定
-  if (
-    combinedText.includes("シャシ") ||
-    combinedText.includes("サスペンション") ||
-    combinedText.includes("ステアリング") ||
-    combinedText.includes("ブレーキ") ||
-    combinedText.includes("タイヤ") ||
-    combinedText.includes("ホイール") ||
-    combinedText.includes("ドライブシャフト") ||
-    combinedText.includes("デフ") ||
-    combinedText.includes("トランスミッション") ||
-    combinedText.includes("クラッチ") ||
-    combinedText.includes("足回り") ||
-    combinedText.includes("走行装置") ||
-    combinedText.includes("制動装置")
-  ) {
-    return "chassis-2";
+  if (num >= 1 && num <= 15) {
+    return "engine-2"; // エンジン（問題1～15）
+  } else if (num >= 16 && num <= 30) {
+    return "chassis-2"; // シャシ（問題16～30）
+  } else if (num >= 31 && num <= 35) {
+    return "tools-equipment-2"; // 整備機器等（問題31～35）
+  } else if (num >= 36 && num <= 40) {
+    return "regulations-2"; // 法規（問題36～40）
   }
 
-  // エンジン系（デフォルト）
+  // デフォルト（範囲外の場合はエンジン）
   return "engine-2";
 }
 
@@ -363,11 +353,8 @@ function loadQuestionSetFromJsonLevel2(
     // 問題文から "Q01. " などのプレフィックスを削除（あれば）
     const questionText = q.question.replace(/^Q\d+\.\s*/, "").trim();
 
-    // 問題文と選択肢から分野を自動判定（2級用）
-    const categoryId = detectCategoryFromQuestionLevel2(
-      questionText,
-      q.choices
-    );
+    // 問題番号に基づいて分野を判定（2級用）
+    const categoryId = detectCategoryFromQuestionLevel2(questionNumber);
 
     // 燃料タイプから名称を取得
     const fuelTypeName =

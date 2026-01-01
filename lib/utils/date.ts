@@ -68,3 +68,4 @@ export function formatYearForFilter(year: number): string {
   return `令和${reiwaYear}年度`;
 }
 
+

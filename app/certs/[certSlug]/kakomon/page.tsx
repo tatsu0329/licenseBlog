@@ -10,7 +10,12 @@ export default async function KakomonPage({
   searchParams,
 }: {
   params: Promise<{ certSlug: string }>;
-  searchParams: Promise<{ year?: string; category?: string; season?: string; fuelType?: string }>;
+  searchParams: Promise<{
+    year?: string;
+    category?: string;
+    season?: string;
+    fuelType?: string;
+  }>;
 }) {
   const { certSlug } = await params;
   const { year, category, season, fuelType } = await searchParams;
@@ -27,22 +32,33 @@ export default async function KakomonPage({
   // 問題IDから燃料タイプを判定する関数（2級整備士用）
   const getFuelTypeFromQuestionId = (questionId: string): string | null => {
     // auto-mechanic-2-G-2025-1-001 形式から燃料タイプコードを抽出
+    // certIdがauto-mechanic-2でない場合はnullを返す
+    if (!questionId.startsWith("auto-mechanic-2-")) {
+      return null;
+    }
+
     const match = questionId.match(/^auto-mechanic-2-([GDMWC])-/);
-    if (match) {
+    if (match && match[1]) {
       const code = match[1];
-      return code === "G" ? "gasoline" 
-        : code === "D" ? "diesel"
-        : code === "M" ? "motorcycle"
-        : code === "C" ? "chassis"
+      return code === "G"
+        ? "gasoline"
+        : code === "D"
+        ? "diesel"
+        : code === "M"
+        ? "motorcycle"
+        : code === "C"
+        ? "chassis"
         : null;
     }
     return null;
   };
 
   // 種類別データがあるかチェック（2級整備士かどうか）
-  const hasFuelTypeData = allQuestions.some((q) => getFuelTypeFromQuestionId(q.id) !== null);
+  // 資格IDがauto-mechanic-2の場合は常にtrue（フィルタリング結果に依存しない）
+  const hasFuelTypeData = cert.id === "auto-mechanic-2";
 
-  // 利用可能な燃料タイプのリストを取得
+  // 利用可能な燃料タイプのリストを取得（フィルタリング前の全問題から取得）
+  // フィルタリング前のallQuestionsから取得することで、選択後もボタンが表示され続ける
   const availableFuelTypes = hasFuelTypeData
     ? Array.from(
         new Set(
@@ -54,7 +70,9 @@ export default async function KakomonPage({
     : [];
 
   // 年度のリストを取得（フィルター適用前の全問題から取得 - 回次と同じように常に全年度を表示）
-  const years = Array.from(new Set(allQuestions.map((q) => q.year))).sort((a, b) => b - a);
+  const years = Array.from(new Set(allQuestions.map((q) => q.year))).sort(
+    (a, b) => b - a
+  );
 
   // フィルター適用
   let questions = allQuestions;
@@ -71,19 +89,29 @@ export default async function KakomonPage({
     questions = questions.filter((q) => q.season === parseInt(season));
   }
   if (fuelType && hasFuelTypeData) {
-    questions = questions.filter((q) => getFuelTypeFromQuestionId(q.id) === fuelType);
+    // 燃料タイプでフィルタリング（2級整備士の問題のみ）
+    questions = questions.filter((q) => {
+      const questionFuelType = getFuelTypeFromQuestionId(q.id);
+      // 2級整備士以外の問題（燃料タイプがnull）は、燃料タイプフィルターが選択されている場合は除外しない
+      // ただし、2級整備士の問題のみを対象にする場合は、燃料タイプが一致するもののみを表示
+      if (questionFuelType === null) {
+        // 2級整備士以外の問題は除外（種類フィルター選択時は2級整備士のみ表示）
+        return false;
+      }
+      return questionFuelType === fuelType;
+    });
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* フローティング戻るボタン */}
       <BackButton variant="gradient" floating position="bottom-left" />
-      
+
       <header className="bg-white shadow-sm">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <nav className="text-sm text-gray-600 mb-2 flex items-center">
-              <BackButton variant="minimal" className="mr-4" />
-              <span className="mx-2">|</span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <nav className="text-sm text-gray-600 mb-2 flex items-center">
+            <BackButton variant="minimal" className="mr-4" />
+            <span className="mx-2">|</span>
             <Link href="/" className="hover:text-gray-900">
               ホーム
             </Link>
@@ -117,7 +145,11 @@ export default async function KakomonPage({
               </p>
             </div>
             <Link
-              href={certSlug === "auto-mechanic-1" ? "/articles/auto-mechanic-1-app-introduction" : "/articles"}
+              href={
+                certSlug === "auto-mechanic-1"
+                  ? "/articles/auto-mechanic-1-app-introduction"
+                  : "/articles"
+              }
               className="px-6 py-3 bg-white text-green-600 rounded-lg hover:bg-green-50 transition-colors font-semibold whitespace-nowrap"
             >
               アプリを見る →
@@ -130,7 +162,74 @@ export default async function KakomonPage({
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
             絞り込み検索
           </h2>
-          <div className={`grid grid-cols-1 md:grid-cols-${hasFuelTypeData ? 4 : 3} gap-4`}>
+          <div
+            className={`grid grid-cols-1 md:grid-cols-${
+              hasFuelTypeData ? 4 : 3
+            } gap-4`}
+          >
+            {/* 種類別（燃料タイプ） - 2級整備士のみ表示 */}
+            {hasFuelTypeData && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  種類
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  <Link
+                    href={`/certs/${cert.slug}/kakomon${
+                      year ? `?year=${year}` : ""
+                    }${
+                      category
+                        ? year
+                          ? `&category=${category}`
+                          : `?category=${category}`
+                        : ""
+                    }${
+                      season
+                        ? year || category
+                          ? `&season=${season}`
+                          : `?season=${season}`
+                        : ""
+                    }`}
+                    className={`px-3 py-1 rounded ${
+                      !fuelType
+                        ? "bg-orange-500 text-white"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                  >
+                    すべて
+                  </Link>
+                  {availableFuelTypes.map((ft) => {
+                    const fuelTypeNames: Record<string, string> = {
+                      gasoline: "ガソリン",
+                      diesel: "ジーゼル",
+                      motorcycle: "2輪",
+                      chassis: "シャシ",
+                    };
+                    const params = new URLSearchParams();
+                    params.set("fuelType", ft);
+                    if (year) params.set("year", year);
+                    if (category) params.set("category", category);
+                    if (season) params.set("season", season);
+                    return (
+                      <Link
+                        key={ft}
+                        href={`/certs/${
+                          cert.slug
+                        }/kakomon?${params.toString()}`}
+                        className={`px-3 py-1 rounded ${
+                          fuelType === ft
+                            ? "bg-orange-500 text-white"
+                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                        }`}
+                      >
+                        {fuelTypeNames[ft] || ft}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
             {/* 年度別 */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -138,7 +237,15 @@ export default async function KakomonPage({
               </label>
               <div className="flex flex-wrap gap-2">
                 <Link
-                  href={`/certs/${cert.slug}/kakomon${category ? `?category=${category}` : ""}${season ? `?season=${season}` : ""}${fuelType ? (category || season ? `&fuelType=${fuelType}` : `?fuelType=${fuelType}`) : ""}`}
+                  href={`/certs/${cert.slug}/kakomon${
+                    category ? `?category=${category}` : ""
+                  }${season ? `?season=${season}` : ""}${
+                    fuelType
+                      ? category || season
+                        ? `&fuelType=${fuelType}`
+                        : `?fuelType=${fuelType}`
+                      : ""
+                  }`}
                   className={`px-3 py-1 rounded ${
                     !year
                       ? "bg-blue-500 text-white"
@@ -178,7 +285,21 @@ export default async function KakomonPage({
               </label>
               <div className="flex flex-wrap gap-2">
                 <Link
-                  href={`/certs/${cert.slug}/kakomon${year ? `?year=${year}` : ""}${season ? (year ? `&season=${season}` : `?season=${season}`) : ""}${fuelType ? ((year || season) ? `&fuelType=${fuelType}` : `?fuelType=${fuelType}`) : ""}`}
+                  href={`/certs/${cert.slug}/kakomon${
+                    year ? `?year=${year}` : ""
+                  }${
+                    season
+                      ? year
+                        ? `&season=${season}`
+                        : `?season=${season}`
+                      : ""
+                  }${
+                    fuelType
+                      ? year || season
+                        ? `&fuelType=${fuelType}`
+                        : `?fuelType=${fuelType}`
+                      : ""
+                  }`}
                   className={`px-3 py-1 rounded ${
                     !category
                       ? "bg-green-500 text-white"
@@ -217,7 +338,21 @@ export default async function KakomonPage({
               </label>
               <div className="flex flex-wrap gap-2">
                 <Link
-                  href={`/certs/${cert.slug}/kakomon${year ? `?year=${year}` : ""}${category ? (year ? `&category=${category}` : `?category=${category}`) : ""}${fuelType ? ((year || category) ? `&fuelType=${fuelType}` : `?fuelType=${fuelType}`) : ""}`}
+                  href={`/certs/${cert.slug}/kakomon${
+                    year ? `?year=${year}` : ""
+                  }${
+                    category
+                      ? year
+                        ? `&category=${category}`
+                        : `?category=${category}`
+                      : ""
+                  }${
+                    fuelType
+                      ? year || category
+                        ? `&fuelType=${fuelType}`
+                        : `?fuelType=${fuelType}`
+                      : ""
+                  }`}
                   className={`px-3 py-1 rounded ${
                     !season
                       ? "bg-purple-500 text-white"
@@ -249,53 +384,6 @@ export default async function KakomonPage({
                 })}
               </div>
             </div>
-
-            {/* 種類別（燃料タイプ） - 2級整備士のみ表示 */}
-            {hasFuelTypeData && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  種類
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  <Link
-                    href={`/certs/${cert.slug}/kakomon${year ? `?year=${year}` : ""}${category ? (year ? `&category=${category}` : `?category=${category}`) : ""}${season ? ((year || category) ? `&season=${season}` : `?season=${season}`) : ""}`}
-                    className={`px-3 py-1 rounded ${
-                      !fuelType
-                        ? "bg-orange-500 text-white"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
-                  >
-                    すべて
-                  </Link>
-                  {availableFuelTypes.map((ft) => {
-                    const fuelTypeNames: Record<string, string> = {
-                      gasoline: "ガソリン",
-                      diesel: "ジーゼル",
-                      motorcycle: "2輪",
-                      chassis: "シャシ",
-                    };
-                    const params = new URLSearchParams();
-                    params.set("fuelType", ft);
-                    if (year) params.set("year", year);
-                    if (category) params.set("category", category);
-                    if (season) params.set("season", season);
-                    return (
-                      <Link
-                        key={ft}
-                        href={`/certs/${cert.slug}/kakomon?${params.toString()}`}
-                        className={`px-3 py-1 rounded ${
-                          fuelType === ft
-                            ? "bg-orange-500 text-white"
-                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                        }`}
-                      >
-                        {fuelTypeNames[ft] || ft}
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
           </div>
         </section>
 
@@ -320,9 +408,11 @@ export default async function KakomonPage({
             <ul className="space-y-4">
               {questions.map((question) => {
                 // categoryIdからslugを取得
-                const categoryData = categories.find((c) => c.id === question.categoryId);
+                const categoryData = categories.find(
+                  (c) => c.id === question.categoryId
+                );
                 const categorySlug = categoryData?.slug || question.categoryId;
-                
+
                 return (
                   <li key={question.id}>
                     <Link
@@ -332,11 +422,16 @@ export default async function KakomonPage({
                       <div className="flex items-center justify-between">
                         <div>
                           <span className="text-sm text-gray-500">
-                            {formatExamPeriod(question.year, question.season)} 問題{question.questionNumber}
+                            {formatExamPeriod(question.year, question.season)}{" "}
+                            問題{question.questionNumber}
                           </span>
                           <h3 className="text-gray-900 font-medium mt-1">
                             {(() => {
-                              const displayText = question.questionSummary || question.questionText || question.questionTheme || "問題";
+                              const displayText =
+                                question.questionSummary ||
+                                question.questionText ||
+                                question.questionTheme ||
+                                "問題";
                               return (
                                 <>
                                   {displayText.substring(0, 100)}
@@ -367,7 +462,11 @@ export default async function KakomonPage({
               無料で10問まで試せます。
             </p>
             <Link
-              href={certSlug === "auto-mechanic-1" ? "/articles/auto-mechanic-1-app-introduction" : "/articles"}
+              href={
+                certSlug === "auto-mechanic-1"
+                  ? "/articles/auto-mechanic-1-app-introduction"
+                  : "/articles"
+              }
               className="inline-block px-8 py-3 bg-white text-blue-600 rounded-lg hover:bg-blue-50 transition-colors font-bold text-lg"
             >
               アプリ詳細を見る →
@@ -378,4 +477,3 @@ export default async function KakomonPage({
     </div>
   );
 }
-
