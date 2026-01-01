@@ -106,117 +106,497 @@ export default async function OverviewPage({
           <h2 className="text-xl font-semibold text-gray-900 mb-4">
             難易度・合格率
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-2">難易度</h3>
-              <div className="text-3xl text-yellow-500 mb-2">
-                {"★".repeat(cert.difficulty)}
-                {"☆".repeat(5 - cert.difficulty)}
-              </div>
-              <p className="text-sm text-gray-600">
-                {cert.difficulty === 4
-                  ? (() => {
-                      // 最新の合格率を取得
-                      if (
-                        cert.examInfo?.passRateHistory &&
+          
+          {(() => {
+            // 合格率から難易度を判定する関数
+            const getDifficultyFromPassRate = (passRate?: number): {
+              level: 1 | 2 | 3 | 4 | 5;
+              label: string;
+            } => {
+              if (passRate === undefined) {
+                return { level: cert.difficulty, label: "普通" };
+              }
+              if (passRate >= 80) {
+                return { level: 1, label: "易しい" };
+              } else if (passRate >= 60) {
+                return { level: 2, label: "普通" };
+              } else if (passRate >= 40) {
+                return { level: 3, label: "やや難しい" };
+              } else if (passRate >= 20) {
+                return { level: 4, label: "難しい" };
+              } else {
+                return { level: 5, label: "非常に難しい" };
+              }
+            };
+
+            // 種類別データがあるかチェック（種類ごとに最新データを取得）
+            const sortedHistory = cert.examInfo?.passRateHistory
+              ? [...cert.examInfo.passRateHistory].sort((a, b) => b.year - a.year)
+              : [];
+            const latest = sortedHistory[0];
+            const latestData = latest?.spring || latest?.autumn;
+            
+            // 種類ごとに最新データを取得（最新年度にデータがない種類がある場合の対応）
+            const getLatestByType = (type: 'gasoline' | 'diesel' | 'motorcycle' | 'chassis') => {
+              for (const item of sortedHistory) {
+                const springData = item.spring?.byType?.[type];
+                const autumnData = item.autumn?.byType?.[type];
+                if (springData) return springData;
+                if (autumnData) return autumnData;
+              }
+              return null;
+            };
+            
+            const byType = {
+              gasoline: latestData?.byType?.gasoline || getLatestByType('gasoline'),
+              diesel: latestData?.byType?.diesel || getLatestByType('diesel'),
+              motorcycle: latestData?.byType?.motorcycle || getLatestByType('motorcycle'),
+              chassis: latestData?.byType?.chassis || getLatestByType('chassis'),
+            };
+            
+            const hasByType = byType.gasoline || byType.diesel || byType.motorcycle || byType.chassis;
+
+            return (
+              <>
+                {hasByType && byType ? (
+                  /* 種類別データがある場合は種類別に表示 */
+                  <div className="space-y-6">
+                    {/* 2級ガソリン自動車整備士 */}
+                    {byType.gasoline && (() => {
+                      const difficulty = getDifficultyFromPassRate(byType.gasoline.passRate);
+                      return (
+                        <div className="border-l-4 border-blue-500 pl-4 py-3">
+                          <h3 className="font-semibold text-gray-900 mb-3">
+                            2級ガソリン自動車整備士
+                          </h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                              <h4 className="font-semibold text-gray-900 mb-2">難易度</h4>
+                              <div className="text-3xl text-yellow-500 mb-2">
+                                {"★".repeat(difficulty.level)}
+                                {"☆".repeat(5 - difficulty.level)}
+                              </div>
+                              <p className="text-sm text-gray-600">
+                                {difficulty.label}
+                                {byType.gasoline.passRate !== undefined
+                                  ? `（合格率${byType.gasoline.passRate.toFixed(1)}%）`
+                                  : ""}
+                              </p>
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-gray-900 mb-2">合格率</h4>
+                              <div className="text-3xl font-bold text-gray-900 mb-2">
+                                {byType.gasoline.passRate !== undefined
+                                  ? `${byType.gasoline.passRate.toFixed(1)}%`
+                                  : "-"}
+                              </div>
+                              <p className="text-sm text-gray-600">
+                                {latest?.spring
+                                  ? formatExamPeriod(latest.year, 1)
+                                  : latest?.autumn
+                                  ? formatExamPeriod(latest.year, 2)
+                                  : ""}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })()}
+
+                    {/* 2級ジーゼル自動車整備士 */}
+                    {byType.diesel && (() => {
+                      const difficulty = getDifficultyFromPassRate(byType.diesel.passRate);
+                      return (
+                        <div className="border-l-4 border-green-500 pl-4 py-3">
+                          <h3 className="font-semibold text-gray-900 mb-3">
+                            2級ジーゼル自動車整備士
+                          </h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                              <h4 className="font-semibold text-gray-900 mb-2">難易度</h4>
+                              <div className="text-3xl text-yellow-500 mb-2">
+                                {"★".repeat(difficulty.level)}
+                                {"☆".repeat(5 - difficulty.level)}
+                              </div>
+                              <p className="text-sm text-gray-600">
+                                {difficulty.label}
+                                {byType.diesel.passRate !== undefined
+                                  ? `（合格率${byType.diesel.passRate.toFixed(1)}%）`
+                                  : ""}
+                              </p>
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-gray-900 mb-2">合格率</h4>
+                              <div className="text-3xl font-bold text-gray-900 mb-2">
+                                {byType.diesel.passRate !== undefined
+                                  ? `${byType.diesel.passRate.toFixed(1)}%`
+                                  : "-"}
+                              </div>
+                              <p className="text-sm text-gray-600">
+                                {latest?.spring
+                                  ? formatExamPeriod(latest.year, 1)
+                                  : latest?.autumn
+                                  ? formatExamPeriod(latest.year, 2)
+                                  : ""}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })()}
+
+                    {/* 2級二輪自動車整備士 */}
+                    {byType.motorcycle && (() => {
+                      const difficulty = getDifficultyFromPassRate(byType.motorcycle.passRate);
+                      return (
+                        <div className="border-l-4 border-purple-500 pl-4 py-3">
+                          <h3 className="font-semibold text-gray-900 mb-3">
+                            2級二輪自動車整備士
+                          </h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                              <h4 className="font-semibold text-gray-900 mb-2">難易度</h4>
+                              <div className="text-3xl text-yellow-500 mb-2">
+                                {"★".repeat(difficulty.level)}
+                                {"☆".repeat(5 - difficulty.level)}
+                              </div>
+                              <p className="text-sm text-gray-600">
+                                {difficulty.label}
+                                {byType.motorcycle.passRate !== undefined
+                                  ? `（合格率${byType.motorcycle.passRate.toFixed(1)}%）`
+                                  : ""}
+                              </p>
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-gray-900 mb-2">合格率</h4>
+                              <div className="text-3xl font-bold text-gray-900 mb-2">
+                                {byType.motorcycle.passRate !== undefined
+                                  ? `${byType.motorcycle.passRate.toFixed(1)}%`
+                                  : "-"}
+                              </div>
+                              <p className="text-sm text-gray-600">
+                                {latest?.spring
+                                  ? formatExamPeriod(latest.year, 1)
+                                  : latest?.autumn
+                                  ? formatExamPeriod(latest.year, 2)
+                                  : ""}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })()}
+
+                    {/* 2級シャシ自動車整備士 */}
+                    {byType.chassis && (() => {
+                      const difficulty = getDifficultyFromPassRate(byType.chassis.passRate);
+                      return (
+                        <div className="border-l-4 border-orange-500 pl-4 py-3">
+                          <h3 className="font-semibold text-gray-900 mb-3">
+                            2級シャシ自動車整備士
+                          </h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                              <h4 className="font-semibold text-gray-900 mb-2">難易度</h4>
+                              <div className="text-3xl text-yellow-500 mb-2">
+                                {"★".repeat(difficulty.level)}
+                                {"☆".repeat(5 - difficulty.level)}
+                              </div>
+                              <p className="text-sm text-gray-600">
+                                {difficulty.label}
+                                {byType.chassis.passRate !== undefined
+                                  ? `（合格率${byType.chassis.passRate.toFixed(1)}%）`
+                                  : ""}
+                              </p>
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-gray-900 mb-2">合格率</h4>
+                              <div className="text-3xl font-bold text-gray-900 mb-2">
+                                {byType.chassis.passRate !== undefined
+                                  ? `${byType.chassis.passRate.toFixed(1)}%`
+                                  : "-"}
+                              </div>
+                              <p className="text-sm text-gray-600">
+                                {latest?.spring
+                                  ? formatExamPeriod(latest.year, 1)
+                                  : latest?.autumn
+                                  ? formatExamPeriod(latest.year, 2)
+                                  : ""}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })()}
+                  </div>
+                ) : (
+                  /* 種類別データがない場合は通常通り表示 */
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <h3 className="font-semibold text-gray-900 mb-2">難易度</h3>
+                      <div className="text-3xl text-yellow-500 mb-2">
+                        {"★".repeat(cert.difficulty)}
+                        {"☆".repeat(5 - cert.difficulty)}
+                      </div>
+                      <p className="text-sm text-gray-600">
+                        {cert.difficulty === 4
+                          ? (() => {
+                              // 最新の合格率を取得
+                              if (
+                                cert.examInfo?.passRateHistory &&
+                                cert.examInfo.passRateHistory.length > 0
+                              ) {
+                                const sortedHistory = [
+                                  ...cert.examInfo.passRateHistory,
+                                ].sort((a, b) => b.year - a.year);
+                                const latest = sortedHistory[0];
+                                const latestData = latest.spring || latest.autumn;
+                                if (latestData?.passRate !== undefined) {
+                                  return `やや難しい（合格率${latestData.passRate}%）`;
+                                }
+                              }
+                              // データがない場合は全期間の平均を計算
+                              if (
+                                cert.examInfo?.passRateHistory &&
+                                cert.examInfo.passRateHistory.length > 0
+                              ) {
+                                const allRates: number[] = [];
+                                cert.examInfo.passRateHistory.forEach((item) => {
+                                  if (item.spring?.passRate !== undefined) {
+                                    allRates.push(item.spring.passRate);
+                                  }
+                                  if (item.autumn?.passRate !== undefined) {
+                                    allRates.push(item.autumn.passRate);
+                                  }
+                                });
+                                if (allRates.length > 0) {
+                                  const avgRate =
+                                    allRates.reduce((sum, rate) => sum + rate, 0) /
+                                    allRates.length;
+                                  return `やや難しい（合格率平均${avgRate.toFixed(
+                                    1
+                                  )}%）`;
+                                }
+                              }
+                              return "やや難しい（合格率参考値なし）";
+                            })()
+                          : cert.difficulty === 5
+                          ? "非常に難しい"
+                          : "普通"}
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900 mb-2">合格率</h3>
+                      <div className="text-3xl font-bold text-gray-900 mb-2">
+                        {cert.passRate !== undefined
+                          ? `${cert.passRate}%`
+                          : cert.examInfo?.passRateHistory &&
+                            cert.examInfo.passRateHistory.length > 0
+                          ? (() => {
+                              const sortedHistory = [
+                                ...cert.examInfo.passRateHistory,
+                              ].sort((a, b) => b.year - a.year);
+                              const latest = sortedHistory[0];
+                              const latestData = latest.spring || latest.autumn;
+                              return latestData?.passRate !== undefined
+                                ? `${latestData.passRate}%`
+                                : "参考値あり";
+                            })()
+                          : "年度により変動"}
+                      </div>
+                      <p className="text-sm text-gray-600">
+                        {cert.examInfo?.passRateHistory &&
                         cert.examInfo.passRateHistory.length > 0
-                      ) {
-                        const sortedHistory = [
-                          ...cert.examInfo.passRateHistory,
-                        ].sort((a, b) => b.year - a.year);
-                        const latest = sortedHistory[0];
-                        const latestData = latest.spring || latest.autumn;
-                        if (latestData?.passRate !== undefined) {
-                          return `やや難しい（合格率${latestData.passRate}%）`;
-                        }
-                      }
-                      // データがない場合は全期間の平均を計算
-                      if (
-                        cert.examInfo?.passRateHistory &&
-                        cert.examInfo.passRateHistory.length > 0
-                      ) {
-                        const allRates: number[] = [];
-                        cert.examInfo.passRateHistory.forEach((item) => {
-                          if (item.spring?.passRate !== undefined) {
-                            allRates.push(item.spring.passRate);
-                          }
-                          if (item.autumn?.passRate !== undefined) {
-                            allRates.push(item.autumn.passRate);
-                          }
-                        });
-                        if (allRates.length > 0) {
-                          const avgRate =
-                            allRates.reduce((sum, rate) => sum + rate, 0) /
-                            allRates.length;
-                          return `やや難しい（合格率平均${avgRate.toFixed(
-                            1
-                          )}%）`;
-                        }
-                      }
-                      return "やや難しい（合格率参考値なし）";
-                    })()
-                  : cert.difficulty === 5
-                  ? "非常に難しい"
-                  : "普通"}
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-2">合格率</h3>
-              <div className="text-3xl font-bold text-gray-900 mb-2">
-                {cert.passRate !== undefined
-                  ? `${cert.passRate}%`
-                  : cert.examInfo?.passRateHistory &&
-                    cert.examInfo.passRateHistory.length > 0
-                  ? (() => {
-                      const sortedHistory = [
-                        ...cert.examInfo.passRateHistory,
-                      ].sort((a, b) => b.year - a.year);
-                      const latest = sortedHistory[0];
-                      const latestData = latest.spring || latest.autumn;
-                      return latestData?.passRate !== undefined
-                        ? `${latestData.passRate}%`
-                        : "参考値あり";
-                    })()
-                  : "年度により変動"}
-              </div>
-              <p className="text-sm text-gray-600">
-                {cert.examInfo?.passRateHistory &&
-                cert.examInfo.passRateHistory.length > 0
-                  ? (() => {
-                      const latest = [...cert.examInfo.passRateHistory].sort(
-                        (a, b) => b.year - a.year
-                      )[0];
-                      const latestPeriod = latest.spring
-                        ? formatExamPeriod(latest.year, 1)
-                        : latest.autumn
-                        ? formatExamPeriod(latest.year, 2)
-                        : null;
-                      return latestPeriod
-                        ? `参考値（最新：${latestPeriod}）`
-                        : "年度により変動";
-                    })()
-                  : "年度により変動"}
-              </p>
-            </div>
-          </div>
+                          ? (() => {
+                              const latest = [...cert.examInfo.passRateHistory].sort(
+                                (a, b) => b.year - a.year
+                              )[0];
+                              const latestPeriod = latest.spring
+                                ? formatExamPeriod(latest.year, 1)
+                                : latest.autumn
+                                ? formatExamPeriod(latest.year, 2)
+                                : null;
+                              return latestPeriod
+                                ? `参考値（最新：${latestPeriod}）`
+                                : "年度により変動";
+                            })()
+                          : "年度により変動"}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </>
+            );
+          })()}
         </section>
 
         {/* 合格率推移グラフ */}
         {cert.examInfo?.passRateHistory &&
-          cert.examInfo.passRateHistory.length > 0 && (
-            <section className="bg-white rounded-lg shadow-md p-6 mb-6">
-              <PassRateChart
-                data={cert.examInfo.passRateHistory}
-                title="合格率の推移（過去4年）"
-              />
-              <div className="mt-4 text-sm text-gray-600">
-                <p>
-                  ※
-                  より詳細な統計データが必要な場合は、試験実施団体の公式サイトをご確認ください。
-                </p>
-              </div>
-            </section>
-          )}
+          cert.examInfo.passRateHistory.length > 0 &&
+          (() => {
+            // 種類別データがあるかチェック（すべての年度から確認）
+            const sortedHistory = [...cert.examInfo.passRateHistory].sort(
+              (a, b) => b.year - a.year
+            );
+            const latest = sortedHistory[0];
+            const latestData = latest.spring || latest.autumn;
+            
+            // 種類ごとにデータが存在するかチェック（すべての年度から）
+            const hasTypeData = (type: 'gasoline' | 'diesel' | 'motorcycle' | 'chassis') => {
+              if (!cert.examInfo?.passRateHistory) return false;
+              for (const item of cert.examInfo.passRateHistory) {
+                if (item.spring?.byType?.[type] || item.autumn?.byType?.[type]) {
+                  return true;
+                }
+              }
+              return false;
+            };
+            
+            const hasByType = hasTypeData('gasoline') || hasTypeData('diesel') || hasTypeData('motorcycle') || hasTypeData('chassis');
+
+            return (
+              <section className="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                  合格率の推移（過去4年）
+                </h2>
+                
+                {/* 種類別データがある場合は種類別に表示 */}
+                {hasByType ? (
+                  <div className="space-y-8">
+                    {/* 2級ガソリン自動車整備士 */}
+                    {hasTypeData('gasoline') && (
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4 border-l-4 border-blue-500 pl-3">
+                          2級ガソリン自動車整備士
+                        </h3>
+                        <PassRateChart
+                          data={cert.examInfo.passRateHistory.map((item) => ({
+                            year: item.year,
+                            spring: item.spring?.byType?.gasoline
+                              ? {
+                                  passRate: item.spring.byType.gasoline.passRate,
+                                  examinees: item.spring.byType.gasoline.examinees,
+                                  passers: item.spring.byType.gasoline.passers,
+                                }
+                              : undefined,
+                            autumn: item.autumn?.byType?.gasoline
+                              ? {
+                                  passRate: item.autumn.byType.gasoline.passRate,
+                                  examinees: item.autumn.byType.gasoline.examinees,
+                                  passers: item.autumn.byType.gasoline.passers,
+                                }
+                              : undefined,
+                          }))}
+                          title=""
+                        />
+                      </div>
+                    )}
+
+                    {/* 2級ジーゼル自動車整備士 */}
+                    {hasTypeData('diesel') && (
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4 border-l-4 border-green-500 pl-3">
+                          2級ジーゼル自動車整備士
+                        </h3>
+                        <PassRateChart
+                          data={cert.examInfo.passRateHistory.map((item) => ({
+                            year: item.year,
+                            spring: item.spring?.byType?.diesel
+                              ? {
+                                  passRate: item.spring.byType.diesel.passRate,
+                                  examinees: item.spring.byType.diesel.examinees,
+                                  passers: item.spring.byType.diesel.passers,
+                                }
+                              : undefined,
+                            autumn: item.autumn?.byType?.diesel
+                              ? {
+                                  passRate: item.autumn.byType.diesel.passRate,
+                                  examinees: item.autumn.byType.diesel.examinees,
+                                  passers: item.autumn.byType.diesel.passers,
+                                }
+                              : undefined,
+                          }))}
+                          title=""
+                        />
+                      </div>
+                    )}
+
+                    {/* 2級二輪自動車整備士 */}
+                    {hasTypeData('motorcycle') && (
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4 border-l-4 border-purple-500 pl-3">
+                          2級二輪自動車整備士
+                        </h3>
+                        <PassRateChart
+                          data={cert.examInfo.passRateHistory.map((item) => ({
+                            year: item.year,
+                            spring: item.spring?.byType?.motorcycle
+                              ? {
+                                  passRate: item.spring.byType.motorcycle.passRate,
+                                  examinees: item.spring.byType.motorcycle.examinees,
+                                  passers: item.spring.byType.motorcycle.passers,
+                                }
+                              : undefined,
+                            autumn: item.autumn?.byType?.motorcycle
+                              ? {
+                                  passRate: item.autumn.byType.motorcycle.passRate,
+                                  examinees: item.autumn.byType.motorcycle.examinees,
+                                  passers: item.autumn.byType.motorcycle.passers,
+                                }
+                              : undefined,
+                          }))}
+                          title=""
+                        />
+                      </div>
+                    )}
+
+                    {/* 2級シャシ自動車整備士 */}
+                    {hasTypeData('chassis') && (
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4 border-l-4 border-orange-500 pl-3">
+                          2級シャシ自動車整備士
+                        </h3>
+                        <PassRateChart
+                          data={cert.examInfo.passRateHistory.map((item) => ({
+                            year: item.year,
+                            spring: item.spring?.byType?.chassis
+                              ? {
+                                  passRate: item.spring.byType.chassis.passRate,
+                                  examinees: item.spring.byType.chassis.examinees,
+                                  passers: item.spring.byType.chassis.passers,
+                                }
+                              : undefined,
+                            autumn: item.autumn?.byType?.chassis
+                              ? {
+                                  passRate: item.autumn.byType.chassis.passRate,
+                                  examinees: item.autumn.byType.chassis.examinees,
+                                  passers: item.autumn.byType.chassis.passers,
+                                }
+                              : undefined,
+                          }))}
+                          title=""
+                        />
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  /* 種類別データがない場合は通常通り表示 */
+                  <PassRateChart
+                    data={cert.examInfo.passRateHistory}
+                    title=""
+                  />
+                )}
+
+                <div className="mt-4 text-sm text-gray-600">
+                  <p>
+                    ※
+                    より詳細な統計データが必要な場合は、試験実施団体の公式サイトをご確認ください。
+                  </p>
+                </div>
+              </section>
+            );
+          })()}
+
 
         {/* 最新データのサマリー（簡潔版） */}
         {cert.examInfo?.passRateHistory &&
@@ -230,46 +610,186 @@ export default async function OverviewPage({
 
             if (!latestData) return null;
 
+            // 種類ごとに最新データを取得（最新年度にデータがない種類がある場合の対応）
+            const getLatestByType = (type: 'gasoline' | 'diesel' | 'motorcycle' | 'chassis') => {
+              for (const item of sortedHistory) {
+                const springData = item.spring?.byType?.[type];
+                const autumnData = item.autumn?.byType?.[type];
+                if (springData) return springData;
+                if (autumnData) return autumnData;
+              }
+              return null;
+            };
+            
+            const byType = {
+              gasoline: latestData.byType?.gasoline || getLatestByType('gasoline'),
+              diesel: latestData.byType?.diesel || getLatestByType('diesel'),
+              motorcycle: latestData.byType?.motorcycle || getLatestByType('motorcycle'),
+              chassis: latestData.byType?.chassis || getLatestByType('chassis'),
+            };
+            
+            const hasByType = byType.gasoline || byType.diesel || byType.motorcycle || byType.chassis;
+
             return (
               <section className="bg-white rounded-lg shadow-md p-6 mb-6">
                 <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                  最新の試験データ
+                  最新の試験データ（{latest.spring
+                    ? formatExamPeriod(latest.year, 1)
+                    : latest.autumn
+                    ? formatExamPeriod(latest.year, 2)
+                    : `${latest.year}年度`}）
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div>
-                    <div className="text-center p-4 bg-gray-50 rounded-lg">
-                      <p className="text-sm text-gray-600 mb-1">
-                        {latest.spring
-                          ? formatExamPeriod(latest.year, 1)
-                          : latest.autumn
-                          ? formatExamPeriod(latest.year, 2)
-                          : ""}
-                      </p>
-                      <p className="text-2xl font-bold text-gray-900">
-                        {latestData.passRate !== undefined
-                          ? `${latestData.passRate}%`
-                          : "-"}
-                      </p>
-                      <p className="text-xs text-gray-500 mt-1">合格率</p>
+
+                {/* 種類別データがある場合は種類別に表示 */}
+                {hasByType && byType ? (
+                  <div className="space-y-6">
+                    {/* 2級ガソリン自動車整備士 */}
+                    {byType.gasoline && (
+                      <div className="border-l-4 border-blue-500 pl-4 py-3">
+                        <h3 className="font-semibold text-gray-900 mb-3">
+                          2級ガソリン自動車整備士
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div className="text-center p-4 bg-gray-50 rounded-lg">
+                            <p className="text-2xl font-bold text-gray-900">
+                              {byType.gasoline.passRate?.toFixed(1) || "-"}%
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">合格率</p>
+                          </div>
+                          <div className="text-center p-4 bg-gray-50 rounded-lg">
+                            <p className="text-2xl font-bold text-gray-900">
+                              {byType.gasoline.examinees?.toLocaleString() || "-"}
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">受験者数</p>
+                          </div>
+                          <div className="text-center p-4 bg-gray-50 rounded-lg">
+                            <p className="text-2xl font-bold text-gray-900">
+                              {byType.gasoline.passers?.toLocaleString() || "-"}
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">合格者数</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* 2級ジーゼル自動車整備士 */}
+                    {byType.diesel && (
+                      <div className="border-l-4 border-green-500 pl-4 py-3">
+                        <h3 className="font-semibold text-gray-900 mb-3">
+                          2級ジーゼル自動車整備士
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div className="text-center p-4 bg-gray-50 rounded-lg">
+                            <p className="text-2xl font-bold text-gray-900">
+                              {byType.diesel.passRate?.toFixed(1) || "-"}%
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">合格率</p>
+                          </div>
+                          <div className="text-center p-4 bg-gray-50 rounded-lg">
+                            <p className="text-2xl font-bold text-gray-900">
+                              {byType.diesel.examinees?.toLocaleString() || "-"}
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">受験者数</p>
+                          </div>
+                          <div className="text-center p-4 bg-gray-50 rounded-lg">
+                            <p className="text-2xl font-bold text-gray-900">
+                              {byType.diesel.passers?.toLocaleString() || "-"}
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">合格者数</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* 2級二輪自動車整備士 */}
+                    {byType.motorcycle && (
+                      <div className="border-l-4 border-purple-500 pl-4 py-3">
+                        <h3 className="font-semibold text-gray-900 mb-3">
+                          2級二輪自動車整備士
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div className="text-center p-4 bg-gray-50 rounded-lg">
+                            <p className="text-2xl font-bold text-gray-900">
+                              {byType.motorcycle.passRate?.toFixed(1) || "-"}%
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">合格率</p>
+                          </div>
+                          <div className="text-center p-4 bg-gray-50 rounded-lg">
+                            <p className="text-2xl font-bold text-gray-900">
+                              {byType.motorcycle.examinees?.toLocaleString() || "-"}
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">受験者数</p>
+                          </div>
+                          <div className="text-center p-4 bg-gray-50 rounded-lg">
+                            <p className="text-2xl font-bold text-gray-900">
+                              {byType.motorcycle.passers?.toLocaleString() || "-"}
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">合格者数</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* 2級シャシ自動車整備士 */}
+                    {byType.chassis && (
+                      <div className="border-l-4 border-orange-500 pl-4 py-3">
+                        <h3 className="font-semibold text-gray-900 mb-3">
+                          2級シャシ自動車整備士
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div className="text-center p-4 bg-gray-50 rounded-lg">
+                            <p className="text-2xl font-bold text-gray-900">
+                              {byType.chassis.passRate?.toFixed(1) || "-"}%
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">合格率</p>
+                          </div>
+                          <div className="text-center p-4 bg-gray-50 rounded-lg">
+                            <p className="text-2xl font-bold text-gray-900">
+                              {byType.chassis.examinees?.toLocaleString() || "-"}
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">受験者数</p>
+                          </div>
+                          <div className="text-center p-4 bg-gray-50 rounded-lg">
+                            <p className="text-2xl font-bold text-gray-900">
+                              {byType.chassis.passers?.toLocaleString() || "-"}
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">合格者数</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  /* 種類別データがない場合は通常通り表示 */
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <div className="text-center p-4 bg-gray-50 rounded-lg">
+                        <p className="text-2xl font-bold text-gray-900">
+                          {latestData.passRate !== undefined
+                            ? `${latestData.passRate}%`
+                            : "-"}
+                        </p>
+                        <p className="text-xs text-gray-500 mt-1">合格率</p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-center p-4 bg-gray-50 rounded-lg">
+                        <p className="text-2xl font-bold text-gray-900">
+                          {latestData.examinees?.toLocaleString() || "-"}
+                        </p>
+                        <p className="text-xs text-gray-500 mt-1">受験者数</p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-center p-4 bg-gray-50 rounded-lg">
+                        <p className="text-2xl font-bold text-gray-900">
+                          {latestData.passers?.toLocaleString() || "-"}
+                        </p>
+                        <p className="text-xs text-gray-500 mt-1">合格者数</p>
+                      </div>
                     </div>
                   </div>
-                  <div>
-                    <div className="text-center p-4 bg-gray-50 rounded-lg">
-                      <p className="text-2xl font-bold text-gray-900">
-                        {latestData.examinees?.toLocaleString() || "-"}
-                      </p>
-                      <p className="text-xs text-gray-500 mt-1">受験者数</p>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-center p-4 bg-gray-50 rounded-lg">
-                      <p className="text-2xl font-bold text-gray-900">
-                        {latestData.passers?.toLocaleString() || "-"}
-                      </p>
-                      <p className="text-xs text-gray-500 mt-1">合格者数</p>
-                    </div>
-                  </div>
-                </div>
+                )}
               </section>
             );
           })()}

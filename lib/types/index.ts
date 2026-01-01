@@ -37,12 +37,82 @@ export type ExamInfo = {
       examinees?: number; // 受験者数
       passers?: number; // 合格者数
       examDate?: string; // 実施日（例: "R7.03.23実施" または "2025-03-23"）
+      // 種類別のデータ（2級整備士など、複数の種類がある場合に使用）
+      byType?: {
+        gasoline?: {
+          // 2級ガソリン自動車整備士
+          passRate?: number;
+          examinees?: number;
+          passers?: number;
+          applicants?: number; // 申請者数
+          examRate?: number; // 受験率（%）
+        };
+        diesel?: {
+          // 2級ジーゼル自動車整備士
+          passRate?: number;
+          examinees?: number;
+          passers?: number;
+          applicants?: number; // 申請者数
+          examRate?: number; // 受験率（%）
+        };
+        motorcycle?: {
+          // 2級二輪自動車整備士
+          passRate?: number;
+          examinees?: number;
+          passers?: number;
+          applicants?: number; // 申請者数
+          examRate?: number; // 受験率（%）
+        };
+        chassis?: {
+          // 2級シャシ自動車整備士
+          passRate?: number;
+          examinees?: number;
+          passers?: number;
+          applicants?: number; // 申請者数
+          examRate?: number; // 受験率（%）
+        };
+      };
     };
     autumn?: {
       passRate?: number; // 合格率（%）
       examinees?: number; // 受験者数
       passers?: number; // 合格者数
       examDate?: string; // 実施日（例: "R7.03.23実施" または "2025-03-23"）
+      // 種類別のデータ（2級整備士など、複数の種類がある場合に使用）
+      byType?: {
+        gasoline?: {
+          // 2級ガソリン自動車整備士
+          passRate?: number;
+          examinees?: number;
+          passers?: number;
+          applicants?: number; // 申請者数
+          examRate?: number; // 受験率（%）
+        };
+        diesel?: {
+          // 2級ジーゼル自動車整備士
+          passRate?: number;
+          examinees?: number;
+          passers?: number;
+          applicants?: number; // 申請者数
+          examRate?: number; // 受験率（%）
+        };
+        motorcycle?: {
+          // 2級二輪自動車整備士
+          passRate?: number;
+          examinees?: number;
+          passers?: number;
+          applicants?: number; // 申請者数
+          examRate?: number; // 受験率（%）
+        };
+        chassis?: {
+          // 2級シャシ自動車整備士
+          passRate?: number;
+          examinees?: number;
+          passers?: number;
+          applicants?: number; // 申請者数
+          examRate?: number; // 受験率（%）
+        };
+      };
     };
   }[];
 };
