@@ -551,6 +551,7 @@ const certAutoMechanic2: Cert = {
   },
   relatedCertIds: ["auto-mechanic-1", "auto-mechanic-3"],
   tags: ["自動車", "整備", "2級", "国家資格", "技術"],
+  features: ["trend"], // 出題傾向分析機能を有効化
   publishedAt: new Date("2024-01-01"),
   updatedAt: new Date("2025-10-05"), // 令和7年度第1回試験結果反映日
 };

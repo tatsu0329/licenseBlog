@@ -337,22 +337,6 @@ export default async function CertPage({
                 試験や学習に関するよくある質問と回答
               </p>
             </Link>
-
-            {/* 試験概要（hasTrendがない場合のみ表示） */}
-            {!hasTrend && (
-              <Link
-                href={`/certs/${cert.slug}/overview`}
-                className="group bg-white rounded-2xl shadow-md border border-gray-100 p-5 md:p-6 hover:shadow-xl hover:border-gray-200 transition-all duration-300 transform hover:-translate-y-1 block"
-              >
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="text-3xl">📋</span>
-                  <h3 className="text-xl font-bold text-gray-900">試験概要</h3>
-                </div>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  受験資格、難易度、勉強時間の詳細
-                </p>
-              </Link>
-            )}
           </div>
 
           {/* 右カラム：記事一覧 */}

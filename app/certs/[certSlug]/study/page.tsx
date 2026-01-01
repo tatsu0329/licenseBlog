@@ -354,9 +354,16 @@ export default async function StudyPage({
                       }
                       return cat.slug === "engine" || cat.slug === "electrical";
                     })
-                    .map((cat) => (
-                      <li key={cat.id}>{cat.name}（{cat.description.match(/問題(\d+)～(\d+)/) ? `${cat.description.match(/問題(\d+)～(\d+)/)?.[1]}-${cat.description.match(/問題(\d+)～(\d+)/)?.[2]}` : ""}問）</li>
-                    ))}
+                    .map((cat) => {
+                      const match = cat.description.match(/問題(\d+)～(\d+)/);
+                      const questionRange = match ? `${match[1]}-${match[2]}` : "";
+                      return (
+                        <li key={cat.id}>
+                          {cat.name}
+                          {questionRange && `（問題${questionRange}）`}
+                        </li>
+                      );
+                    })}
                   {categories.length === 0 && (
                     <>
                       <li>エンジンの基本構造・動作原理</li>
