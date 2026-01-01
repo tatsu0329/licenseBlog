@@ -13,6 +13,25 @@ export type Cert = {
   studyHours?: {
     beginner: number; // 初学者の勉強時間（時間）
     experienced: number; // 経験者の勉強時間（時間）
+    // 種類別のデータ（2級整備士など、複数の種類がある場合に使用）
+    byType?: {
+      gasoline?: {
+        beginner: number;
+        experienced: number;
+      };
+      diesel?: {
+        beginner: number;
+        experienced: number;
+      };
+      motorcycle?: {
+        beginner: number;
+        experienced: number;
+      };
+      chassis?: {
+        beginner: number;
+        experienced: number;
+      };
+    };
   };
   examInfo?: ExamInfo;
   relatedCertIds: string[]; // 関連資格ID

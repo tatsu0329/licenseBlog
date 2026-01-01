@@ -156,14 +156,31 @@ export default async function OverviewPage({
             
             const hasByType = byType.gasoline || byType.diesel || byType.motorcycle || byType.chassis;
 
+            // 種類別データがある場合、各種類ごとに年度ごとの平均合格率を計算
+            const getAveragePassRateByType = (type: 'gasoline' | 'diesel' | 'motorcycle' | 'chassis'): number | undefined => {
+              if (!cert.examInfo?.passRateHistory) return undefined;
+              const rates: number[] = [];
+              for (const item of cert.examInfo.passRateHistory) {
+                const springRate = item.spring?.byType?.[type]?.passRate;
+                const autumnRate = item.autumn?.byType?.[type]?.passRate;
+                if (springRate !== undefined) rates.push(springRate);
+                if (autumnRate !== undefined) rates.push(autumnRate);
+              }
+              if (rates.length > 0) {
+                return rates.reduce((sum, rate) => sum + rate, 0) / rates.length;
+              }
+              return undefined;
+            };
+
             return (
               <>
                 {hasByType && byType ? (
-                  /* 種類別データがある場合は種類別に表示 */
+                  /* 種類別データがある場合は種類別に年度ごとの平均を表示 */
                   <div className="space-y-6">
                     {/* 2級ガソリン自動車整備士 */}
-                    {byType.gasoline && (() => {
-                      const difficulty = getDifficultyFromPassRate(byType.gasoline.passRate);
+                    {getAveragePassRateByType('gasoline') !== undefined && (() => {
+                      const avgRate = getAveragePassRateByType('gasoline')!;
+                      const difficulty = getDifficultyFromPassRate(avgRate);
                       return (
                         <div className="border-l-4 border-blue-500 pl-4 py-3">
                           <h3 className="font-semibold text-gray-900 mb-3">
@@ -178,24 +195,16 @@ export default async function OverviewPage({
                               </div>
                               <p className="text-sm text-gray-600">
                                 {difficulty.label}
-                                {byType.gasoline.passRate !== undefined
-                                  ? `（合格率${byType.gasoline.passRate.toFixed(1)}%）`
-                                  : ""}
+                                {`（合格率平均${avgRate.toFixed(1)}%）`}
                               </p>
                             </div>
                             <div>
-                              <h4 className="font-semibold text-gray-900 mb-2">合格率</h4>
+                              <h4 className="font-semibold text-gray-900 mb-2">合格率（年度ごとの平均）</h4>
                               <div className="text-3xl font-bold text-gray-900 mb-2">
-                                {byType.gasoline.passRate !== undefined
-                                  ? `${byType.gasoline.passRate.toFixed(1)}%`
-                                  : "-"}
+                                {avgRate.toFixed(1)}%
                               </div>
-                              <p className="text-sm text-gray-600">
-                                {latest?.spring
-                                  ? formatExamPeriod(latest.year, 1)
-                                  : latest?.autumn
-                                  ? formatExamPeriod(latest.year, 2)
-                                  : ""}
+                              <p className="text-xs text-gray-500">
+                                過去の全年度データの平均値
                               </p>
                             </div>
                           </div>
@@ -204,8 +213,9 @@ export default async function OverviewPage({
                     })()}
 
                     {/* 2級ジーゼル自動車整備士 */}
-                    {byType.diesel && (() => {
-                      const difficulty = getDifficultyFromPassRate(byType.diesel.passRate);
+                    {getAveragePassRateByType('diesel') !== undefined && (() => {
+                      const avgRate = getAveragePassRateByType('diesel')!;
+                      const difficulty = getDifficultyFromPassRate(avgRate);
                       return (
                         <div className="border-l-4 border-green-500 pl-4 py-3">
                           <h3 className="font-semibold text-gray-900 mb-3">
@@ -220,24 +230,16 @@ export default async function OverviewPage({
                               </div>
                               <p className="text-sm text-gray-600">
                                 {difficulty.label}
-                                {byType.diesel.passRate !== undefined
-                                  ? `（合格率${byType.diesel.passRate.toFixed(1)}%）`
-                                  : ""}
+                                {`（合格率平均${avgRate.toFixed(1)}%）`}
                               </p>
                             </div>
                             <div>
-                              <h4 className="font-semibold text-gray-900 mb-2">合格率</h4>
+                              <h4 className="font-semibold text-gray-900 mb-2">合格率（年度ごとの平均）</h4>
                               <div className="text-3xl font-bold text-gray-900 mb-2">
-                                {byType.diesel.passRate !== undefined
-                                  ? `${byType.diesel.passRate.toFixed(1)}%`
-                                  : "-"}
+                                {avgRate.toFixed(1)}%
                               </div>
-                              <p className="text-sm text-gray-600">
-                                {latest?.spring
-                                  ? formatExamPeriod(latest.year, 1)
-                                  : latest?.autumn
-                                  ? formatExamPeriod(latest.year, 2)
-                                  : ""}
+                              <p className="text-xs text-gray-500">
+                                過去の全年度データの平均値
                               </p>
                             </div>
                           </div>
@@ -246,8 +248,9 @@ export default async function OverviewPage({
                     })()}
 
                     {/* 2級二輪自動車整備士 */}
-                    {byType.motorcycle && (() => {
-                      const difficulty = getDifficultyFromPassRate(byType.motorcycle.passRate);
+                    {getAveragePassRateByType('motorcycle') !== undefined && (() => {
+                      const avgRate = getAveragePassRateByType('motorcycle')!;
+                      const difficulty = getDifficultyFromPassRate(avgRate);
                       return (
                         <div className="border-l-4 border-purple-500 pl-4 py-3">
                           <h3 className="font-semibold text-gray-900 mb-3">
@@ -262,24 +265,16 @@ export default async function OverviewPage({
                               </div>
                               <p className="text-sm text-gray-600">
                                 {difficulty.label}
-                                {byType.motorcycle.passRate !== undefined
-                                  ? `（合格率${byType.motorcycle.passRate.toFixed(1)}%）`
-                                  : ""}
+                                {`（合格率平均${avgRate.toFixed(1)}%）`}
                               </p>
                             </div>
                             <div>
-                              <h4 className="font-semibold text-gray-900 mb-2">合格率</h4>
+                              <h4 className="font-semibold text-gray-900 mb-2">合格率（年度ごとの平均）</h4>
                               <div className="text-3xl font-bold text-gray-900 mb-2">
-                                {byType.motorcycle.passRate !== undefined
-                                  ? `${byType.motorcycle.passRate.toFixed(1)}%`
-                                  : "-"}
+                                {avgRate.toFixed(1)}%
                               </div>
-                              <p className="text-sm text-gray-600">
-                                {latest?.spring
-                                  ? formatExamPeriod(latest.year, 1)
-                                  : latest?.autumn
-                                  ? formatExamPeriod(latest.year, 2)
-                                  : ""}
+                              <p className="text-xs text-gray-500">
+                                過去の全年度データの平均値
                               </p>
                             </div>
                           </div>
@@ -288,8 +283,9 @@ export default async function OverviewPage({
                     })()}
 
                     {/* 2級シャシ自動車整備士 */}
-                    {byType.chassis && (() => {
-                      const difficulty = getDifficultyFromPassRate(byType.chassis.passRate);
+                    {getAveragePassRateByType('chassis') !== undefined && (() => {
+                      const avgRate = getAveragePassRateByType('chassis')!;
+                      const difficulty = getDifficultyFromPassRate(avgRate);
                       return (
                         <div className="border-l-4 border-orange-500 pl-4 py-3">
                           <h3 className="font-semibold text-gray-900 mb-3">
@@ -304,24 +300,16 @@ export default async function OverviewPage({
                               </div>
                               <p className="text-sm text-gray-600">
                                 {difficulty.label}
-                                {byType.chassis.passRate !== undefined
-                                  ? `（合格率${byType.chassis.passRate.toFixed(1)}%）`
-                                  : ""}
+                                {`（合格率平均${avgRate.toFixed(1)}%）`}
                               </p>
                             </div>
                             <div>
-                              <h4 className="font-semibold text-gray-900 mb-2">合格率</h4>
+                              <h4 className="font-semibold text-gray-900 mb-2">合格率（年度ごとの平均）</h4>
                               <div className="text-3xl font-bold text-gray-900 mb-2">
-                                {byType.chassis.passRate !== undefined
-                                  ? `${byType.chassis.passRate.toFixed(1)}%`
-                                  : "-"}
+                                {avgRate.toFixed(1)}%
                               </div>
-                              <p className="text-sm text-gray-600">
-                                {latest?.spring
-                                  ? formatExamPeriod(latest.year, 1)
-                                  : latest?.autumn
-                                  ? formatExamPeriod(latest.year, 2)
-                                  : ""}
+                              <p className="text-xs text-gray-500">
+                                過去の全年度データの平均値
                               </p>
                             </div>
                           </div>
@@ -800,32 +788,92 @@ export default async function OverviewPage({
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
               勉強時間の目安
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <h3 className="font-semibold text-gray-900 mb-2">
-                  初学者の場合
-                </h3>
-                <p className="text-2xl font-bold text-gray-900 mb-2">
-                  {cert.studyHours.beginner}時間
-                </p>
-                <p className="text-sm text-gray-600">
-                  1日2時間の学習で約
-                  {Math.ceil(cert.studyHours.beginner / (2 * 30))}ヶ月
-                </p>
+            {cert.studyHours.byType && (() => {
+              // 種類別データがある場合は種類別に表示
+              const studyHoursByType = cert.studyHours.byType;
+              const types = [
+                { key: 'gasoline' as const, name: '2級ガソリン自動車整備士', color: 'blue' },
+                { key: 'diesel' as const, name: '2級ジーゼル自動車整備士', color: 'green' },
+                { key: 'motorcycle' as const, name: '2級二輪自動車整備士', color: 'purple' },
+                { key: 'chassis' as const, name: '2級シャシ自動車整備士', color: 'orange' },
+              ].filter(type => studyHoursByType[type.key]);
+
+              return (
+                <div className="space-y-6">
+                  {types.map((type) => {
+                    const hours = studyHoursByType[type.key]!;
+                    const borderColorClass = {
+                      blue: 'border-blue-500',
+                      green: 'border-green-500',
+                      purple: 'border-purple-500',
+                      orange: 'border-orange-500',
+                    }[type.color];
+
+                    return (
+                      <div key={type.key} className={`border-l-4 ${borderColorClass} pl-4 py-3`}>
+                        <h3 className="font-semibold text-gray-900 mb-4">
+                          {type.name}
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div className="bg-gray-50 p-4 rounded-lg">
+                            <h4 className="font-semibold text-gray-900 mb-2">
+                              初学者の場合
+                            </h4>
+                            <p className="text-2xl font-bold text-gray-900 mb-2">
+                              {hours.beginner}時間
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              1日2時間の学習で約
+                              {Math.ceil(hours.beginner / (2 * 30))}ヶ月
+                            </p>
+                          </div>
+                          <div className="bg-gray-50 p-4 rounded-lg">
+                            <h4 className="font-semibold text-gray-900 mb-2">
+                              経験者の場合
+                            </h4>
+                            <p className="text-2xl font-bold text-gray-900 mb-2">
+                              {hours.experienced}時間
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              1日2時間の学習で約
+                              {Math.ceil(hours.experienced / (2 * 30))}ヶ月
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })() || (
+              // 種類別データがない場合は通常の表示
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h3 className="font-semibold text-gray-900 mb-2">
+                    初学者の場合
+                  </h3>
+                  <p className="text-2xl font-bold text-gray-900 mb-2">
+                    {cert.studyHours.beginner}時間
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    1日2時間の学習で約
+                    {Math.ceil(cert.studyHours.beginner / (2 * 30))}ヶ月
+                  </p>
+                </div>
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h3 className="font-semibold text-gray-900 mb-2">
+                    経験者の場合
+                  </h3>
+                  <p className="text-2xl font-bold text-gray-900 mb-2">
+                    {cert.studyHours.experienced}時間
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    1日2時間の学習で約
+                    {Math.ceil(cert.studyHours.experienced / (2 * 30))}ヶ月
+                  </p>
+                </div>
               </div>
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <h3 className="font-semibold text-gray-900 mb-2">
-                  経験者の場合
-                </h3>
-                <p className="text-2xl font-bold text-gray-900 mb-2">
-                  {cert.studyHours.experienced}時間
-                </p>
-                <p className="text-sm text-gray-600">
-                  1日2時間の学習で約
-                  {Math.ceil(cert.studyHours.experienced / (2 * 30))}ヶ月
-                </p>
-              </div>
-            </div>
+            )}
           </section>
         )}
 
