@@ -6,6 +6,24 @@ import questions2022_2Json from "./questions/level-1-C-2022-2.json";
 import questions2023_2Json from "./questions/level-1-C-2023-2.json";
 import questions2024_2Json from "./questions/level-1-C-2024-2.json";
 
+// 2級整備士の問題（ジーゼル）
+import questionsLevel2D2022_1Json from "./questions/level-2-D-2022-1.json";
+import questionsLevel2D2022_2Json from "./questions/level-2-D-2022-2.json";
+import questionsLevel2D2023_1Json from "./questions/level-2-D-2023-1.json";
+import questionsLevel2D2023_2Json from "./questions/level-2-D-2023-2.json";
+import questionsLevel2D2024_1Json from "./questions/level-2-D-2024-1.json";
+import questionsLevel2D2024_2Json from "./questions/level-2-D-2024-2.json";
+import questionsLevel2D2025_1Json from "./questions/level-2-D-2025-1.json";
+
+// 2級整備士の問題（ガソリン）
+import questionsLevel2G2022_1Json from "./questions/level-2-G-2022-1.json";
+import questionsLevel2G2022_2Json from "./questions/level-2-G-2022-2.json";
+import questionsLevel2G2023_1Json from "./questions/level-2-G-2023-1.json";
+import questionsLevel2G2023_2Json from "./questions/level-2-G-2023-2.json";
+import questionsLevel2G2024_1Json from "./questions/level-2-G-2024-1.json";
+import questionsLevel2G2024_2Json from "./questions/level-2-G-2024-2.json";
+import questionsLevel2G2025_1Json from "./questions/level-2-G-2025-1.json";
+
 // 解説集の読み込み（解説のみ）
 // 注意: 解説集は別途実装が必要。現在は過去問集のみを使用
 // import explanationsR6_2Json from "./explanations/auto_mechanic_1_r6_2.json";
@@ -246,6 +264,155 @@ function detectCategoryFromQuestion(
   return "structure-1";
 }
 
+// 2級整備士の問題文から分野を判定する関数
+function detectCategoryFromQuestionLevel2(
+  questionText: string,
+  choices: string[]
+): string {
+  const combinedText = (questionText + " " + choices.join(" ")).toLowerCase();
+
+  // シャシ系の判定
+  if (
+    combinedText.includes("シャシ") ||
+    combinedText.includes("サスペンション") ||
+    combinedText.includes("ステアリング") ||
+    combinedText.includes("ブレーキ") ||
+    combinedText.includes("タイヤ") ||
+    combinedText.includes("ホイール") ||
+    combinedText.includes("ドライブシャフト") ||
+    combinedText.includes("デフ") ||
+    combinedText.includes("トランスミッション") ||
+    combinedText.includes("クラッチ") ||
+    combinedText.includes("足回り") ||
+    combinedText.includes("走行装置") ||
+    combinedText.includes("制動装置")
+  ) {
+    return "chassis-2";
+  }
+
+  // エンジン系（デフォルト）
+  return "engine-2";
+}
+
+// 2級整備士用の過去問集からQuestion型に変換（解説なし）
+function loadQuestionSetFromJsonLevel2(
+  jsonData: QuestionSetJsonFile
+): Question[] {
+  const { category, questions } = jsonData;
+
+  // "2022-1" 形式から年度と回次を抽出
+  const [yearStr, seasonStr] = category.year.split("-");
+  const year = parseInt(yearStr);
+  const season = parseInt(seasonStr) as 1 | 2;
+
+  // certIdを設定（2級整備士）
+  const certId = "auto-mechanic-2";
+
+  // 燃料タイプから識別子を取得（G=ガソリン, D=ジーゼル, M=2輪, C=シャシ）
+  const fuelTypeCode =
+    category.fuelType === "ガソリン"
+      ? "G"
+      : category.fuelType === "ジーゼル"
+      ? "D"
+      : category.fuelType === "2輪"
+      ? "M"
+      : category.fuelType === "シャシ"
+      ? "C"
+      : category.fuelType.substring(0, 1).toUpperCase();
+
+  const now = new Date();
+
+  return questions.map((q, index) => {
+    // 問題番号を取得
+    let questionNumber: string;
+    if (q.id && q.id.trim() !== "") {
+      // idが存在する場合: "No.1" → "001" に変換
+      questionNumber = q.id.replace("No.", "").padStart(3, "0");
+    } else if (q.question && q.question.match(/No\.\d+/)) {
+      // idが空の場合、問題文から "No.1" などを抽出
+      const match = q.question.match(/No\.(\d+)/);
+      if (match) {
+        questionNumber = parseInt(match[1]).toString().padStart(3, "0");
+      } else {
+        // 問題文からも抽出できない場合はインデックス+1を使用
+        questionNumber = (index + 1).toString().padStart(3, "0");
+      }
+    } else {
+      // どちらもない場合はインデックス+1を使用
+      questionNumber = (index + 1).toString().padStart(3, "0");
+    }
+
+    // 問題IDを生成: certId-fuelTypeCode-year-season-questionNumber
+    // 例: auto-mechanic-2-G-2025-1-001 (2級ガソリン 2025年度第1回 問題1)
+    // 例: auto-mechanic-2-D-2025-1-001 (2級ジーゼル 2025年度第1回 問題1)
+    const id = `${certId}-${fuelTypeCode}-${year}-${season}-${questionNumber}`;
+
+    // choicesを {number, text} 形式に変換
+    const choices = q.choices.map((choice, index) => {
+      // "(1).選択肢1" 形式から "(1)." を削除してテキストのみ抽出
+      const text = choice.replace(/^\(\d+\)\.\s*/, "").trim();
+      return {
+        number: (index + 1) as 1 | 2 | 3 | 4,
+        text,
+      };
+    });
+
+    // answerIndex (0-based) → correctAnswer (1-based)
+    const correctAnswer = (q.answerIndex + 1) as 1 | 2 | 3 | 4;
+
+    // 問題文から "Q01. " などのプレフィックスを削除（あれば）
+    const questionText = q.question.replace(/^Q\d+\.\s*/, "").trim();
+
+    // 問題文と選択肢から分野を自動判定（2級用）
+    const categoryId = detectCategoryFromQuestionLevel2(
+      questionText,
+      q.choices
+    );
+
+    // 燃料タイプから名称を取得
+    const fuelTypeName =
+      category.fuelType === "ガソリン"
+        ? "ガソリン"
+        : category.fuelType === "ジーゼル"
+        ? "ジーゼル"
+        : category.fuelType === "2輪"
+        ? "2輪"
+        : category.fuelType === "シャシ"
+        ? "シャシ"
+        : category.fuelType;
+
+    return {
+      id,
+      certId,
+      year,
+      season,
+      categoryId,
+      questionNumber,
+      questionText,
+      questionSummary:
+        questionText.length > 100
+          ? questionText.substring(0, 100) + "..."
+          : questionText,
+      choices,
+      correctAnswer,
+      // 解説は解説集からマージされるまで空（過去問集では解説なし）
+      explanation: "",
+      explanationDetail: undefined,
+      // 問題画像は暫定的に explanationImages に格納
+      explanationImages: q.images || [],
+      difficulty: undefined,
+      tags: [],
+      relatedQuestionIds: [],
+      source: `2級自動車整備士 ${year}年度第${season}回学科試験 ${category.level} ${fuelTypeName}（国土交通省）`,
+      sourceUrl: "https://www.mlit.go.jp/",
+      officialPastQuestionUrl: "https://www.mlit.go.jp/jidosha/jidosha.html",
+      permissionStatus: "pending" as const,
+      publishedAt: now,
+      updatedAt: now,
+    };
+  });
+}
+
 // 過去問集からQuestion型に変換（解説なし）
 function loadQuestionSetFromJson(jsonData: QuestionSetJsonFile): Question[] {
   const { category, questions } = jsonData;
@@ -368,12 +535,76 @@ const questionSet2024_2 = loadQuestionSetFromJson(
   questions2024_2Json as QuestionSetJsonFile
 );
 
+// 2級整備士の問題を読み込み（ジーゼル）
+const questionSetLevel2D2022_1 = loadQuestionSetFromJsonLevel2(
+  questionsLevel2D2022_1Json as QuestionSetJsonFile
+);
+const questionSetLevel2D2022_2 = loadQuestionSetFromJsonLevel2(
+  questionsLevel2D2022_2Json as QuestionSetJsonFile
+);
+const questionSetLevel2D2023_1 = loadQuestionSetFromJsonLevel2(
+  questionsLevel2D2023_1Json as QuestionSetJsonFile
+);
+const questionSetLevel2D2023_2 = loadQuestionSetFromJsonLevel2(
+  questionsLevel2D2023_2Json as QuestionSetJsonFile
+);
+const questionSetLevel2D2024_1 = loadQuestionSetFromJsonLevel2(
+  questionsLevel2D2024_1Json as QuestionSetJsonFile
+);
+const questionSetLevel2D2024_2 = loadQuestionSetFromJsonLevel2(
+  questionsLevel2D2024_2Json as QuestionSetJsonFile
+);
+const questionSetLevel2D2025_1 = loadQuestionSetFromJsonLevel2(
+  questionsLevel2D2025_1Json as QuestionSetJsonFile
+);
+
+// 2級整備士の問題を読み込み（ガソリン）
+const questionSetLevel2G2022_1 = loadQuestionSetFromJsonLevel2(
+  questionsLevel2G2022_1Json as QuestionSetJsonFile
+);
+const questionSetLevel2G2022_2 = loadQuestionSetFromJsonLevel2(
+  questionsLevel2G2022_2Json as QuestionSetJsonFile
+);
+const questionSetLevel2G2023_1 = loadQuestionSetFromJsonLevel2(
+  questionsLevel2G2023_1Json as QuestionSetJsonFile
+);
+const questionSetLevel2G2023_2 = loadQuestionSetFromJsonLevel2(
+  questionsLevel2G2023_2Json as QuestionSetJsonFile
+);
+const questionSetLevel2G2024_1 = loadQuestionSetFromJsonLevel2(
+  questionsLevel2G2024_1Json as QuestionSetJsonFile
+);
+const questionSetLevel2G2024_2 = loadQuestionSetFromJsonLevel2(
+  questionsLevel2G2024_2Json as QuestionSetJsonFile
+);
+const questionSetLevel2G2025_1 = loadQuestionSetFromJsonLevel2(
+  questionsLevel2G2025_1Json as QuestionSetJsonFile
+);
+
 // 過去問集のみを返す（解説は含まない）
 // 解説は解説集ページで別途表示されるため、ここではマージしない
 const questions2021_2: Question[] = questionSet2021_2;
 const questions2022_2: Question[] = questionSet2022_2;
 const questions2023_2: Question[] = questionSet2023_2;
 const questions2024_2: Question[] = questionSet2024_2;
+
+// 2級整備士の問題（ジーゼル）
+const questionsLevel2D2022_1: Question[] = questionSetLevel2D2022_1;
+const questionsLevel2D2022_2: Question[] = questionSetLevel2D2022_2;
+const questionsLevel2D2023_1: Question[] = questionSetLevel2D2023_1;
+const questionsLevel2D2023_2: Question[] = questionSetLevel2D2023_2;
+const questionsLevel2D2024_1: Question[] = questionSetLevel2D2024_1;
+const questionsLevel2D2024_2: Question[] = questionSetLevel2D2024_2;
+const questionsLevel2D2025_1: Question[] = questionSetLevel2D2025_1;
+
+// 2級整備士の問題（ガソリン）
+const questionsLevel2G2022_1: Question[] = questionSetLevel2G2022_1;
+const questionsLevel2G2022_2: Question[] = questionSetLevel2G2022_2;
+const questionsLevel2G2023_1: Question[] = questionSetLevel2G2023_1;
+const questionsLevel2G2023_2: Question[] = questionSetLevel2G2023_2;
+const questionsLevel2G2024_1: Question[] = questionSetLevel2G2024_1;
+const questionsLevel2G2024_2: Question[] = questionSetLevel2G2024_2;
+const questionsLevel2G2025_1: Question[] = questionSetLevel2G2025_1;
 
 // 1級自動車整備士 - エンジン分野
 const questionAutoMechanic1Engine1: Question = {
@@ -1276,6 +1507,7 @@ const question2025_12_50: Question = {
 export function getAllQuestions(): Question[] {
   return [
     // JSONファイルからの読み込み（過去問集のみ）
+    // 1級整備士
     // 2021年度第2回 - 過去問集JSONファイルから読み込み
     ...questions2021_2,
     // 2022年度第2回
@@ -1284,6 +1516,38 @@ export function getAllQuestions(): Question[] {
     ...questions2023_2,
     // 2024年度第2回
     ...questions2024_2,
+
+    // 2級整備士（ジーゼル）
+    // 2022年度第1回
+    ...questionsLevel2D2022_1,
+    // 2022年度第2回
+    ...questionsLevel2D2022_2,
+    // 2023年度第1回
+    ...questionsLevel2D2023_1,
+    // 2023年度第2回
+    ...questionsLevel2D2023_2,
+    // 2024年度第1回
+    ...questionsLevel2D2024_1,
+    // 2024年度第2回
+    ...questionsLevel2D2024_2,
+    // 2025年度第1回
+    ...questionsLevel2D2025_1,
+
+    // 2級整備士（ガソリン）
+    // 2022年度第1回
+    ...questionsLevel2G2022_1,
+    // 2022年度第2回
+    ...questionsLevel2G2022_2,
+    // 2023年度第1回
+    ...questionsLevel2G2023_1,
+    // 2023年度第2回
+    ...questionsLevel2G2023_2,
+    // 2024年度第1回
+    ...questionsLevel2G2024_1,
+    // 2024年度第2回
+    ...questionsLevel2G2024_2,
+    // 2025年度第1回
+    ...questionsLevel2G2025_1,
   ];
 }
 
