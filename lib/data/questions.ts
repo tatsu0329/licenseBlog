@@ -1102,7 +1102,7 @@ const questionAutoMechanic1Diagnosis1: Question = {
   updatedAt: new Date("2024-01-01"),
 };
 
-// 自動車整備士3級のサンプル問題（既存）
+// 3級自動車整備士のサンプル問題（既存）
 const questionAutoMechanic3: Question = {
   id: "auto-mechanic-3-2024-1-001",
   certId: "auto-mechanic-3",
@@ -1161,7 +1161,7 @@ const questionAutoMechanic3: Question = {
   difficulty: 2,
   tags: ["エンジン", "基本構造", "4サイクル"],
   relatedQuestionIds: [],
-  source: "自動車整備士3級 2024年6月試験 学科（国土交通省）",
+  source: "3級自動車整備士 2024年6月試験 学科（国土交通省）",
   sourceUrl: "https://www.mlit.go.jp/",
   officialPastQuestionUrl: "https://www.mlit.go.jp/jidosha/jidosha.html",
   permissionStatus: "pending",
@@ -1169,139 +1169,6 @@ const questionAutoMechanic3: Question = {
   updatedAt: new Date("2024-01-01"),
 };
 
-// 介護福祉士のサンプル問題（既存）
-const questionCareWorker: Question = {
-  id: "care-worker-2024-1-001",
-  certId: "care-worker",
-  year: 2024,
-  season: 1,
-  categoryId: "care-practice",
-  questionNumber: "001",
-  questionText:
-    "介護の基本原則に関する問題です。利用者の尊厳を尊重した介護の実践について問われています。",
-  questionTheme: "介護の基本原則",
-  choices: [
-    {
-      number: 1,
-      text: "選択肢1（要約）",
-    },
-    {
-      number: 2,
-      text: "選択肢2（要約）",
-    },
-    {
-      number: 3,
-      text: "選択肢3（要約）",
-    },
-    {
-      number: 4,
-      text: "選択肢4（要約）",
-    },
-  ],
-  correctAnswer: 1,
-  explanation:
-    "この問題は、介護の基本原則に関する問題です。正解は1です。介護においては、利用者の尊厳を尊重し、自己決定権を最大限に尊重することが重要です。",
-  explanationDetail: `
-## 詳細解説
-
-### 介護の基本原則
-
-介護福祉士は、以下の基本原則に基づいて介護を実践します。
-
-1. **利用者の尊厳の尊重**: 一人ひとりの人格と人権を尊重する
-2. **自己決定権の尊重**: 利用者自身の意思決定を尊重する
-3. **個別性の尊重**: 一人ひとりの個性や特性を理解する
-4. **自立支援**: できる限り自立した生活が送れるよう支援する
-
-### ポイント
-
-- 利用者中心のケアの重要性
-- インフォームドコンセントの必要性
-- プライバシーの保護
-
-### 関連問題
-
-- 権利擁護
-- コミュニケーション技術
-- ケア計画の作成
-  `,
-  difficulty: 2,
-  tags: ["介護", "基本原則", "尊厳"],
-  relatedQuestionIds: [],
-  source: "介護福祉士 2024年1月試験 筆記試験（厚生労働省）",
-  sourceUrl: "https://www.mhlw.go.jp/",
-  officialPastQuestionUrl: "https://www.sssc.or.jp/",
-  permissionStatus: "pending",
-  publishedAt: new Date("2024-01-01"),
-  updatedAt: new Date("2024-01-01"),
-};
-
-// USCPAのサンプル問題（既存）
-const questionUSCPA: Question = {
-  id: "uscpa-2024-1-001",
-  certId: "uscpa",
-  year: 2024,
-  season: 1,
-  categoryId: "far",
-  questionNumber: "001",
-  questionText:
-    "財務会計の基礎概念に関する問題です。一般に公正妥当と認められた会計原則（GAAP）の適用について問われています。",
-  questionTheme: "GAAPの適用",
-  choices: [
-    {
-      number: 1,
-      text: "選択肢1（要約）",
-    },
-    {
-      number: 2,
-      text: "選択肢2（要約）",
-    },
-    {
-      number: 3,
-      text: "選択肢3（要約）",
-    },
-    {
-      number: 4,
-      text: "選択肢4（要約）",
-    },
-  ],
-  correctAnswer: 3,
-  explanation:
-    "この問題は、US GAAPの適用に関する問題です。正解は3です。米国の財務会計基準では、保守主義の原則、継続性の原則、重要性の原則などが重要です。",
-  explanationDetail: `
-## 詳細解説
-
-### US GAAPの基本原則
-
-米国の一般に公正妥当と認められた会計原則（GAAP）には、以下の原則が含まれます。
-
-1. **継続企業の前提**: 企業が継続して営業することを前提とする
-2. **会計期間の仮定**: 会計期間を設定して損益を計算する
-3. **保守主義の原則**: 不確実性がある場合は保守的な評価を採用
-4. **重要性の原則**: 重要性の低い項目は簡便な処理を認める
-
-### ポイント
-
-- FASB（財務会計基準審議会）の役割
-- IFRSとの違い
-- 財務諸表の構成要素
-
-### 関連問題
-
-- 収益認識基準
-- 金融商品の会計処理
-- リース取引の会計
-  `,
-  difficulty: 4,
-  tags: ["USCPA", "FAR", "GAAP", "財務会計"],
-  relatedQuestionIds: [],
-  source: "USCPA FAR 2024年試験（AICPA）",
-  sourceUrl: "https://www.aicpa.org/",
-  officialPastQuestionUrl: "https://www.aicpa.org/",
-  permissionStatus: "pending",
-  publishedAt: new Date("2024-01-01"),
-  updatedAt: new Date("2024-01-01"),
-};
 
 // ========== 2025年3月23日実施 1級自動車整備士 ==========
 

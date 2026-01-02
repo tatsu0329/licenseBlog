@@ -67,7 +67,7 @@ export const categories: Category[] = [
     description: "道路運送車両法の基礎、整備に関する法的義務、作業安全・品質管理の考え方に関する分野",
   },
  
-  // 自動車整備士2級
+  // 2級自動車整備士
   {
     id: "engine-2",
     certId: "auto-mechanic-2",
@@ -100,7 +100,7 @@ export const categories: Category[] = [
     order: 4,
     description: "法規に関する分野（問題36～40）",
   },
-  // 自動車整備士3級
+  // 3級自動車整備士
   {
     id: "engine-3",
     certId: "auto-mechanic-3",
@@ -124,64 +124,6 @@ export const categories: Category[] = [
     name: "法規",
     order: 3,
     description: "法規に関する分野（問題28～30）",
-  },
-  // 介護福祉士
-  {
-    id: "human-body",
-    certId: "care-worker",
-    slug: "human-body",
-    name: "人間の尊厳と自立・人間関係とコミュニケーション",
-    order: 1,
-    description: "人間の尊厳と自立、人間関係とコミュニケーションに関する分野",
-  },
-  {
-    id: "care-theory",
-    certId: "care-worker",
-    slug: "care-theory",
-    name: "社会の理解",
-    order: 2,
-    description: "社会の理解に関する分野",
-  },
-  {
-    id: "care-practice",
-    certId: "care-worker",
-    slug: "care-practice",
-    name: "介護の基本",
-    order: 3,
-    description: "介護の基本に関する分野",
-  },
-  // USCPA
-  {
-    id: "far",
-    certId: "uscpa",
-    slug: "far",
-    name: "FAR（財務会計）",
-    order: 1,
-    description: "Financial Accounting and Reporting",
-  },
-  {
-    id: "aud",
-    certId: "uscpa",
-    slug: "aud",
-    name: "AUD（監査及び証明業務）",
-    order: 2,
-    description: "Auditing and Attestation",
-  },
-  {
-    id: "reg",
-    certId: "uscpa",
-    slug: "reg",
-    name: "REG（ビジネス環境及び諸概念）",
-    order: 3,
-    description: "Regulation",
-  },
-  {
-    id: "bec",
-    certId: "uscpa",
-    slug: "bec",
-    name: "BEC（ビジネス環境及び諸概念）",
-    order: 4,
-    description: "Business Environment and Concepts",
   },
 ];
 

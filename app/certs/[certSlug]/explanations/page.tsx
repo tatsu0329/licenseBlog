@@ -338,8 +338,7 @@ export default async function ExplanationsPage({
               📱 解説をアプリで効率的に学習
             </h3>
             <p className="text-blue-100 mb-4 max-w-2xl mx-auto">
-              スキマ時間で繰り返し解ける。学習進捗や弱点を自動で分析。
-              無料で10問まで試せます。
+              スキマ時間で繰り返し解ける。学習進捗を自動で分析。
             </p>
             <Link
               href={certSlug === "auto-mechanic-1" ? "/articles/auto-mechanic-1-app-introduction" : "/articles"}

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getCert } from "@/lib/data/certs";
 import { getQuestionsByCert } from "@/lib/data/questions";
 import { getCategoriesByCert } from "@/lib/data/categories";
-import { formatExamPeriod, formatYearForFilter } from "@/lib/utils/date";
+import { formatExamPeriod } from "@/lib/utils/date";
 import BackButton from "@/components/BackButton";
 
 export default async function KakomonPage({
@@ -11,14 +11,18 @@ export default async function KakomonPage({
 }: {
   params: Promise<{ certSlug: string }>;
   searchParams: Promise<{
-    year?: string;
+    examPeriod?: string;
     category?: string;
-    season?: string;
     fuelType?: string;
   }>;
 }) {
   const { certSlug } = await params;
-  const { year, category, season, fuelType } = await searchParams;
+  const { examPeriod, category, fuelType } = await searchParams;
+
+  // examPeriodから年度と回次を抽出（形式: "2025-1" または "2025-2"）
+  const [year, season] = examPeriod
+    ? examPeriod.split("-").map(Number)
+    : [null, null];
   const cert = getCert(certSlug);
 
   if (!cert) {
@@ -86,24 +90,32 @@ export default async function KakomonPage({
       )
     : [];
 
-  // 年度のリストを取得（フィルター適用前の全問題から取得 - 回次と同じように常に全年度を表示）
-  const years = Array.from(new Set(allQuestions.map((q) => q.year))).sort(
-    (a, b) => b - a
-  );
+  // 年度と回次の組み合わせリストを取得（フィルター適用前の全問題から取得）
+  const examPeriods = Array.from(
+    new Set(allQuestions.map((q) => `${q.year}-${q.season}`))
+  )
+    .map((ep) => {
+      const [y, s] = ep.split("-").map(Number);
+      return { year: y, season: s as 1 | 2 };
+    })
+    .sort((a, b) => {
+      // 年度の降順、同じ年度なら回次の降順
+      if (a.year !== b.year) {
+        return b.year - a.year;
+      }
+      return b.season - a.season;
+    });
 
   // フィルター適用
   let questions = allQuestions;
-  if (year) {
-    questions = questions.filter((q) => q.year === parseInt(year));
+  if (year && season) {
+    questions = questions.filter((q) => q.year === year && q.season === season);
   }
   if (category) {
     const categoryData = categories.find((c) => c.slug === category);
     if (categoryData) {
       questions = questions.filter((q) => q.categoryId === categoryData.id);
     }
-  }
-  if (season) {
-    questions = questions.filter((q) => q.season === parseInt(season));
   }
   if (fuelType && hasFuelTypeData) {
     // 燃料タイプでフィルタリング（2級整備士の問題のみ）
@@ -181,7 +193,7 @@ export default async function KakomonPage({
           </h2>
           <div
             className={`grid grid-cols-1 md:grid-cols-${
-              hasFuelTypeData ? 4 : 3
+              hasFuelTypeData ? 3 : 2
             } gap-4`}
           >
             {/* 種類別（燃料タイプ） - 2級・3級整備士のみ表示 */}
@@ -190,108 +202,110 @@ export default async function KakomonPage({
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   種類
                 </label>
-                <div className="flex flex-wrap gap-2">
+                <div className="space-y-2">
+                  <div>
+                    <Link
+                      href={`/certs/${cert.slug}/kakomon${
+                        examPeriod ? `?examPeriod=${examPeriod}` : ""
+                      }${
+                        category
+                          ? examPeriod
+                            ? `&category=${category}`
+                            : `?category=${category}`
+                          : ""
+                      }`}
+                      className={`inline-block px-4 py-2 rounded font-medium ${
+                        !fuelType
+                          ? "bg-orange-500 text-white"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      }`}
+                    >
+                      すべて
+                    </Link>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {availableFuelTypes.map((ft) => {
+                      const fuelTypeNames: Record<string, string> = {
+                        gasoline: "ガソリン",
+                        diesel: "ジーゼル",
+                        motorcycle: "2輪",
+                        chassis: "シャシ",
+                      };
+                      const params = new URLSearchParams();
+                      params.set("fuelType", ft);
+                      if (examPeriod) params.set("examPeriod", examPeriod);
+                      if (category) params.set("category", category);
+                      return (
+                        <Link
+                          key={ft}
+                          href={`/certs/${
+                            cert.slug
+                          }/kakomon?${params.toString()}`}
+                          className={`px-3 py-1 rounded ${
+                            fuelType === ft
+                              ? "bg-orange-500 text-white"
+                              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                          }`}
+                        >
+                          {fuelTypeNames[ft] || ft}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* 年度・回次（統合） */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                実施回
+              </label>
+              <div className="space-y-2">
+                <div>
                   <Link
                     href={`/certs/${cert.slug}/kakomon${
-                      year ? `?year=${year}` : ""
+                      category ? `?category=${category}` : ""
                     }${
-                      category
-                        ? year
-                          ? `&category=${category}`
-                          : `?category=${category}`
-                        : ""
-                    }${
-                      season
-                        ? year || category
-                          ? `&season=${season}`
-                          : `?season=${season}`
+                      fuelType
+                        ? category
+                          ? `&fuelType=${fuelType}`
+                          : `?fuelType=${fuelType}`
                         : ""
                     }`}
-                    className={`px-3 py-1 rounded ${
-                      !fuelType
-                        ? "bg-orange-500 text-white"
+                    className={`inline-block px-4 py-2 rounded font-medium ${
+                      !examPeriod
+                        ? "bg-blue-500 text-white"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                     }`}
                   >
                     すべて
                   </Link>
-                  {availableFuelTypes.map((ft) => {
-                    const fuelTypeNames: Record<string, string> = {
-                      gasoline: "ガソリン",
-                      diesel: "ジーゼル",
-                      motorcycle: "2輪",
-                      chassis: "シャシ",
-                    };
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {examPeriods.map((ep) => {
                     const params = new URLSearchParams();
-                    params.set("fuelType", ft);
-                    if (year) params.set("year", year);
+                    params.set("examPeriod", `${ep.year}-${ep.season}`);
                     if (category) params.set("category", category);
-                    if (season) params.set("season", season);
+                    if (fuelType) params.set("fuelType", fuelType);
+                    const isSelected = examPeriod === `${ep.year}-${ep.season}`;
                     return (
                       <Link
-                        key={ft}
+                        key={`${ep.year}-${ep.season}`}
                         href={`/certs/${
                           cert.slug
                         }/kakomon?${params.toString()}`}
                         className={`px-3 py-1 rounded ${
-                          fuelType === ft
-                            ? "bg-orange-500 text-white"
+                          isSelected
+                            ? "bg-blue-500 text-white"
                             : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                         }`}
                       >
-                        {fuelTypeNames[ft] || ft}
+                        {formatExamPeriod(ep.year, ep.season)}
                       </Link>
                     );
                   })}
                 </div>
-              </div>
-            )}
-
-            {/* 年度別 */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                年度
-              </label>
-              <div className="flex flex-wrap gap-2">
-                <Link
-                  href={`/certs/${cert.slug}/kakomon${
-                    category ? `?category=${category}` : ""
-                  }${season ? `?season=${season}` : ""}${
-                    fuelType
-                      ? category || season
-                        ? `&fuelType=${fuelType}`
-                        : `?fuelType=${fuelType}`
-                      : ""
-                  }`}
-                  className={`px-3 py-1 rounded ${
-                    !year
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  }`}
-                >
-                  すべて
-                </Link>
-                {years.map((y) => {
-                  const params = new URLSearchParams();
-                  params.set("year", String(y));
-                  if (category) params.set("category", category);
-                  if (season) params.set("season", season);
-                  if (fuelType) params.set("fuelType", fuelType);
-                  return (
-                    <Link
-                      key={y}
-                      href={`/certs/${cert.slug}/kakomon?${params.toString()}`}
-                      className={`px-3 py-1 rounded ${
-                        year === String(y)
-                          ? "bg-blue-500 text-white"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                      }`}
-                      title={`${y}年（${formatYearForFilter(y)}）`}
-                    >
-                      {formatYearForFilter(y)}
-                    </Link>
-                  );
-                })}
               </div>
             </div>
 
@@ -300,105 +314,50 @@ export default async function KakomonPage({
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 分野
               </label>
-              <div className="flex flex-wrap gap-2">
-                <Link
-                  href={`/certs/${cert.slug}/kakomon${
-                    year ? `?year=${year}` : ""
-                  }${
-                    season
-                      ? year
-                        ? `&season=${season}`
-                        : `?season=${season}`
-                      : ""
-                  }${
-                    fuelType
-                      ? year || season
-                        ? `&fuelType=${fuelType}`
-                        : `?fuelType=${fuelType}`
-                      : ""
-                  }`}
-                  className={`px-3 py-1 rounded ${
-                    !category
-                      ? "bg-green-500 text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  }`}
-                >
-                  すべて
-                </Link>
-                {categories.map((cat) => {
-                  const params = new URLSearchParams();
-                  params.set("category", cat.slug);
-                  if (year) params.set("year", year);
-                  if (season) params.set("season", season);
-                  if (fuelType) params.set("fuelType", fuelType);
-                  return (
-                    <Link
-                      key={cat.id}
-                      href={`/certs/${cert.slug}/kakomon?${params.toString()}`}
-                      className={`px-3 py-1 rounded ${
-                        category === cat.slug
-                          ? "bg-green-500 text-white"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                      }`}
-                    >
-                      {cat.name}
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* 回次 */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                回次
-              </label>
-              <div className="flex flex-wrap gap-2">
-                <Link
-                  href={`/certs/${cert.slug}/kakomon${
-                    year ? `?year=${year}` : ""
-                  }${
-                    category
-                      ? year
-                        ? `&category=${category}`
-                        : `?category=${category}`
-                      : ""
-                  }${
-                    fuelType
-                      ? year || category
-                        ? `&fuelType=${fuelType}`
-                        : `?fuelType=${fuelType}`
-                      : ""
-                  }`}
-                  className={`px-3 py-1 rounded ${
-                    !season
-                      ? "bg-purple-500 text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  }`}
-                >
-                  すべて
-                </Link>
-                {[1, 2].map((s) => {
-                  const params = new URLSearchParams();
-                  params.set("season", String(s));
-                  if (year) params.set("year", year);
-                  if (category) params.set("category", category);
-                  if (fuelType) params.set("fuelType", fuelType);
-                  return (
-                    <Link
-                      key={s}
-                      href={`/certs/${cert.slug}/kakomon?${params.toString()}`}
-                      className={`px-3 py-1 rounded ${
-                        season === String(s)
-                          ? "bg-purple-500 text-white"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                      }`}
-                      title={`第${s}回`}
-                    >
-                      第{s}回
-                    </Link>
-                  );
-                })}
+              <div className="space-y-2">
+                <div>
+                  <Link
+                    href={`/certs/${cert.slug}/kakomon${
+                      examPeriod ? `?examPeriod=${examPeriod}` : ""
+                    }${
+                      fuelType
+                        ? examPeriod
+                          ? `&fuelType=${fuelType}`
+                          : `?fuelType=${fuelType}`
+                        : ""
+                    }`}
+                    className={`inline-block px-4 py-2 rounded font-medium ${
+                      !category
+                        ? "bg-green-500 text-white"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                  >
+                    すべて
+                  </Link>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {categories.map((cat) => {
+                    const params = new URLSearchParams();
+                    params.set("category", cat.slug);
+                    if (examPeriod) params.set("examPeriod", examPeriod);
+                    if (fuelType) params.set("fuelType", fuelType);
+                    return (
+                      <Link
+                        key={cat.id}
+                        href={`/certs/${
+                          cert.slug
+                        }/kakomon?${params.toString()}`}
+                        className={`px-3 py-1 rounded ${
+                          category === cat.slug
+                            ? "bg-green-500 text-white"
+                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                        }`}
+                      >
+                        {cat.name}
+                      </Link>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>
@@ -410,7 +369,7 @@ export default async function KakomonPage({
             <h2 className="text-lg font-semibold text-gray-900">
               過去問一覧（{questions.length}問）
             </h2>
-            {(year || category || season || fuelType) && (
+            {(examPeriod || category || fuelType) && (
               <Link
                 href={`/certs/${cert.slug}/kakomon`}
                 className="text-sm text-blue-600 hover:text-blue-800"
@@ -475,8 +434,7 @@ export default async function KakomonPage({
               📱 過去問をアプリで効率的に学習
             </h3>
             <p className="text-blue-100 mb-4 max-w-2xl mx-auto">
-              スキマ時間で繰り返し解ける。学習進捗や弱点を自動で分析。
-              無料で10問まで試せます。
+              スキマ時間で繰り返し解ける。学習進捗を自動で分析。
             </p>
             <Link
               href={

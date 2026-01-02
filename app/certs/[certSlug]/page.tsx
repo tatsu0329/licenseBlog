@@ -56,10 +56,18 @@ export default async function CertPage({
   const hasArticles = features.includes("articles");
 
   // アプリ記事へのリンク（featuresで制御可能にする場合は、features.includes("app-article")などに変更）
-  const appArticleSlug =
-    certSlug === "auto-mechanic-1"
-      ? "/articles/auto-mechanic-1-app-introduction"
-      : "/articles";
+  // 資格IDに応じたアプリ記事のスラッグを取得
+  const getAppArticleSlug = (certId: string): string => {
+    const articleMap: Record<string, string> = {
+      "auto-mechanic-1": "auto-mechanic-1-app-introduction",
+      "auto-mechanic-2": "auto-mechanic-2-app-introduction",
+      "auto-mechanic-3": "auto-mechanic-3-app-introduction",
+    };
+    const articleSlug = articleMap[certId];
+    return articleSlug ? `/articles/${articleSlug}` : "/articles";
+  };
+
+  const appArticleSlug = getAppArticleSlug(cert.id);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50">
@@ -104,43 +112,6 @@ export default async function CertPage({
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-        {/* ヒーローCTA */}
-        <div className="relative bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-600 rounded-2xl shadow-2xl p-8 md:p-10 mb-10 text-white overflow-hidden">
-          <div className="absolute inset-0 bg-grid-white/10 bg-[length:20px_20px] opacity-20"></div>
-          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex-1 space-y-3">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-2xl">📱</span>
-                <h2 className="text-2xl md:text-3xl font-bold tracking-tight">
-                  {cert.shortName}の過去問をスマホで解く
-                </h2>
-              </div>
-              <p className="text-blue-50 text-base md:text-lg leading-relaxed">
-                通勤・通学中のスキマ時間で効率的に学習。無料で10問まで試せます
-              </p>
-              <div className="flex flex-wrap gap-2 mt-4">
-                <span className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium">
-                  無料体験可能
-                </span>
-                <span className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium">
-                  詳細解説付き
-                </span>
-              </div>
-            </div>
-            <Link
-              href={appArticleSlug}
-              className="group relative px-8 py-4 bg-white text-blue-600 rounded-xl hover:bg-blue-50 transition-all duration-300 font-bold text-lg whitespace-nowrap shadow-lg hover:shadow-xl hover:scale-105"
-            >
-              <span className="flex items-center gap-2">
-                アプリを見る
-                <span className="group-hover:translate-x-1 transition-transform">
-                  →
-                </span>
-              </span>
-            </Link>
-          </div>
-        </div>
-
         {/* 試験概要（クイックビュー） */}
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 md:p-8 mb-10">
           <div className="flex items-center justify-between mb-6">
@@ -156,26 +127,39 @@ export default async function CertPage({
           {(() => {
             // 種類別データがあるかチェック
             const sortedHistory = cert.examInfo?.passRateHistory
-              ? [...cert.examInfo.passRateHistory].sort((a, b) => b.year - a.year)
+              ? [...cert.examInfo.passRateHistory].sort(
+                  (a, b) => b.year - a.year
+                )
               : [];
             const latest = sortedHistory[0];
             const latestData = latest?.spring || latest?.autumn;
-            
+
             // 種類ごとにデータが存在するかチェック
-            const hasTypeData = (type: 'gasoline' | 'diesel' | 'motorcycle' | 'chassis') => {
+            const hasTypeData = (
+              type: "gasoline" | "diesel" | "motorcycle" | "chassis"
+            ) => {
               if (!cert.examInfo?.passRateHistory) return false;
               for (const item of cert.examInfo.passRateHistory) {
-                if (item.spring?.byType?.[type] || item.autumn?.byType?.[type]) {
+                if (
+                  item.spring?.byType?.[type] ||
+                  item.autumn?.byType?.[type]
+                ) {
                   return true;
                 }
               }
               return false;
             };
-            
-            const hasByType = hasTypeData('gasoline') || hasTypeData('diesel') || hasTypeData('motorcycle') || hasTypeData('chassis');
-            
+
+            const hasByType =
+              hasTypeData("gasoline") ||
+              hasTypeData("diesel") ||
+              hasTypeData("motorcycle") ||
+              hasTypeData("chassis");
+
             // 種類別の平均合格率を計算
-            const getAveragePassRateByType = (type: 'gasoline' | 'diesel' | 'motorcycle' | 'chassis'): number | undefined => {
+            const getAveragePassRateByType = (
+              type: "gasoline" | "diesel" | "motorcycle" | "chassis"
+            ): number | undefined => {
               if (!cert.examInfo?.passRateHistory) return undefined;
               const rates: number[] = [];
               for (const item of cert.examInfo.passRateHistory) {
@@ -185,24 +169,52 @@ export default async function CertPage({
                 if (autumnRate !== undefined) rates.push(autumnRate);
               }
               if (rates.length > 0) {
-                return rates.reduce((sum, rate) => sum + rate, 0) / rates.length;
+                return (
+                  rates.reduce((sum, rate) => sum + rate, 0) / rates.length
+                );
               }
               return undefined;
             };
-            
-            // 種類ごとに最新受験者数を取得
-            const getLatestExamineesByType = (type: 'gasoline' | 'diesel' | 'motorcycle' | 'chassis'): number | undefined => {
-              for (const item of sortedHistory) {
-                const springData = item.spring?.byType?.[type];
-                const autumnData = item.autumn?.byType?.[type];
-                if (springData?.examinees !== undefined) return springData.examinees;
-                if (autumnData?.examinees !== undefined) return autumnData.examinees;
+
+            // 種類ごとに年度ごとの平均受験者数を計算（第1回と第2回の合計の平均）
+            const getAverageAnnualExamineesByType = (
+              type: "gasoline" | "diesel" | "motorcycle" | "chassis"
+            ): number | undefined => {
+              if (!cert.examInfo?.passRateHistory) return undefined;
+              const annualExaminees: number[] = [];
+              for (const item of cert.examInfo.passRateHistory) {
+                const springExaminees = item.spring?.byType?.[type]?.examinees;
+                const autumnExaminees = item.autumn?.byType?.[type]?.examinees;
+                // 年度ごとの合計を計算
+                let yearTotal = 0;
+                let hasData = false;
+                if (springExaminees !== undefined) {
+                  yearTotal += springExaminees;
+                  hasData = true;
+                }
+                if (autumnExaminees !== undefined) {
+                  yearTotal += autumnExaminees;
+                  hasData = true;
+                }
+                if (hasData) {
+                  annualExaminees.push(yearTotal);
+                }
+              }
+              if (annualExaminees.length > 0) {
+                return (
+                  annualExaminees.reduce(
+                    (sum, examinees) => sum + examinees,
+                    0
+                  ) / annualExaminees.length
+                );
               }
               return undefined;
             };
-            
+
             // 合格率から難易度を判定する関数
-            const getDifficultyFromPassRate = (passRate?: number): {
+            const getDifficultyFromPassRate = (
+              passRate?: number
+            ): {
               level: 1 | 2 | 3 | 4 | 5;
               label: string;
             } => {
@@ -225,33 +237,40 @@ export default async function CertPage({
             if (hasByType && cert.studyHours?.byType) {
               // 種類別データがある場合
               const types = [
-                { key: 'gasoline' as const, name: 'ガソリン', color: 'blue' },
-                { key: 'diesel' as const, name: 'ジーゼル', color: 'green' },
-                { key: 'motorcycle' as const, name: '2輪', color: 'purple' },
-                { key: 'chassis' as const, name: 'シャシ', color: 'orange' },
-              ].filter(type => hasTypeData(type.key) && cert.studyHours?.byType?.[type.key]);
-              
+                { key: "gasoline" as const, name: "ガソリン", color: "blue" },
+                { key: "diesel" as const, name: "ジーゼル", color: "green" },
+                { key: "motorcycle" as const, name: "2輪", color: "purple" },
+                { key: "chassis" as const, name: "シャシ", color: "orange" },
+              ].filter(
+                (type) =>
+                  hasTypeData(type.key) && cert.studyHours?.byType?.[type.key]
+              );
+
               // 資格の等級を判定（cert.idから抽出）
               const getLevel = (certId: string): string => {
-                if (certId === 'auto-mechanic-1') return '1級';
-                if (certId === 'auto-mechanic-2') return '2級';
-                if (certId === 'auto-mechanic-3') return '3級';
-                return ''; // その他の資格の場合は空文字
+                if (certId === "auto-mechanic-1") return "1級";
+                if (certId === "auto-mechanic-2") return "2級";
+                if (certId === "auto-mechanic-3") return "3級";
+                return ""; // その他の資格の場合は空文字
               };
               const level = getLevel(cert.id);
-              
+
               return (
                 <div className="space-y-6">
                   {types.map((type) => {
                     const avgRate = getAveragePassRateByType(type.key);
                     const difficulty = getDifficultyFromPassRate(avgRate);
-                    const examinees = getLatestExamineesByType(type.key);
+                    const examinees = getAverageAnnualExamineesByType(type.key);
                     const studyHours = cert.studyHours?.byType?.[type.key];
-                    
+
                     return (
-                      <div key={type.key} className="border-l-4 border-gray-300 pl-4 py-2">
+                      <div
+                        key={type.key}
+                        className="border-l-4 border-gray-300 pl-4 py-2"
+                      >
                         <h3 className="text-sm font-semibold text-gray-900 mb-3">
-                          {level}{type.name}自動車整備士
+                          {level}
+                          {type.name}自動車整備士
                         </h3>
                         <dl className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                           <div className="space-y-1">
@@ -270,22 +289,25 @@ export default async function CertPage({
                           </div>
                           <div className="space-y-1">
                             <dt className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-                              合格率
+                              合格率(過去年度平均)
                             </dt>
                             <dd className="text-2xl font-bold text-gray-900">
-                              {avgRate !== undefined ? `${avgRate.toFixed(1)}%` : "未公開"}
+                              {avgRate !== undefined
+                                ? `${avgRate.toFixed(1)}%`
+                                : "未公開"}
                             </dd>
-                            <dd className="text-xs text-gray-600">過去年度平均</dd>
                           </div>
                           <div className="space-y-1">
                             <dt className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-                              年間受験者数
+                              年間受験者数(過去年度平均)
                             </dt>
                             <dd className="text-xl font-bold text-gray-900">
                               {examinees !== undefined ? (
                                 <>
-                                  {examinees.toLocaleString()}
-                                  <span className="text-sm text-gray-600 font-normal ml-1">人</span>
+                                  {Math.round(examinees).toLocaleString()}
+                                  <span className="text-sm text-gray-600 font-normal ml-1">
+                                    人
+                                  </span>
                                 </>
                               ) : (
                                 "未公開"
@@ -300,10 +322,14 @@ export default async function CertPage({
                               {studyHours ? (
                                 <>
                                   初学者: {studyHours.beginner}
-                                  <span className="text-sm text-gray-600 font-normal ml-1">時間</span>
+                                  <span className="text-sm text-gray-600 font-normal ml-1">
+                                    時間
+                                  </span>
                                 </>
                               ) : (
-                                <span className="text-sm text-gray-600 font-normal">未設定</span>
+                                <span className="text-sm text-gray-600 font-normal">
+                                  未設定
+                                </span>
                               )}
                             </dd>
                           </div>
@@ -328,57 +354,89 @@ export default async function CertPage({
                   </div>
                   <div className="space-y-2">
                     <dt className="text-sm font-medium text-gray-500 uppercase tracking-wide">
-                      合格率
+                      合格率(過去年度平均)
                     </dt>
                     <dd className="text-3xl font-bold text-gray-900">
-                      {cert.passRate !== undefined
-                        ? `${cert.passRate}%`
-                        : cert.examInfo?.passRateHistory &&
-                          cert.examInfo.passRateHistory.length > 0
+                      {cert.examInfo?.passRateHistory &&
+                      cert.examInfo.passRateHistory.length > 0
                         ? (() => {
-                            const sortedHistory = [
-                              ...cert.examInfo.passRateHistory,
-                            ].sort((a, b) => b.year - a.year);
-                            const latest = sortedHistory[0];
-                            const latestData = latest.spring || latest.autumn;
-                            return latestData?.passRate !== undefined
-                              ? `${latestData.passRate}%`
-                              : "未公開";
+                            // 全期間の平均を計算
+                            const allRates: number[] = [];
+                            cert.examInfo.passRateHistory.forEach((item) => {
+                              if (item.spring?.passRate !== undefined) {
+                                allRates.push(item.spring.passRate);
+                              }
+                              if (item.autumn?.passRate !== undefined) {
+                                allRates.push(item.autumn.passRate);
+                              }
+                            });
+                            if (allRates.length > 0) {
+                              const avgRate =
+                                allRates.reduce((sum, rate) => sum + rate, 0) /
+                                allRates.length;
+                              return `${avgRate.toFixed(1)}%`;
+                            }
+                            return "未公開";
                           })()
+                        : cert.passRate !== undefined
+                        ? `${cert.passRate}%`
                         : "未公開"}
                     </dd>
                   </div>
                   <div className="space-y-2">
                     <dt className="text-sm font-medium text-gray-500 uppercase tracking-wide">
-                      年間受験者数
+                      年間受験者数(過去年度平均)
                     </dt>
                     <dd className="text-2xl font-bold text-gray-900">
-                      {cert.annualExaminees !== undefined ? (
+                      {cert.examInfo?.passRateHistory &&
+                      cert.examInfo.passRateHistory.length > 0 ? (
+                        (() => {
+                          // 年度ごとの平均受験者数を計算（第1回と第2回の合計の平均）
+                          const annualExaminees: number[] = [];
+                          for (const item of cert.examInfo.passRateHistory) {
+                            const springExaminees = item.spring?.examinees;
+                            const autumnExaminees = item.autumn?.examinees;
+                            // 年度ごとの合計を計算
+                            let yearTotal = 0;
+                            let hasData = false;
+                            if (springExaminees !== undefined) {
+                              yearTotal += springExaminees;
+                              hasData = true;
+                            }
+                            if (autumnExaminees !== undefined) {
+                              yearTotal += autumnExaminees;
+                              hasData = true;
+                            }
+                            if (hasData) {
+                              annualExaminees.push(yearTotal);
+                            }
+                          }
+                          if (annualExaminees.length > 0) {
+                            const avgAnnualExaminees =
+                              annualExaminees.reduce(
+                                (sum, examinees) => sum + examinees,
+                                0
+                              ) / annualExaminees.length;
+                            return (
+                              <>
+                                {Math.round(
+                                  avgAnnualExaminees
+                                ).toLocaleString()}
+                                <span className="text-lg text-gray-600 font-normal">
+                                  人
+                                </span>
+                              </>
+                            );
+                          }
+                          return "未公開";
+                        })()
+                      ) : cert.annualExaminees !== undefined ? (
                         <>
                           {cert.annualExaminees.toLocaleString()}
                           <span className="text-lg text-gray-600 font-normal">
                             人
                           </span>
                         </>
-                      ) : cert.examInfo?.passRateHistory &&
-                        cert.examInfo.passRateHistory.length > 0 ? (
-                        (() => {
-                          const sortedHistory = [
-                            ...cert.examInfo.passRateHistory,
-                          ].sort((a, b) => b.year - a.year);
-                          const latest = sortedHistory[0];
-                          const latestData = latest.spring || latest.autumn;
-                          return latestData?.examinees !== undefined ? (
-                            <>
-                              {latestData.examinees.toLocaleString()}
-                              <span className="text-lg text-gray-600 font-normal">
-                                人
-                              </span>
-                            </>
-                          ) : (
-                            "未公開"
-                          );
-                        })()
                       ) : (
                         "未公開"
                       )}
@@ -511,37 +569,42 @@ export default async function CertPage({
           </div>
         </div>
 
-        {/* アプリCTA（最後のCTA - 強） */}
-        <section className="relative bg-gradient-to-br from-indigo-600 via-blue-600 to-purple-600 rounded-3xl shadow-2xl p-10 md:p-12 mb-6 text-white text-center overflow-hidden">
-          <div className="absolute inset-0 bg-grid-white/10 bg-[length:30px_30px] opacity-20"></div>
-          <div className="relative z-10">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">
-              {cert.shortName}の合格をアプリでサポート
-            </h2>
-            <p className="text-blue-50 mb-8 max-w-2xl mx-auto text-lg leading-relaxed">
-              過去問演習、学習進捗管理、弱点分析など、{cert.shortName}
-              の学習に必要な機能を全てアプリで。
-              <span className="block mt-2 font-semibold">
-                無料で10問まで試せます。
-              </span>
-            </p>
-            {articles.length > 0 && (
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a
-                  href="#related-articles"
-                  className="group px-8 py-4 bg-white text-indigo-600 rounded-xl hover:bg-blue-50 transition-all duration-300 font-bold text-lg shadow-lg hover:shadow-xl hover:scale-105"
-                >
-                  <span className="flex items-center justify-center gap-2">
-                    関連記事を見る
-                    <span className="group-hover:translate-x-1 transition-transform">
-                      →
-                    </span>
-                  </span>
-                </a>
+        {/* ○級自動車整備士の過去問をスマホで解く */}
+        <div className="relative bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-600 rounded-2xl shadow-2xl p-8 md:p-10 mb-10 text-white overflow-hidden">
+          <div className="absolute inset-0 bg-grid-white/10 bg-[length:20px_20px] opacity-20"></div>
+          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex-1 space-y-3">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-2xl">📱</span>
+                <h2 className="text-2xl md:text-3xl font-bold tracking-tight">
+                  {cert.shortName}の過去問をスマホで解く
+                </h2>
               </div>
-            )}
+              <p className="text-blue-50 text-base md:text-lg leading-relaxed">
+                通勤・通学中のスキマ時間で効率的に学習。
+              </p>
+              <div className="flex flex-wrap gap-2 mt-4">
+                <span className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium">
+                  無料体験可能
+                </span>
+                <span className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium">
+                  詳細解説付き
+                </span>
+              </div>
+            </div>
+            <Link
+              href={appArticleSlug}
+              className="group relative px-8 py-4 bg-white text-blue-600 rounded-xl hover:bg-blue-50 transition-all duration-300 font-bold text-lg whitespace-nowrap shadow-lg hover:shadow-xl hover:scale-105"
+            >
+              <span className="flex items-center gap-2">
+                アプリを見る
+                <span className="group-hover:translate-x-1 transition-transform">
+                  →
+                </span>
+              </span>
+            </Link>
           </div>
-        </section>
+        </div>
       </main>
     </div>
   );

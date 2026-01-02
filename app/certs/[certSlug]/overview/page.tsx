@@ -383,41 +383,35 @@ export default async function OverviewPage({
                       </p>
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900 mb-2">合格率</h3>
+                      <h3 className="font-semibold text-gray-900 mb-2">合格率（年度ごとの平均）</h3>
                       <div className="text-3xl font-bold text-gray-900 mb-2">
                         {cert.passRate !== undefined
                           ? `${cert.passRate}%`
                           : cert.examInfo?.passRateHistory &&
                             cert.examInfo.passRateHistory.length > 0
                           ? (() => {
-                              const sortedHistory = [
-                                ...cert.examInfo.passRateHistory,
-                              ].sort((a, b) => b.year - a.year);
-                              const latest = sortedHistory[0];
-                              const latestData = latest.spring || latest.autumn;
-                              return latestData?.passRate !== undefined
-                                ? `${latestData.passRate}%`
-                                : "参考値あり";
+                              // 全期間の平均を計算
+                              const allRates: number[] = [];
+                              cert.examInfo.passRateHistory.forEach((item) => {
+                                if (item.spring?.passRate !== undefined) {
+                                  allRates.push(item.spring.passRate);
+                                }
+                                if (item.autumn?.passRate !== undefined) {
+                                  allRates.push(item.autumn.passRate);
+                                }
+                              });
+                              if (allRates.length > 0) {
+                                const avgRate =
+                                  allRates.reduce((sum, rate) => sum + rate, 0) /
+                                  allRates.length;
+                                return `${avgRate.toFixed(1)}%`;
+                              }
+                              return "参考値あり";
                             })()
                           : "年度により変動"}
                       </div>
-                      <p className="text-sm text-gray-600">
-                        {cert.examInfo?.passRateHistory &&
-                        cert.examInfo.passRateHistory.length > 0
-                          ? (() => {
-                              const latest = [...cert.examInfo.passRateHistory].sort(
-                                (a, b) => b.year - a.year
-                              )[0];
-                              const latestPeriod = latest.spring
-                                ? formatExamPeriod(latest.year, 1)
-                                : latest.autumn
-                                ? formatExamPeriod(latest.year, 2)
-                                : null;
-                              return latestPeriod
-                                ? `参考値（最新：${latestPeriod}）`
-                                : "年度により変動";
-                            })()
-                          : "年度により変動"}
+                      <p className="text-xs text-gray-500">
+                        過去の全年度データの平均値
                       </p>
                     </div>
                   </div>
