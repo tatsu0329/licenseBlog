@@ -5,6 +5,9 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "国家資格の過去問解説と勉強法",
   description: "FP、簿記、宅建など、国家資格の過去問解説と勉強法を提供しています。",
+  other: {
+    "google-site-verification": "iGf-PF9uOWYiJU0QpuGr559zSe4duSwiDVj9cL1niMs",
+  },
 };
 
 export default function RootLayout({
