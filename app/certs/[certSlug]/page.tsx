@@ -22,13 +22,35 @@ export async function generateMetadata({
     };
   }
 
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://example.com";
+  const passRate = cert.passRate
+    ? `${cert.passRate}%`
+    : cert.examInfo?.passRateHistory && cert.examInfo.passRateHistory.length > 0
+    ? `${cert.examInfo.passRateHistory[0].spring?.passRate || cert.examInfo.passRateHistory[0].autumn?.passRate || ""}%`
+    : "";
+
   return {
     title: `${cert.name}｜勉強方法・過去問解説・出題傾向`,
-    description: `${cert.shortName}の試験概要、最短合格ロードマップ、過去問解説、頻出分野分析、学習ツールをまとめて紹介。`,
+    description: `${cert.shortName}の試験概要、最短合格ロードマップ、過去問解説、頻出分野分析、学習ツールをまとめて紹介。${passRate ? `合格率${passRate}。` : ""}効率的な学習方法で合格を目指しましょう。`,
+    keywords: [
+      cert.shortName,
+      `${cert.shortName} 勉強法`,
+      `${cert.shortName} 過去問`,
+      `${cert.shortName} 合格率`,
+      "国家資格",
+      "試験対策",
+    ],
     alternates: {
       canonical: `/certs/${certSlug}`,
     },
     openGraph: {
+      title: `${cert.name}｜勉強方法・過去問解説・出題傾向`,
+      description: `${cert.shortName}の試験概要、最短合格ロードマップ、過去問解説、頻出分野分析、学習ツールをまとめて紹介。`,
+      type: "website",
+      url: `${baseUrl}/certs/${certSlug}`,
+    },
+    twitter: {
+      card: "summary_large_image",
       title: `${cert.name}｜勉強方法・過去問解説・出題傾向`,
       description: `${cert.shortName}の試験概要、最短合格ロードマップ、過去問解説、頻出分野分析、学習ツールをまとめて紹介。`,
     },

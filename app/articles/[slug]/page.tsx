@@ -20,17 +20,29 @@ export async function generateMetadata({
     };
   }
 
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://example.com";
+
   return {
     title: `${article.title} | ライセンスブログ`,
     description: article.excerpt,
+    keywords: article.tags || [],
+    alternates: {
+      canonical: `/articles/${slug}`,
+    },
     openGraph: {
       title: article.title,
       description: article.excerpt,
       type: "article",
+      url: `${baseUrl}/articles/${slug}`,
       publishedTime: article.publishedAt.toISOString(),
       modifiedTime: article.updatedAt.toISOString(),
       authors: article.author ? [article.author] : undefined,
       tags: article.tags,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description: article.excerpt,
     },
   };
 }

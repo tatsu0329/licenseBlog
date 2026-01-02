@@ -1,5 +1,19 @@
 import Link from "next/link";
+import { Metadata } from "next";
 import { getAllCerts } from "@/lib/data/certs";
+
+export const metadata: Metadata = {
+  title: "国家資格の過去問解説と勉強法 | ライセンスブログ",
+  description: "国家資格（自動車整備士、FP、簿記、宅建など）の過去問解説、勉強法、合格ロードマップを提供。過去問ベースの逆算学習で効率的に合格を目指せます。",
+  openGraph: {
+    title: "国家資格の過去問解説と勉強法 | ライセンスブログ",
+    description: "国家資格（自動車整備士、FP、簿記、宅建など）の過去問解説、勉強法、合格ロードマップを提供。",
+    type: "website",
+  },
+  alternates: {
+    canonical: "/",
+  },
+};
 
 export default function HomePage() {
   const certs = getAllCerts();

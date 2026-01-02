@@ -1,12 +1,14 @@
 import { MetadataRoute } from "next";
 import { getAllCerts } from "@/lib/data/certs";
 import { getAllQuestions } from "@/lib/data/questions";
+import { getAllArticles } from "@/lib/data/articles";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://example.com";
 
   const certs = getAllCerts();
   const questions = getAllQuestions();
+  const articles = getAllArticles();
 
   return [
     {
@@ -39,6 +41,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
+    ...certs.map((cert) => ({
+      url: `${baseUrl}/certs/${cert.slug}/faq`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
+    ...certs.map((cert) => ({
+      url: `${baseUrl}/certs/${cert.slug}/overview`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
     ...questions.map((q) => {
       const cert = certs.find((c) => c.id === q.certId || c.slug === q.certId);
       const certSlug = cert?.slug || q.certId;
@@ -46,9 +60,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
         url: `${baseUrl}/certs/${certSlug}/kakomon/${q.year}/${q.season}/${q.categoryId}/${q.id}`,
         lastModified: q.updatedAt,
         changeFrequency: "monthly" as const,
-        priority: 0.8,
+        priority: 0.7,
       };
     }),
+    ...articles.map((article) => ({
+      url: `${baseUrl}/articles/${article.slug}`,
+      lastModified: article.updatedAt,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
     {
       url: `${baseUrl}/disclaimer`,
       lastModified: new Date(),

@@ -19,11 +19,31 @@ export async function generateMetadata({
     };
   }
 
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://example.com";
+
   return {
     title: `${cert.shortName}｜最短合格ロードマップ・勉強法`,
-    description: `${cert.shortName}の最短合格を目指すための学習ロードマップ、分野別重要度、過去問ベース逆算学習法を詳しく解説します。`,
+    description: `${cert.shortName}の最短合格を目指すための学習ロードマップ、分野別重要度、過去問ベース逆算学習法を詳しく解説します。効率的な勉強方法で合格を目指しましょう。`,
+    keywords: [
+      `${cert.shortName} 勉強法`,
+      `${cert.shortName} 学習ロードマップ`,
+      `${cert.shortName} 合格`,
+      "国家資格 勉強法",
+      "試験対策",
+    ],
     alternates: {
       canonical: `/certs/${certSlug}/study`,
+    },
+    openGraph: {
+      title: `${cert.shortName}｜最短合格ロードマップ・勉強法`,
+      description: `${cert.shortName}の最短合格を目指すための学習ロードマップ、分野別重要度、過去問ベース逆算学習法を詳しく解説します。`,
+      type: "article",
+      url: `${baseUrl}/certs/${certSlug}/study`,
+    },
+    twitter: {
+      card: "summary",
+      title: `${cert.shortName}｜最短合格ロードマップ・勉強法`,
+      description: `${cert.shortName}の最短合格を目指すための学習ロードマップ、分野別重要度、過去問ベース逆算学習法を詳しく解説します。`,
     },
   };
 }

@@ -19,11 +19,30 @@ export async function generateMetadata({
     };
   }
 
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://example.com";
+
   return {
     title: `${cert.shortName} よくある質問（FAQ）`,
-    description: `${cert.shortName}に関するよくある質問と回答をご紹介します。`,
+    description: `${cert.shortName}に関するよくある質問と回答をご紹介します。試験概要、受験資格、勉強法、合格率など、よくある質問にわかりやすくお答えします。`,
+    keywords: [
+      `${cert.shortName} FAQ`,
+      `${cert.shortName} よくある質問`,
+      `${cert.shortName} 受験資格`,
+      `${cert.shortName} 合格率`,
+    ],
     alternates: {
       canonical: `/certs/${certSlug}/faq`,
+    },
+    openGraph: {
+      title: `${cert.shortName} よくある質問（FAQ）`,
+      description: `${cert.shortName}に関するよくある質問と回答をご紹介します。`,
+      type: "website",
+      url: `${baseUrl}/certs/${certSlug}/faq`,
+    },
+    twitter: {
+      card: "summary",
+      title: `${cert.shortName} よくある質問（FAQ）`,
+      description: `${cert.shortName}に関するよくある質問と回答をご紹介します。`,
     },
   };
 }

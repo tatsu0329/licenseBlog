@@ -36,15 +36,37 @@ export async function generateMetadata({
   const explanation = getExplanationByQuestionId(qid);
   const hasExplanation = explanation !== undefined;
   
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://example.com";
+  const title = hasExplanation
+    ? `${cert.shortName} ${examPeriod} 過去問解説 ${question.questionNumber} | 正解・解説付き`
+    : `${cert.shortName} ${examPeriod} 過去問 ${question.questionNumber}`;
+  const description = hasExplanation
+    ? `${questionDisplayText.substring(0, 120)}... ${cert.shortName}${examPeriod}の過去問です。正解と詳細な解説を確認できます。`
+    : `${questionDisplayText.substring(0, 120)}... ${cert.shortName}${examPeriod}の過去問です。`;
+
   return {
-    title: hasExplanation 
-      ? `${cert.shortName} ${examPeriod} 過去問解説 ${question.questionNumber}`
-      : `${cert.shortName} ${examPeriod} 過去問 ${question.questionNumber}`,
-    description: hasExplanation
-      ? `${questionDisplayText.substring(0, 100)}... 正解と解説はこちら`
-      : `${questionDisplayText.substring(0, 100)}... 正解はこちら`,
+    title,
+    description,
+    keywords: [
+      `${cert.shortName} 過去問`,
+      `${cert.shortName} ${examPeriod}`,
+      `${cert.shortName} ${question.categoryId}`,
+      "国家資格 過去問",
+      "試験問題",
+    ],
     alternates: {
       canonical: `/certs/${certSlug}/kakomon/${year}/${season}/${category}/${qid}`,
+    },
+    openGraph: {
+      title,
+      description,
+      type: "article",
+      url: `${baseUrl}/certs/${certSlug}/kakomon/${year}/${season}/${category}/${qid}`,
+    },
+    twitter: {
+      card: "summary",
+      title,
+      description,
     },
   };
 }
