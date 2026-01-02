@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import AdSenseHead from "@/components/AdSenseHead";
 import "./globals.css";
 
@@ -13,21 +12,11 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const adsensePublisherId = process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID;
-
   return (
     <html lang="ja">
       <body className="antialiased">
         <AdSenseHead />
         {children}
-        {adsensePublisherId && (
-          <Script
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsensePublisherId}`}
-            crossOrigin="anonymous"
-            strategy="afterInteractive"
-          />
-        )}
       </body>
     </html>
   );

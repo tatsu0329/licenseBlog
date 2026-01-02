@@ -15,6 +15,19 @@ export default function AdSenseHead() {
         metaTag.setAttribute("content", adsensePublisherId);
         document.head.appendChild(metaTag);
       }
+
+      // AdSenseスクリプトをhead内に追加
+      let scriptTag = document.querySelector('script[src*="adsbygoogle.js"]');
+      if (!scriptTag) {
+        scriptTag = document.createElement("script");
+        scriptTag.setAttribute("async", "true");
+        scriptTag.setAttribute(
+          "src",
+          `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsensePublisherId}`
+        );
+        scriptTag.setAttribute("crossorigin", "anonymous");
+        document.head.appendChild(scriptTag);
+      }
     }
   }, [adsensePublisherId]);
 
