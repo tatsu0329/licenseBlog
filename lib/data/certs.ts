@@ -563,23 +563,185 @@ const certAutoMechanic3: Cert = {
   name: "自動車整備士3級",
   shortName: "自動車整備士3級",
   description:
-    "自動車整備士3級は、自動車の整備に関する基礎知識と技能を有することを証明する国家資格です。3級整備士は、ガソリン自動車、ジーゼル自動車、二輪自動車、シャシ、車体の5つの専門分野に分かれており、それぞれの専門性を深めることができます。\n\n3級整備士は、自動車整備の基礎を学ぶ最初のステップとして位置づけられており、基本的な整備技術と判断力が求められます。自動車整備工場やディーラーにおいて、基礎的な整備作業を担当する重要な役割を担います。",
+    "自動車整備士3級は、自動車の整備に関する基礎知識と技能を有することを証明する国家資格です。3級整備士は、ガソリン自動車、ジーゼル自動車、二輪自動車、シャシの4つの専門分野に分かれており、それぞれの専門性を深めることができます。\n\n3級整備士は、自動車整備の基礎を学ぶ最初のステップとして位置づけられており、基本的な整備技術と判断力が求められます。自動車整備工場やディーラーにおいて、基礎的な整備作業を担当する重要な役割を担います。\n\n━━━\n\n【3級ガソリン自動車整備士】\nガソリンエンジン搭載の四輪自動車を専門に整備する資格です。乗用車から軽自動車まで、幅広いガソリン車の基本的な点検・整備・修理に対応できます。最も受験者数が多い種類で、一般的な自動車整備工場やディーラーで最も需要が高い資格です。ガソリンエンジンの基本構造、燃料システム、点火システム、排気システムなど、ガソリン車の基礎的な技術を学びます。3級では、2級ほど専門的な知識は求められませんが、基本的な整備作業を行うために必要な知識と技能を身につけることができます。\n\n━━━\n\n【3級ジーゼル自動車整備士】\nディーゼルエンジン搭載の自動車（主にトラック・バスなどの商用車）を専門に整備する資格です。ディーゼルエンジンはガソリンエンジンとは構造が異なるため、基本的な構造の理解や燃料システム、過給システム、排気システムなどの基礎知識が必要です。商用車の整備工場や輸送業界で需要が高く、基礎的な整備技術を習得するための重要な資格です。ディーゼルエンジンの基本構造、燃料噴射システムの基礎、過給システムの基礎、排気ガス後処理装置の基礎など、ディーゼル車の基本技術を体系的に学びます。\n\n━━━\n\n【3級二輪自動車整備士】\nオートバイ（自動二輪車）を専門に整備する資格です。四輪車とは異なる構造・メカニズムを持つ二輪車の基本的な点検・整備・修理に対応できます。エンジンから駆動系、サスペンション、ブレーキシステムまで、二輪車特有の整備技術の基礎を学びます。オートバイ専門店や二輪車ディーラーで需要が高く、バイク愛好家やレーサーを目指す方にも人気の資格です。二輪車の軽量コンパクトな構造、チェーン駆動、キャブレター・燃料噴射、2ストローク・4ストロークエンジンの違いなど、二輪車の特性を基礎から理解することが重要です。\n\n━━━\n\n【3級シャシ自動車整備士】\n自動車のシャシ（車体構造・走行装置）を専門に整備する資格です。エンジンや動力伝達装置を除く、車体の骨格構造、サスペンション、ステアリング、ブレーキ、タイヤなどの走行に関わる装置全般の基本的な点検・整備・修理に対応します。シャシは自動車の走行性能や安全性に直接関わる重要な部分であり、その基礎的な整備技術を習得することは重要です。サスペンションの基本構造、ブレーキシステムの基礎知識、タイヤの基礎知識、アライメント調整の基礎など、シャシ特有の基礎技術を体系的に学びます。",
   difficulty: 2,
   annualExaminees: 35000,
   passRate: 67.7, // 令和7年度第1回の最新合格率（合計）
   studyHours: {
     beginner: 400,
     experienced: 200,
+    // 種類別の勉強時間（合格率の平均に基づいて設定）
+    // ガソリン: 平均約70.6% → 普通 → 400時間/200時間
+    // ジーゼル: 平均約61.8% → やや難しい → 450時間/220時間
+    // 2輪: 平均約85.9% → 易しい → 350時間/180時間
+    // シャシ: 平均約66.6% → 普通 → 400時間/200時間
+    byType: {
+      gasoline: {
+        beginner: 160,
+        experienced: 80,
+      },
+      diesel: {
+        beginner: 180,
+        experienced: 100,
+      },
+      motorcycle: {
+        beginner: 140,
+        experienced: 70,
+      },
+      chassis: {
+        beginner: 160,
+        experienced: 80,
+      },
+    },
   },
   examInfo: {
-    eligibility: "実務経験6ヶ月以上、または指定養成施設修了",
+    eligibility:
+      "下記のいずれか\n・実務経験3〜6ヶ月以上(学歴要件による)\n・三級整備士養成課程の修了者",
     examDates: {
       spring: "令和7年10月5日実施(直近の実施回)", // 令和7年度第1回
       autumn: "令和7年3月23日実施",
     },
     passCriteria:
-      "合格基準は年度ごとに公表され、学科試験・実技試験それぞれに基準が設けられます。学科試験合格者のみが実技試験を受験できます。\n・学科試験:総得点の基準（30問中18問以上）と各分野ごとの基準（各分野40%以上）\n・実技試験:総得点の基準（30点中18点以上）と各分野ごとの基準（各分野40%以上）",
+      "合格基準は年度ごとに公表され、学科試験・実技試験それぞれに基準が設けられます。学科試験合格者のみが実技試験を受験できます。\n・学科試験:総得点の基準（30問中21問以上）\n・実技試験:総得点の基準（30点中18点以上）",
     passRateHistory: [
+      {
+        year: 2022,
+        // 令和4年度第2回学科試験結果（R5.03.26実施）
+        // 出典: https://www.jaspa.or.jp/mechanic/result/2022_2nd.html
+        autumn: {
+          passRate: undefined, // 種類別データから計算されるため未設定
+          examinees: undefined,
+          passers: undefined,
+          examDate: "R5.03.26実施", // 令和5年3月26日実施（令和4年度第2回）
+          byType: {
+            gasoline: {
+              // 三級ガソリン自動車整備士
+              passRate: 71.9,
+              examinees: 4008,
+              passers: 2881,
+              applicants: 4193,
+              examRate: 95.6,
+            },
+            diesel: {
+              // 三級ジーゼル自動車整備士
+              passRate: 60.6,
+              examinees: 709,
+              passers: 430,
+              applicants: 739,
+              examRate: 95.9,
+            },
+            chassis: {
+              // 三級シャシ自動車整備士
+              passRate: 63.8,
+              examinees: 1799,
+              passers: 1148,
+              applicants: 1843,
+              examRate: 97.6,
+            },
+            motorcycle: {
+              // 三級二輪自動車整備士
+              // 注: 三級2輪は各年度の第2回のみ実施
+              // 出典: https://www.jaspa.or.jp/mechanic/result/2022_2nd.html
+              passRate: 84.1,
+              examinees: 245,
+              passers: 206,
+              applicants: 255, // 推定値（公式サイトで確認が必要）
+              examRate: undefined, // 公式サイトで確認が必要
+            },
+          },
+        },
+      },
+      {
+        year: 2023,
+        // 令和5年度第1回学科試験結果（R5.10.01実施）
+        // 出典: https://www.jaspa.or.jp/mechanic/result/2023_1st.html
+        spring: {
+          passRate: undefined, // 種類別データから計算されるため未設定
+          examinees: undefined,
+          passers: undefined,
+          examDate: "R5.10.01実施", // 令和5年10月1日実施（令和5年度第1回）
+          byType: {
+            gasoline: {
+              // 三級ガソリン自動車整備士
+              passRate: 74.0,
+              examinees: 3756,
+              passers: 2779,
+              applicants: 3857,
+              examRate: 97.4,
+            },
+            diesel: {
+              // 三級ジーゼル自動車整備士
+              passRate: 57.7,
+              examinees: 343,
+              passers: 198,
+              applicants: 358,
+              examRate: 95.8,
+            },
+            chassis: {
+              // 三級シャシ自動車整備士
+              passRate: 64.4,
+              examinees: 942,
+              passers: 607,
+              applicants: 966,
+              examRate: 97.5,
+            },
+            motorcycle: {
+              // 三級二輪自動車整備士
+              // 注: 三級2輪は各年度の第2回のみ実施されるため、第1回にはデータなし
+              passRate: undefined,
+              examinees: undefined,
+              passers: undefined,
+              applicants: undefined,
+              examRate: undefined,
+            },
+          },
+        },
+        // 令和5年度第2回学科試験結果（R6.03.24実施）
+        // 出典: https://www.jaspa.or.jp/mechanic/result/2023_2nd.html
+        autumn: {
+          passRate: undefined, // 種類別データから計算されるため未設定
+          examinees: undefined,
+          passers: undefined,
+          examDate: "R6.03.24実施", // 令和6年3月24日実施（令和5年度第2回）
+          byType: {
+            gasoline: {
+              // 三級ガソリン自動車整備士
+              passRate: 65.6,
+              examinees: 3659,
+              passers: 2399,
+              applicants: 3823,
+              examRate: 95.7,
+            },
+            diesel: {
+              // 三級ジーゼル自動車整備士
+              passRate: 57.6,
+              examinees: 688,
+              passers: 396,
+              applicants: 712,
+              examRate: 96.6,
+            },
+            chassis: {
+              // 三級シャシ自動車整備士
+              passRate: 67.4,
+              examinees: 1816,
+              passers: 1224,
+              applicants: 1892,
+              examRate: 96.0,
+            },
+            motorcycle: {
+              // 三級二輪自動車整備士
+              // 注: 三級2輪は各年度の第2回のみ実施
+              // 出典: https://www.jaspa.or.jp/mechanic/result/2023_2nd.html
+              // 令和5年度第2回の詳細データは公式サイトで確認が必要
+              passRate: 83.0,
+              examinees: 265,
+              passers: 220,
+              applicants: 278,
+              examRate: 95.3,
+            },
+          },
+        },
+      },
       {
         year: 2024,
         // 令和6年度第1回学科試験結果（R06.10.06実施）
@@ -610,14 +772,60 @@ const certAutoMechanic3: Cert = {
               applicants: 851,
               examRate: 96.2,
             },
+            motorcycle: {
+              // 三級二輪自動車整備士
+              // 注: 三級2輪は各年度の第2回のみ実施されるため、第1回にはデータなし
+              passRate: undefined,
+              examinees: undefined,
+              passers: undefined,
+              applicants: undefined,
+              examRate: undefined,
+            },
           },
         },
         // 令和6年度第2回学科試験結果（R7.03.23実施）
+        // 出典: https://www.jaspa.or.jp/mechanic/result/2024_2nd.html
         autumn: {
-          passRate: 68.8,
-          examinees: 8434,
-          passers: 5802,
-          examDate: "R7.03.23実施",
+          passRate: 68.8, // 合計合格率
+          examinees: 8434, // 合計受験者数（ガソリン3,682 + ジーゼル637 + シャシ1,588 + その他）
+          passers: 5802, // 合計合格者数（ガソリン2,519 + ジーゼル376 + シャシ1,070 + その他）
+          examDate: "R7.03.23実施", // 令和7年3月23日実施（令和6年度第2回）
+          byType: {
+            gasoline: {
+              // 三級ガソリン自動車整備士
+              passRate: 68.4,
+              examinees: 3682,
+              passers: 2519,
+              applicants: 3838,
+              examRate: 95.9,
+            },
+            diesel: {
+              // 三級ジーゼル自動車整備士
+              passRate: 59.0,
+              examinees: 637,
+              passers: 376,
+              applicants: 665,
+              examRate: 95.8,
+            },
+            chassis: {
+              // 三級シャシ自動車整備士
+              passRate: 67.4,
+              examinees: 1588,
+              passers: 1070,
+              applicants: 1645,
+              examRate: 96.5,
+            },
+            motorcycle: {
+              // 三級二輪自動車整備士
+              // 注: 三級2輪は各年度の第2回のみ実施
+              // 出典: https://www.jaspa.or.jp/mechanic/result/2024_2nd.html
+              passRate: 87.7,
+              examinees: 236,
+              passers: 207,
+              applicants: undefined, // 公式サイトで確認が必要
+              examRate: undefined, // 公式サイトで確認が必要
+            },
+          },
         },
       },
       {
@@ -654,8 +862,15 @@ const certAutoMechanic3: Cert = {
               applicants: 775,
               examRate: 96.8,
             },
-            // 注: 3級には「車体」という種類もあるが、型定義に含まれていないため、合計値に反映
-            // 三級車体: 申請者数190、受験者数186、合格者数143、合格率76.9%
+            motorcycle: {
+              // 三級二輪自動車整備士
+              // 注: 三級2輪は各年度の第2回のみ実施されるため、第1回にはデータなし
+              passRate: undefined,
+              examinees: undefined,
+              passers: undefined,
+              applicants: undefined,
+              examRate: undefined,
+            },
           },
         },
       },

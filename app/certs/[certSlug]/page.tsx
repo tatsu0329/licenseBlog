@@ -231,6 +231,15 @@ export default async function CertPage({
                 { key: 'chassis' as const, name: 'シャシ', color: 'orange' },
               ].filter(type => hasTypeData(type.key) && cert.studyHours?.byType?.[type.key]);
               
+              // 資格の等級を判定（cert.idから抽出）
+              const getLevel = (certId: string): string => {
+                if (certId === 'auto-mechanic-1') return '1級';
+                if (certId === 'auto-mechanic-2') return '2級';
+                if (certId === 'auto-mechanic-3') return '3級';
+                return ''; // その他の資格の場合は空文字
+              };
+              const level = getLevel(cert.id);
+              
               return (
                 <div className="space-y-6">
                   {types.map((type) => {
@@ -242,7 +251,7 @@ export default async function CertPage({
                     return (
                       <div key={type.key} className="border-l-4 border-gray-300 pl-4 py-2">
                         <h3 className="text-sm font-semibold text-gray-900 mb-3">
-                          2級{type.name}自動車整備士
+                          {level}{type.name}自動車整備士
                         </h3>
                         <dl className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                           <div className="space-y-1">

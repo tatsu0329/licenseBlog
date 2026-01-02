@@ -172,19 +172,28 @@ export default async function OverviewPage({
               return undefined;
             };
 
+            // 資格の等級を判定（cert.idから抽出）
+            const getLevel = (certId: string): string => {
+              if (certId === 'auto-mechanic-1') return '1級';
+              if (certId === 'auto-mechanic-2') return '2級';
+              if (certId === 'auto-mechanic-3') return '3級';
+              return ''; // その他の資格の場合は空文字
+            };
+            const level = getLevel(cert.id);
+
             return (
               <>
                 {hasByType && byType ? (
                   /* 種類別データがある場合は種類別に年度ごとの平均を表示 */
                   <div className="space-y-6">
-                    {/* 2級ガソリン自動車整備士 */}
+                    {/* ガソリン自動車整備士 */}
                     {getAveragePassRateByType('gasoline') !== undefined && (() => {
                       const avgRate = getAveragePassRateByType('gasoline')!;
                       const difficulty = getDifficultyFromPassRate(avgRate);
                       return (
                         <div className="border-l-4 border-blue-500 pl-4 py-3">
                           <h3 className="font-semibold text-gray-900 mb-3">
-                            2級ガソリン自動車整備士
+                            {level}ガソリン自動車整備士
                           </h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
@@ -212,14 +221,14 @@ export default async function OverviewPage({
                       );
                     })()}
 
-                    {/* 2級ジーゼル自動車整備士 */}
+                    {/* ジーゼル自動車整備士 */}
                     {getAveragePassRateByType('diesel') !== undefined && (() => {
                       const avgRate = getAveragePassRateByType('diesel')!;
                       const difficulty = getDifficultyFromPassRate(avgRate);
                       return (
                         <div className="border-l-4 border-green-500 pl-4 py-3">
                           <h3 className="font-semibold text-gray-900 mb-3">
-                            2級ジーゼル自動車整備士
+                            {level}ジーゼル自動車整備士
                           </h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
@@ -247,14 +256,14 @@ export default async function OverviewPage({
                       );
                     })()}
 
-                    {/* 2級二輪自動車整備士 */}
+                    {/* 二輪自動車整備士 */}
                     {getAveragePassRateByType('motorcycle') !== undefined && (() => {
                       const avgRate = getAveragePassRateByType('motorcycle')!;
                       const difficulty = getDifficultyFromPassRate(avgRate);
                       return (
                         <div className="border-l-4 border-purple-500 pl-4 py-3">
                           <h3 className="font-semibold text-gray-900 mb-3">
-                            2級二輪自動車整備士
+                            {level}二輪自動車整備士
                           </h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
@@ -282,14 +291,14 @@ export default async function OverviewPage({
                       );
                     })()}
 
-                    {/* 2級シャシ自動車整備士 */}
+                    {/* シャシ自動車整備士 */}
                     {getAveragePassRateByType('chassis') !== undefined && (() => {
                       const avgRate = getAveragePassRateByType('chassis')!;
                       const difficulty = getDifficultyFromPassRate(avgRate);
                       return (
                         <div className="border-l-4 border-orange-500 pl-4 py-3">
                           <h3 className="font-semibold text-gray-900 mb-3">
-                            2級シャシ自動車整備士
+                            {level}シャシ自動車整備士
                           </h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
@@ -442,6 +451,15 @@ export default async function OverviewPage({
             
             const hasByType = hasTypeData('gasoline') || hasTypeData('diesel') || hasTypeData('motorcycle') || hasTypeData('chassis');
 
+            // 資格の等級を判定（cert.idから抽出）
+            const getLevel = (certId: string): string => {
+              if (certId === 'auto-mechanic-1') return '1級';
+              if (certId === 'auto-mechanic-2') return '2級';
+              if (certId === 'auto-mechanic-3') return '3級';
+              return ''; // その他の資格の場合は空文字
+            };
+            const level = getLevel(cert.id);
+
             return (
               <section className="bg-white rounded-lg shadow-md p-6 mb-6">
                 <h2 className="text-xl font-semibold text-gray-900 mb-4">
@@ -451,11 +469,11 @@ export default async function OverviewPage({
                 {/* 種類別データがある場合は種類別に表示 */}
                 {hasByType ? (
                   <div className="space-y-8">
-                    {/* 2級ガソリン自動車整備士 */}
+                    {/* ガソリン自動車整備士 */}
                     {hasTypeData('gasoline') && (
                       <div>
                         <h3 className="text-lg font-semibold text-gray-900 mb-4 border-l-4 border-blue-500 pl-3">
-                          2級ガソリン自動車整備士
+                          {level}ガソリン自動車整備士
                         </h3>
                         <PassRateChart
                           data={cert.examInfo.passRateHistory.map((item) => ({
@@ -480,11 +498,11 @@ export default async function OverviewPage({
                       </div>
                     )}
 
-                    {/* 2級ジーゼル自動車整備士 */}
+                    {/* ジーゼル自動車整備士 */}
                     {hasTypeData('diesel') && (
                       <div>
                         <h3 className="text-lg font-semibold text-gray-900 mb-4 border-l-4 border-green-500 pl-3">
-                          2級ジーゼル自動車整備士
+                          {level}ジーゼル自動車整備士
                         </h3>
                         <PassRateChart
                           data={cert.examInfo.passRateHistory.map((item) => ({
@@ -509,11 +527,11 @@ export default async function OverviewPage({
                       </div>
                     )}
 
-                    {/* 2級二輪自動車整備士 */}
+                    {/* 二輪自動車整備士 */}
                     {hasTypeData('motorcycle') && (
                       <div>
                         <h3 className="text-lg font-semibold text-gray-900 mb-4 border-l-4 border-purple-500 pl-3">
-                          2級二輪自動車整備士
+                          {level}二輪自動車整備士
                         </h3>
                         <PassRateChart
                           data={cert.examInfo.passRateHistory.map((item) => ({
@@ -538,11 +556,11 @@ export default async function OverviewPage({
                       </div>
                     )}
 
-                    {/* 2級シャシ自動車整備士 */}
+                    {/* シャシ自動車整備士 */}
                     {hasTypeData('chassis') && (
                       <div>
                         <h3 className="text-lg font-semibold text-gray-900 mb-4 border-l-4 border-orange-500 pl-3">
-                          2級シャシ自動車整備士
+                          {level}シャシ自動車整備士
                         </h3>
                         <PassRateChart
                           data={cert.examInfo.passRateHistory.map((item) => ({
@@ -618,6 +636,15 @@ export default async function OverviewPage({
             
             const hasByType = byType.gasoline || byType.diesel || byType.motorcycle || byType.chassis;
 
+            // 資格の等級を判定（cert.idから抽出）
+            const getLevel = (certId: string): string => {
+              if (certId === 'auto-mechanic-1') return '1級';
+              if (certId === 'auto-mechanic-2') return '2級';
+              if (certId === 'auto-mechanic-3') return '3級';
+              return ''; // その他の資格の場合は空文字
+            };
+            const level = getLevel(cert.id);
+
             return (
               <section className="bg-white rounded-lg shadow-md p-6 mb-6">
                 <h2 className="text-xl font-semibold text-gray-900 mb-4">
@@ -631,11 +658,11 @@ export default async function OverviewPage({
                 {/* 種類別データがある場合は種類別に表示 */}
                 {hasByType && byType ? (
                   <div className="space-y-6">
-                    {/* 2級ガソリン自動車整備士 */}
+                    {/* ガソリン自動車整備士 */}
                     {byType.gasoline && (
                       <div className="border-l-4 border-blue-500 pl-4 py-3">
                         <h3 className="font-semibold text-gray-900 mb-3">
-                          2級ガソリン自動車整備士
+                          {level}ガソリン自動車整備士
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                           <div className="text-center p-4 bg-gray-50 rounded-lg">
@@ -660,11 +687,11 @@ export default async function OverviewPage({
                       </div>
                     )}
 
-                    {/* 2級ジーゼル自動車整備士 */}
+                    {/* ジーゼル自動車整備士 */}
                     {byType.diesel && (
                       <div className="border-l-4 border-green-500 pl-4 py-3">
                         <h3 className="font-semibold text-gray-900 mb-3">
-                          2級ジーゼル自動車整備士
+                          {level}ジーゼル自動車整備士
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                           <div className="text-center p-4 bg-gray-50 rounded-lg">
@@ -689,11 +716,11 @@ export default async function OverviewPage({
                       </div>
                     )}
 
-                    {/* 2級二輪自動車整備士 */}
+                    {/* 二輪自動車整備士 */}
                     {byType.motorcycle && (
                       <div className="border-l-4 border-purple-500 pl-4 py-3">
                         <h3 className="font-semibold text-gray-900 mb-3">
-                          2級二輪自動車整備士
+                          {level}二輪自動車整備士
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                           <div className="text-center p-4 bg-gray-50 rounded-lg">
@@ -718,11 +745,11 @@ export default async function OverviewPage({
                       </div>
                     )}
 
-                    {/* 2級シャシ自動車整備士 */}
+                    {/* シャシ自動車整備士 */}
                     {byType.chassis && (
                       <div className="border-l-4 border-orange-500 pl-4 py-3">
                         <h3 className="font-semibold text-gray-900 mb-3">
-                          2級シャシ自動車整備士
+                          {level}シャシ自動車整備士
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                           <div className="text-center p-4 bg-gray-50 rounded-lg">
@@ -791,11 +818,28 @@ export default async function OverviewPage({
             {cert.studyHours.byType && (() => {
               // 種類別データがある場合は種類別に表示
               const studyHoursByType = cert.studyHours.byType;
+              
+              // 資格の等級を判定（cert.idから抽出）
+              const getLevel = (certId: string): string => {
+                if (certId === 'auto-mechanic-1') return '1級';
+                if (certId === 'auto-mechanic-2') return '2級';
+                if (certId === 'auto-mechanic-3') return '3級';
+                return ''; // その他の資格の場合は空文字
+              };
+              const level = getLevel(cert.id);
+              
+              const typeNames = {
+                gasoline: 'ガソリン',
+                diesel: 'ジーゼル',
+                motorcycle: '2輪',
+                chassis: 'シャシ',
+              };
+              
               const types = [
-                { key: 'gasoline' as const, name: '2級ガソリン自動車整備士', color: 'blue' },
-                { key: 'diesel' as const, name: '2級ジーゼル自動車整備士', color: 'green' },
-                { key: 'motorcycle' as const, name: '2級二輪自動車整備士', color: 'purple' },
-                { key: 'chassis' as const, name: '2級シャシ自動車整備士', color: 'orange' },
+                { key: 'gasoline' as const, name: typeNames.gasoline, color: 'blue' },
+                { key: 'diesel' as const, name: typeNames.diesel, color: 'green' },
+                { key: 'motorcycle' as const, name: typeNames.motorcycle, color: 'purple' },
+                { key: 'chassis' as const, name: typeNames.chassis, color: 'orange' },
               ].filter(type => studyHoursByType[type.key]);
 
               return (
@@ -812,7 +856,7 @@ export default async function OverviewPage({
                     return (
                       <div key={type.key} className={`border-l-4 ${borderColorClass} pl-4 py-3`}>
                         <h3 className="font-semibold text-gray-900 mb-4">
-                          {type.name}
+                          {level}{type.name}自動車整備士
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div className="bg-gray-50 p-4 rounded-lg">

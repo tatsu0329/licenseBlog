@@ -125,6 +125,12 @@ export default async function StudyPage({
                     <span className="text-blue-500 mt-1">•</span>
                     <span>受験資格があるか確認</span>
                   </li>
+                  {cert.id === "auto-mechanic-3" && (
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-500 mt-1">•</span>
+                      <span>実務経験3〜6ヶ月以上（学歴要件による）または指定養成施設修了</span>
+                    </li>
+                  )}
                   {cert.id === "auto-mechanic-2" && (
                     <li className="flex items-start gap-2">
                       <span className="text-blue-500 mt-1">•</span>
@@ -145,10 +151,16 @@ export default async function StudyPage({
                     <span className="text-blue-500 mt-1">•</span>
                     <span>合格基準の理解</span>
                   </li>
-                  {cert.id === "auto-mechanic-2" && (
+                  {(cert.id === "auto-mechanic-2" || cert.id === "auto-mechanic-3") && (
                     <li className="flex items-start gap-2">
                       <span className="text-blue-500 mt-1">•</span>
                       <span>受験する種類の選択（ガソリン・ジーゼル・2輪・シャシ）</span>
+                    </li>
+                  )}
+                  {cert.id === "auto-mechanic-3" && (
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-500 mt-1">•</span>
+                      <span>2輪は各年度の第2回のみ、シャシは各年度の第2回のみ実施（第1回は実施なし）</span>
                     </li>
                   )}
                 </ul>
@@ -186,7 +198,15 @@ export default async function StudyPage({
               全体像：何から何まであるか
             </h2>
             <p className="mb-4 leading-relaxed">
-              {cert.id === "auto-mechanic-2" ? (
+              {cert.id === "auto-mechanic-3" ? (
+                <>
+                  {cert.shortName}の試験は、学科試験と実技試験から構成されます。
+                  学科試験では、{categories.length}つの分野（エンジン・整備機器等・法規）から出題され、
+                  30問形式で、問題1～20がエンジン、問題21～27が整備機器等、問題28～30が法規となっています。
+                  実技試験では、実際の作業手順や測定器の使用方法が問われます。
+                  学科試験は総得点の基準（30問中18問以上）と各分野ごとの基準（各分野40%以上）が設けられています。
+                </>
+              ) : cert.id === "auto-mechanic-2" ? (
                 <>
                   {cert.shortName}の試験は、学科試験と実技試験から構成されます。
                   学科試験では、{categories.length}つの分野（エンジン・シャシ・整備機器等・法規）から出題され、
@@ -212,8 +232,8 @@ export default async function StudyPage({
             <div className="bg-white/20 rounded-lg p-4">
               <p className="font-semibold mb-2">合格までの大まかな流れ</p>
               <ol className="list-decimal list-inside space-y-1 text-sm">
-                <li>基礎知識の習得（{cert.id === "auto-mechanic-2" ? "1-2ヶ月" : "2-3ヶ月"}）</li>
-                <li>過去問演習による知識の定着（{cert.id === "auto-mechanic-2" ? "1-2ヶ月" : "2-3ヶ月"}）</li>
+                <li>基礎知識の習得（{cert.id === "auto-mechanic-3" ? "1-2ヶ月" : cert.id === "auto-mechanic-2" ? "1-2ヶ月" : "2-3ヶ月"}）</li>
+                <li>過去問演習による知識の定着（{cert.id === "auto-mechanic-3" ? "1-2ヶ月" : cert.id === "auto-mechanic-2" ? "1-2ヶ月" : "2-3ヶ月"}）</li>
                 <li>実技試験対策（1-2ヶ月）</li>
                 <li>総復習・模試（1ヶ月）</li>
               </ol>
@@ -257,6 +277,17 @@ export default async function StudyPage({
                         importance = 2; // 重要（問題31-35、5問）
                       } else if (category.slug === "regulations") {
                         importance = 2; // 重要（問題36-40、5問）
+                      } else {
+                        importance = 1; // 普通
+                      }
+                    } else if (category.certId === "auto-mechanic-3") {
+                      // 3級自動車整備士の場合
+                      if (category.slug === "engine") {
+                        importance = 3; // 最重要（問題1-20、20問）
+                      } else if (category.slug === "tools-equipment") {
+                        importance = 2; // 重要（問題21-27、7問）
+                      } else if (category.slug === "regulations") {
+                        importance = 2; // 重要（問題28-30、3問）
                       } else {
                         importance = 1; // 普通
                       }
@@ -351,6 +382,8 @@ export default async function StudyPage({
                         return (
                           cat.slug === "engine" || cat.slug === "chassis"
                         );
+                      } else if (cat.certId === "auto-mechanic-3") {
+                        return cat.slug === "engine";
                       }
                       return cat.slug === "engine" || cat.slug === "electrical";
                     })
@@ -388,6 +421,8 @@ export default async function StudyPage({
                         return cat.slug === "regulations";
                       } else if (cat.certId === "auto-mechanic-2") {
                         return cat.slug === "regulations" || cat.slug === "tools-equipment";
+                      } else if (cat.certId === "auto-mechanic-3") {
+                        return cat.slug === "regulations" || cat.slug === "tools-equipment";
                       }
                       return false;
                     })
@@ -404,6 +439,12 @@ export default async function StudyPage({
                     <>
                       <li>最新技術（EV、ハイブリッド）の詳細</li>
                       <li>特殊な整備事例</li>
+                    </>
+                  )}
+                  {categories.length > 0 && cert.id === "auto-mechanic-3" && (
+                    <>
+                      <li>高度な整備技術や特殊事例</li>
+                      <li>法規の細かな条文の詳細理解</li>
                     </>
                   )}
                   {categories.length === 0 && (
@@ -429,7 +470,7 @@ export default async function StudyPage({
             <div className="space-y-4">
               <div className="border-l-4 border-blue-500 pl-4">
                 <h3 className="font-semibold text-gray-900 mb-2">
-                  ステップ1: 基礎知識の習得（2-3ヶ月）
+                  ステップ1: 基礎知識の習得（{cert.id === "auto-mechanic-3" ? "1-2ヶ月" : cert.id === "auto-mechanic-2" ? "1-2ヶ月" : "2-3ヶ月"}）
                 </h3>
                 <p className="text-gray-700 text-sm mb-2">
                   テキストや参考書を使用して、{cert.shortName}
@@ -439,15 +480,22 @@ export default async function StudyPage({
                   <li>公式テキストを1冊通読する</li>
                   <li>各分野の重要ポイントをノートにまとめる</li>
                   <li>専門用語の意味を理解する</li>
-                  {cert.id === "auto-mechanic-2" && (
+                  {(cert.id === "auto-mechanic-2" || cert.id === "auto-mechanic-3") && (
                     <li>受験する種類（ガソリン・ジーゼル・2輪・シャシ）に合わせて重点的に学習する</li>
+                  )}
+                  {cert.id === "auto-mechanic-3" && (
+                    <>
+                      <li>エンジンの基本構造（4サイクル、2サイクル、燃焼行程など）をしっかり理解する</li>
+                      <li>整備機器等（工具・測定器・材料）の基礎知識を覚える</li>
+                      <li>法規（道路運送車両法・保安基準）の基本的な内容を把握する</li>
+                    </>
                   )}
                 </ul>
               </div>
 
               <div className="border-l-4 border-green-500 pl-4">
                 <h3 className="font-semibold text-gray-900 mb-2">
-                  ステップ2: 過去問演習（2-3ヶ月）
+                  ステップ2: 過去問演習（{cert.id === "auto-mechanic-3" ? "1-2ヶ月" : cert.id === "auto-mechanic-2" ? "1-2ヶ月" : "2-3ヶ月"}）
                 </h3>
                 <p className="text-gray-700 text-sm mb-2">
                   過去問を解いて問題形式に慣れ、知識の定着を図ります。
@@ -456,6 +504,14 @@ export default async function StudyPage({
                   <li>直近5年分の過去問を解く</li>
                   <li>間違えた問題を復習する</li>
                   <li>頻出問題を重点的に学習する</li>
+                  {cert.id === "auto-mechanic-3" && (
+                    <>
+                      <li>問題番号別の出題傾向を把握する（エンジン1-20、整備機器等21-27、法規28-30）</li>
+                      <li>各分野で40%以上の正答率を確保できるようにする（エンジン8問以上、整備機器等3問以上、法規2問以上）</li>
+                      <li>30問中18問以上の正答を目指す（総得点60%以上）</li>
+                      <li>種類別（ガソリン・ジーゼル）の過去問も解いて、それぞれの特徴を理解する</li>
+                    </>
+                  )}
                   {cert.id === "auto-mechanic-2" && (
                     <>
                       <li>問題番号別の出題傾向を把握する（エンジン1-15、シャシ16-30、整備機器等31-35、法規36-40）</li>

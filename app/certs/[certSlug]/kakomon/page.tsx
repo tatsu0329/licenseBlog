@@ -29,33 +29,50 @@ export default async function KakomonPage({
   const allQuestions = getQuestionsByCert(cert.id);
   const categories = getCategoriesByCert(cert.id);
 
-  // 問題IDから燃料タイプを判定する関数（2級整備士用）
+  // 問題IDから燃料タイプを判定する関数（2級・3級整備士用）
   const getFuelTypeFromQuestionId = (questionId: string): string | null => {
-    // auto-mechanic-2-G-2025-1-001 形式から燃料タイプコードを抽出
-    // certIdがauto-mechanic-2でない場合はnullを返す
-    if (!questionId.startsWith("auto-mechanic-2-")) {
+    // auto-mechanic-2-G-2025-1-001 または auto-mechanic-3-G-2025-1-001 形式から燃料タイプコードを抽出
+    // certIdがauto-mechanic-2またはauto-mechanic-3でない場合はnullを返す
+    if (
+      !questionId.startsWith("auto-mechanic-2-") &&
+      !questionId.startsWith("auto-mechanic-3-")
+    ) {
       return null;
     }
 
-    const match = questionId.match(/^auto-mechanic-2-([GDMWC])-/);
-    if (match && match[1]) {
-      const code = match[1];
-      return code === "G"
-        ? "gasoline"
-        : code === "D"
-        ? "diesel"
-        : code === "M"
-        ? "motorcycle"
-        : code === "C"
-        ? "chassis"
-        : null;
+    // 2級整備士の場合
+    if (questionId.startsWith("auto-mechanic-2-")) {
+      const match = questionId.match(/^auto-mechanic-2-([GDMWC])-/);
+      if (match && match[1]) {
+        const code = match[1];
+        return code === "G"
+          ? "gasoline"
+          : code === "D"
+          ? "diesel"
+          : code === "M"
+          ? "motorcycle"
+          : code === "C"
+          ? "chassis"
+          : null;
+      }
     }
+
+    // 3級整備士の場合
+    if (questionId.startsWith("auto-mechanic-3-")) {
+      const match = questionId.match(/^auto-mechanic-3-([GD])-/);
+      if (match && match[1]) {
+        const code = match[1];
+        return code === "G" ? "gasoline" : code === "D" ? "diesel" : null;
+      }
+    }
+
     return null;
   };
 
-  // 種類別データがあるかチェック（2級整備士かどうか）
-  // 資格IDがauto-mechanic-2の場合は常にtrue（フィルタリング結果に依存しない）
-  const hasFuelTypeData = cert.id === "auto-mechanic-2";
+  // 種類別データがあるかチェック（2級・3級整備士かどうか）
+  // 資格IDがauto-mechanic-2またはauto-mechanic-3の場合は常にtrue（フィルタリング結果に依存しない）
+  const hasFuelTypeData =
+    cert.id === "auto-mechanic-2" || cert.id === "auto-mechanic-3";
 
   // 利用可能な燃料タイプのリストを取得（フィルタリング前の全問題から取得）
   // フィルタリング前のallQuestionsから取得することで、選択後もボタンが表示され続ける
@@ -167,7 +184,7 @@ export default async function KakomonPage({
               hasFuelTypeData ? 4 : 3
             } gap-4`}
           >
-            {/* 種類別（燃料タイプ） - 2級整備士のみ表示 */}
+            {/* 種類別（燃料タイプ） - 2級・3級整備士のみ表示 */}
             {hasFuelTypeData && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">

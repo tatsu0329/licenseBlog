@@ -107,15 +107,23 @@ export const categories: Category[] = [
     slug: "engine",
     name: "エンジン",
     order: 1,
-    description: "エンジンの整備に関する分野",
+    description: "エンジンの整備に関する分野（問題1～20）",
   },
   {
-    id: "chassis-3",
+    id: "tools-equipment-3",
     certId: "auto-mechanic-3",
-    slug: "chassis",
-    name: "シャシ",
+    slug: "tools-equipment",
+    name: "整備機器等",
     order: 2,
-    description: "シャシの整備に関する分野",
+    description: "整備機器等に関する分野（問題21～27）",
+  },
+  {
+    id: "regulations-3",
+    certId: "auto-mechanic-3",
+    slug: "regulations",
+    name: "法規",
+    order: 3,
+    description: "法規に関する分野（問題28～30）",
   },
   // 介護福祉士
   {
