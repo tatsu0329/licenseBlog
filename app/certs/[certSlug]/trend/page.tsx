@@ -625,24 +625,17 @@ export default async function TrendPage({
         </section>
 
         {/* 有料コンテンツ導線 */}
-        <section className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg shadow-lg p-6 mb-6 text-white">
-          <h2 className="text-lg font-bold mb-2">
+        <section className="bg-yellow-50 border border-yellow-200 rounded-lg shadow-lg p-8 mb-6 text-center">
+          <div className="mb-4">
+            <span className="text-4xl">🚧</span>
+          </div>
+          <h2 className="text-lg font-bold mb-2 text-gray-900">
             💎 より詳細な分析データを入手
           </h2>
-          <p className="text-purple-100 text-sm mb-4">
-            過去10年の詳細分析、分野別の出題傾向グラフ、予想問題の傾向分析など、
-            より詳しいデータはアプリのプレミアムプランでご利用いただけます。
+          <p className="text-gray-600 text-sm">
+            この機能は現在準備中です。<br />
+            公開まで今しばらくお待ちください。
           </p>
-          <Link
-            href={
-              features.includes("articles") && certSlug === "auto-mechanic-1"
-                ? "/articles/auto-mechanic-1-app-introduction"
-                : "/articles"
-            }
-            className="inline-block px-6 py-3 bg-white text-purple-600 rounded-lg hover:bg-purple-50 transition-colors font-semibold text-sm"
-          >
-            プレミアムプランを確認する →
-          </Link>
         </section>
 
         {/* 関連リンク */}

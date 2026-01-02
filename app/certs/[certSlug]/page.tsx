@@ -585,10 +585,10 @@ export default async function CertPage({
               </p>
               <div className="flex flex-wrap gap-2 mt-4">
                 <span className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium">
-                  無料体験可能
+                  即時正誤判定
                 </span>
                 <span className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium">
-                  詳細解説付き
+                  回答記録保存機能付き
                 </span>
               </div>
             </div>

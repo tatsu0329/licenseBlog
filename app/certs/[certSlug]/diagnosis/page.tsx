@@ -73,16 +73,17 @@ export default function DiagnosisPage() {
           </div>
         </div>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 text-center">
-          <p className="text-gray-700 mb-4">
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-8 text-center">
+          <div className="mb-4">
+            <span className="text-4xl">🚧</span>
+          </div>
+          <h3 className="text-lg font-bold mb-2 text-gray-900">
             💎 より詳細な診断結果と学習計画を保存するには、プレミアムプランに登録してください
+          </h3>
+          <p className="text-gray-600 text-sm">
+            この機能は現在準備中です。<br />
+            公開まで今しばらくお待ちください。
           </p>
-          <Link
-            href={certSlug === "auto-mechanic-1" ? "/articles/auto-mechanic-1-app-introduction" : "/articles"}
-            className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold"
-          >
-            アプリで詳細診断を受ける →
-          </Link>
         </div>
       </div>
     </div>
@@ -289,27 +290,17 @@ function WeakAreaDiagnosis({ certSlug }: { certSlug: string }) {
       <h2 className="text-lg font-semibold text-gray-900 mb-4">
         苦手分野診断
       </h2>
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-        <p className="text-blue-800 text-sm">
-          苦手分野診断は、アプリで過去問を解くことで自動的に分析されます。
-        </p>
-      </div>
-      <div className="space-y-3">
-        <div className="p-4 bg-gray-50 rounded-lg">
-          <h3 className="font-semibold text-gray-900 mb-2">診断方法</h3>
-          <ol className="list-decimal list-inside space-y-1 text-sm text-gray-700">
-            <li>アプリで過去問を解く</li>
-            <li>間違えた問題を自動記録</li>
-            <li>分野別の正答率を分析</li>
-            <li>苦手分野を可視化</li>
-          </ol>
+      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-8 text-center">
+        <div className="mb-4">
+          <span className="text-4xl">🚧</span>
         </div>
-        <Link
-          href={certSlug === "auto-mechanic-1" ? "/articles/auto-mechanic-1-app-introduction" : "/articles"}
-          className="block w-full px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold text-center"
-        >
-          アプリで苦手分野を診断する →
-        </Link>
+        <h3 className="text-xl font-semibold text-gray-900 mb-2">
+          準備中
+        </h3>
+        <p className="text-gray-600 text-sm">
+          苦手分野診断機能は現在準備中です。<br />
+          公開まで今しばらくお待ちください。
+        </p>
       </div>
     </div>
   );
