@@ -563,10 +563,10 @@ const certAutoMechanic3: Cert = {
   name: "自動車整備士3級",
   shortName: "自動車整備士3級",
   description:
-    "自動車整備士3級は、自動車の整備に関する基礎知識と技能を有することを証明する国家資格です。",
+    "自動車整備士3級は、自動車の整備に関する基礎知識と技能を有することを証明する国家資格です。3級整備士は、ガソリン自動車、ジーゼル自動車、二輪自動車、シャシ、車体の5つの専門分野に分かれており、それぞれの専門性を深めることができます。\n\n3級整備士は、自動車整備の基礎を学ぶ最初のステップとして位置づけられており、基本的な整備技術と判断力が求められます。自動車整備工場やディーラーにおいて、基礎的な整備作業を担当する重要な役割を担います。",
   difficulty: 2,
   annualExaminees: 35000,
-  passRate: 65,
+  passRate: 67.7, // 令和7年度第1回の最新合格率（合計）
   studyHours: {
     beginner: 400,
     experienced: 200,
@@ -574,30 +574,89 @@ const certAutoMechanic3: Cert = {
   examInfo: {
     eligibility: "実務経験6ヶ月以上、または指定養成施設修了",
     examDates: {
-      spring: "2024-06-15",
-      autumn: "2024-11-10",
+      spring: "令和7年10月5日実施(直近の実施回)", // 令和7年度第1回
+      autumn: "令和7年3月23日実施",
     },
-    passCriteria: "学科60点以上、実技60点以上",
+    passCriteria:
+      "合格基準は年度ごとに公表され、学科試験・実技試験それぞれに基準が設けられます。学科試験合格者のみが実技試験を受験できます。\n・学科試験:総得点の基準（30問中18問以上）と各分野ごとの基準（各分野40%以上）\n・実技試験:総得点の基準（30点中18点以上）と各分野ごとの基準（各分野40%以上）",
     passRateHistory: [
       {
-        year: 2023,
+        year: 2024,
+        // 令和6年度第1回学科試験結果（R06.10.06実施）
         spring: {
-          passRate: 63,
-          examinees: 34800,
-          passers: 21924,
+          passRate: undefined, // 種類別データから計算されるため未設定
+          examinees: undefined,
+          passers: undefined,
+          examDate: "R06.10.06実施",
+          byType: {
+            gasoline: {
+              passRate: 74.5,
+              examinees: 3756,
+              passers: 2799,
+              applicants: 3863,
+              examRate: 97.2,
+            },
+            diesel: {
+              passRate: 61.7,
+              examinees: 269,
+              passers: 166,
+              applicants: 286,
+              examRate: 94.1,
+            },
+            chassis: {
+              passRate: 65.9,
+              examinees: 819,
+              passers: 540,
+              applicants: 851,
+              examRate: 96.2,
+            },
+          },
         },
+        // 令和6年度第2回学科試験結果（R7.03.23実施）
         autumn: {
-          passRate: 67,
-          examinees: 34200,
-          passers: 22914,
+          passRate: 68.8,
+          examinees: 8434,
+          passers: 5802,
+          examDate: "R7.03.23実施",
         },
       },
       {
-        year: 2024,
+        year: 2025,
+        // 令和7年度第1回学科試験結果（R7.10.05実施）
+        // 出典: https://www.jaspa.or.jp/mechanic/result/2025_1st.html
         spring: {
-          passRate: 65,
-          examinees: 35200,
-          passers: 22880,
+          passRate: 67.7, // 合計合格率
+          examinees: 8566, // 合計受験者数
+          passers: 5799, // 合計合格者数
+          examDate: "R7.10.05実施", // 令和7年10月5日実施（令和7年度第1回）
+          byType: {
+            gasoline: {
+              // 三級ガソリン自動車整備士
+              passRate: 69.2,
+              examinees: 3831,
+              passers: 2650,
+              applicants: 3951,
+              examRate: 97.0,
+            },
+            diesel: {
+              // 三級ジーゼル自動車整備士
+              passRate: 74.1,
+              examinees: 270,
+              passers: 200,
+              applicants: 285,
+              examRate: 94.7,
+            },
+            chassis: {
+              // 三級シャシ自動車整備士
+              passRate: 70.8,
+              examinees: 750,
+              passers: 531,
+              applicants: 775,
+              examRate: 96.8,
+            },
+            // 注: 3級には「車体」という種類もあるが、型定義に含まれていないため、合計値に反映
+            // 三級車体: 申請者数190、受験者数186、合格者数143、合格率76.9%
+          },
         },
       },
     ],
@@ -605,7 +664,7 @@ const certAutoMechanic3: Cert = {
   relatedCertIds: ["auto-mechanic-2"],
   tags: ["自動車", "整備", "3級", "国家資格", "技術"],
   publishedAt: new Date("2024-01-01"),
-  updatedAt: new Date("2024-01-01"),
+  updatedAt: new Date("2025-10-05"), // 令和7年度第1回試験結果反映日
 };
 
 // 介護福祉士

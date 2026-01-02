@@ -49,23 +49,78 @@ export default async function TrendPage({
 
   // 分野別の問題数を集計（サンプルデータ）
   const categoryStats = categories.map((category) => {
-    const count = questions.filter((q) => q.categoryId === category.id).length;
+    const categoryQuestions = questions.filter((q) => q.categoryId === category.id);
+    const count = categoryQuestions.length;
+    
+    // 年度別の問題数を集計
+    const yearCounts = categoryQuestions.reduce((acc, q) => {
+      const key = `${q.year}-${q.season}`;
+      if (!acc[key]) {
+        acc[key] = { count: 0, year: q.year, season: q.season };
+      }
+      acc[key].count += 1;
+      return acc;
+    }, {} as Record<string, { count: number; year: number; season: 1 | 2 }>);
+    
+    // 年度順にソートされたデータ配列を作成
+    const yearData = Object.values(yearCounts)
+      .sort((a, b) => {
+        if (a.year !== b.year) {
+          return a.year - b.year;
+        }
+        return a.season - b.season;
+      })
+      .map((item) => ({
+        label: formatExamPeriod(item.year, item.season),
+        value: item.count,
+        year: item.year,
+        season: item.season,
+      }));
+    
+    // 直近3年の出題数を計算
+    const currentYear = new Date().getFullYear();
+    const recent3Years = categoryQuestions.filter(
+      (q) => q.year >= currentYear - 2
+    );
+    const olderYears = categoryQuestions.filter(
+      (q) => q.year < currentYear - 2
+    );
+    
+    // 直近3年の年度別回数をカウント
+    const recentYearPeriods = new Set<string>();
+    recent3Years.forEach((q) => {
+      recentYearPeriods.add(`${q.year}-${q.season}`);
+    });
+    const olderYearPeriods = new Set<string>();
+    olderYears.forEach((q) => {
+      olderYearPeriods.add(`${q.year}-${q.season}`);
+    });
+    
+    const recentAverage = recentYearPeriods.size > 0 ? recent3Years.length / recentYearPeriods.size : 0;
+    const olderAverage = olderYearPeriods.size > 0 ? olderYears.length / olderYearPeriods.size : 0;
+    const growthRate = olderAverage > 0 ? (recentAverage / olderAverage - 1) * 100 : (recentAverage > 0 ? 100 : 0);
+    
     return {
       category,
       count,
       percentage: questions.length > 0 ? Math.round((count / questions.length) * 100) : 0,
+      yearData, // 年度別のデータを追加
+      growthRate, // 直近3年の増加率
     };
   }).sort((a, b) => b.count - a.count);
-
-  // 年度別の問題数（年度順にソート）
-  const yearStats = questions.reduce((acc, q) => {
-    const key = formatExamPeriod(q.year, q.season);
-    if (!acc[key]) {
-      acc[key] = { count: 0, year: q.year, season: q.season };
-    }
-    acc[key].count += 1;
-    return acc;
-  }, {} as Record<string, { count: number; year: number; season: 1 | 2 }>);
+  
+  // 直近3年で急に増えた分野を特定（増加率が高い順）
+  const growingCategories = [...categoryStats]
+    .filter((s) => s.growthRate > 30) // 30%以上の増加
+    .sort((a, b) => b.growthRate - a.growthRate);
+  
+  // 過去10年で8割以上出ている分野（出題率80%以上、または問題数が全体の15%以上）
+  const frequentlyAskedCategories = categoryStats.filter(
+    (s) => s.percentage >= 15 || (s.count / questions.length) >= 0.15
+  );
+  
+  // 必須分野（出題率20%以上）
+  const essentialCategories = categoryStats.filter((s) => s.percentage >= 20);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -114,61 +169,215 @@ export default async function TrendPage({
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
               頻出分野ランキング
             </h2>
-            <div className="space-y-4">
-              {categoryStats.map((stat, index) => (
-                <div
-                  key={stat.category.id}
-                  className="border-l-4 border-blue-500 pl-4 py-2"
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-3">
-                      <span className="text-2xl font-bold text-blue-600">
-                        {index + 1}位
-                      </span>
-                      <h3 className="font-semibold text-gray-900">
-                        {stat.category.name}
-                      </h3>
-                    </div>
-                    <span className="text-sm text-gray-600">
-                      {stat.count}問（{stat.percentage}%）
-                    </span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+            <div className="space-y-6">
+              {categoryStats.map((stat, index) => {
+                // 各分野ごとに異なる色を割り当て
+                const colors = [
+                  "#3b82f6", // blue
+                  "#10b981", // green
+                  "#f59e0b", // amber
+                  "#ef4444", // red
+                  "#8b5cf6", // purple
+                  "#ec4899", // pink
+                  "#06b6d4", // cyan
+                  "#f97316", // orange
+                ];
+                const color = colors[index % colors.length];
+                
+                // 線グラフ用のデータ
+                const yearData = stat.yearData || [];
+                if (yearData.length === 0) {
+                  return (
                     <div
-                      className="bg-blue-500 h-2 rounded-full"
-                      style={{ width: `${stat.percentage}%` }}
-                    ></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* 年度別出題数 */}
-        {Object.keys(yearStats).length > 0 && (
-          <section className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              年度別出題数
-            </h2>
-            <div className="space-y-3">
-              {Object.entries(yearStats)
-                .sort((a, b) => {
-                  // 年度と回次でソート（新しい年度が上）
-                  if (b[1].year !== a[1].year) {
-                    return b[1].year - a[1].year;
-                  }
-                  return b[1].season - a[1].season;
-                })
-                .map(([year, stat], index) => (
+                      key={stat.category.id}
+                      className="border-l-4 pl-4 py-2"
+                      style={{ borderColor: color }}
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-3">
+                          <span className="text-2xl font-bold" style={{ color }}>
+                            {index + 1}位
+                          </span>
+                          <h3 className="font-semibold text-gray-900">
+                            {stat.category.name}
+                          </h3>
+                        </div>
+                        <span className="text-sm text-gray-600">
+                          {stat.count}問（{stat.percentage}%）
+                        </span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div
+                          className="h-2 rounded-full"
+                          style={{ width: `${stat.percentage}%`, backgroundColor: color }}
+                        ></div>
+                      </div>
+                    </div>
+                  );
+                }
+                
+                const maxValue = Math.max(...yearData.map((d) => d.value), 1);
+                const minValue = 0;
+                const range = maxValue - minValue || 1;
+                const padding = 50;
+                const chartWidth = Math.max(600, yearData.length * 60);
+                const chartHeight = 150;
+                
+                return (
                   <div
-                    key={`${stat.year}-${stat.season}-${index}`}
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                    key={stat.category.id}
+                    className="border-l-4 pl-4 py-3"
+                    style={{ borderColor: color }}
                   >
-                    <span key={`year-label-${stat.year}-${stat.season}-${index}`} className="font-medium text-gray-900">{year}</span>
-                    <span key={`count-label-${stat.year}-${stat.season}-${index}`} className="text-gray-600">{stat.count}問</span>
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-3">
+                        <span className="text-2xl font-bold" style={{ color }}>
+                          {index + 1}位
+                        </span>
+                        <h3 className="font-semibold text-gray-900">
+                          {stat.category.name}
+                        </h3>
+                      </div>
+                      <span className="text-sm text-gray-600">
+                        {stat.count}問（{stat.percentage}%）
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
+                      <div
+                        className="h-2 rounded-full"
+                        style={{ width: `${stat.percentage}%`, backgroundColor: color }}
+                      ></div>
+                    </div>
+                    
+                    {/* 年度別出題数の線グラフ */}
+                    <div className="overflow-x-auto">
+                      <svg
+                        width={chartWidth}
+                        height={chartHeight}
+                        viewBox={`0 0 ${chartWidth} ${chartHeight}`}
+                        className="w-full max-w-full"
+                        preserveAspectRatio="xMidYMid meet"
+                      >
+                        {/* グリッド線 */}
+                        {Array.from({ length: Math.ceil(maxValue) + 1 }, (_, i) => i).map((y) => {
+                          if (y > maxValue) return null;
+                          const yPos = padding + chartHeight - padding * 2 - ((y - minValue) / range) * (chartHeight - padding * 2);
+                          return (
+                            <g key={y}>
+                              <line
+                                x1={padding}
+                                y1={yPos}
+                                x2={chartWidth - padding}
+                                y2={yPos}
+                                stroke="#e5e7eb"
+                                strokeWidth={1}
+                                strokeDasharray={y === 0 ? "0" : "4,4"}
+                              />
+                              <text
+                                x={padding - 5}
+                                y={yPos + 4}
+                                textAnchor="end"
+                                fontSize="10"
+                                fill="#6b7280"
+                              >
+                                {y}
+                              </text>
+                            </g>
+                          );
+                        })}
+                        
+                        {/* 線グラフ */}
+                        {yearData.length > 1 && (
+                          <polyline
+                            points={yearData
+                              .map((point, i) => {
+                                const x = padding + (i * (chartWidth - padding * 2)) / (yearData.length - 1);
+                                const y = padding + (chartHeight - padding * 2) - ((point.value - minValue) / range) * (chartHeight - padding * 2);
+                                return `${x},${y}`;
+                              })
+                              .join(" ")}
+                            fill="none"
+                            stroke={color}
+                            strokeWidth={3}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        )}
+                        
+                        {/* データポイント */}
+                        {yearData.map((point, i) => {
+                          const x = padding + (i * (chartWidth - padding * 2)) / (yearData.length - 1 || 1);
+                          const y = padding + (chartHeight - padding * 2) - ((point.value - minValue) / range) * (chartHeight - padding * 2);
+                          return (
+                            <g key={`${point.year}-${point.season}`}>
+                              <circle
+                                cx={x}
+                                cy={y}
+                                r={5}
+                                fill={color}
+                                stroke="white"
+                                strokeWidth={2}
+                              />
+                              <text
+                                x={x}
+                                y={y - 10}
+                                textAnchor="middle"
+                                fontSize="11"
+                                fontWeight="bold"
+                                fill={color}
+                              >
+                                {point.value}
+                              </text>
+                              {/* X軸ラベル */}
+                              <text
+                                x={x}
+                                y={chartHeight - padding + 15}
+                                textAnchor="middle"
+                                fontSize="9"
+                                fill="#6b7280"
+                                transform={`rotate(-45, ${x}, ${chartHeight - padding + 15})`}
+                              >
+                                {point.label.replace("年度", "度").replace("第1回", "1回").replace("第2回", "2回")}
+                              </text>
+                            </g>
+                          );
+                        })}
+                        
+                        {/* Y軸 */}
+                        <line
+                          x1={padding}
+                          y1={padding}
+                          x2={padding}
+                          y2={chartHeight - padding}
+                          stroke="#374151"
+                          strokeWidth={2}
+                        />
+                        {/* X軸 */}
+                        <line
+                          x1={padding}
+                          y1={chartHeight - padding}
+                          x2={chartWidth - padding}
+                          y2={chartHeight - padding}
+                          stroke="#374151"
+                          strokeWidth={2}
+                        />
+                        
+                        {/* Y軸ラベル */}
+                        <text
+                          x={padding / 2}
+                          y={chartHeight / 2}
+                          textAnchor="middle"
+                          fontSize="11"
+                          fill="#6b7280"
+                          transform={`rotate(-90, ${padding / 2}, ${chartHeight / 2})`}
+                        >
+                          出題数
+                        </text>
+                      </svg>
+                    </div>
                   </div>
-                ))}
+                );
+              })}
             </div>
           </section>
         )}
@@ -183,23 +392,71 @@ export default async function TrendPage({
               <h3 className="font-semibold text-gray-900 mb-2">
                 🔍 増えている出題テーマ
               </h3>
-              <ul className="list-disc list-inside text-gray-700 space-y-1">
-                <li>電気自動車（EV）・ハイブリッド車の技術</li>
-                <li>電子制御システムの故障診断</li>
-                <li>ADAS（先進運転支援システム）の基礎</li>
-                <li>環境規制対応技術</li>
-              </ul>
+              {cert.id === "auto-mechanic-1" ? (
+                <ul className="list-disc list-inside text-gray-700 space-y-1">
+                  <li>電気・電子装置／電子制御（ECU系）</li>
+                  <li>故障診断・トラブルシューティング</li>
+                  <li>図面・配線図・資料の読解</li>
+                  {growingCategories.length > 0 && (
+                    growingCategories.slice(0, 3).map((cat) => (
+                      <li key={cat.category.id}>
+                        {cat.category.name}（直近3年で{cat.growthRate > 0 ? `${Math.round(cat.growthRate)}%増加` : "増加傾向"}）
+                      </li>
+                    ))
+                  )}
+                </ul>
+              ) : cert.id === "auto-mechanic-2" ? (
+                <ul className="list-disc list-inside text-gray-700 space-y-1">
+                  <li>エンジン（各種エンジンシステム）</li>
+                  <li>シャシ（走行・制動・操舵装置）</li>
+                  <li>整備機器等（計測機器・診断機）</li>
+                  {growingCategories.length > 0 && (
+                    growingCategories.slice(0, 3).map((cat) => (
+                      <li key={cat.category.id}>
+                        {cat.category.name}（直近3年で{cat.growthRate > 0 ? `${Math.round(cat.growthRate)}%増加` : "増加傾向"}）
+                      </li>
+                    ))
+                  )}
+                </ul>
+              ) : (
+                <ul className="list-disc list-inside text-gray-700 space-y-1">
+                  {growingCategories.length > 0 ? (
+                    growingCategories.slice(0, 4).map((cat) => (
+                      <li key={cat.category.id}>
+                        {cat.category.name}（直近3年で{cat.growthRate > 0 ? `${Math.round(cat.growthRate)}%増加` : "増加傾向"}）
+                      </li>
+                    ))
+                  ) : (
+                    <li>データを分析中です</li>
+                  )}
+                </ul>
+              )}
             </div>
             <div className="bg-blue-50 border-l-4 border-blue-400 p-4">
               <h3 className="font-semibold text-gray-900 mb-2">
-                ⚠️ 8割の人が落とす論点
+                ⚠️ 難しい論点
               </h3>
-              <ul className="list-disc list-inside text-gray-700 space-y-1">
-                <li>電子制御ユニット（ECU）の動作原理</li>
-                <li>診断用ツールの使い方・読み方</li>
-                <li>複合的な故障の原因特定</li>
-                <li>法規・保安基準の詳細</li>
-              </ul>
+              {cert.id === "auto-mechanic-1" ? (
+                <ul className="list-disc list-inside text-gray-700 space-y-1">
+                  <li>電子制御ユニット（ECU）の動作原理と制御ロジック</li>
+                  <li>診断用ツール（オシロスコープ、デジタルテスタ）の使い方・読み方</li>
+                  <li>複合的な故障の原因特定とトラブルシューティング</li>
+                  <li>CAN通信システムの理解と点検方法</li>
+                </ul>
+              ) : cert.id === "auto-mechanic-2" ? (
+                <ul className="list-disc list-inside text-gray-700 space-y-1">
+                  <li>エンジン制御システムと電子制御装置</li>
+                  <li>シャシ各部の構造と点検・調整方法</li>
+                  <li>整備機器・計測機器の正しい使い方</li>
+                  <li>法規・保安基準の詳細理解</li>
+                </ul>
+              ) : (
+                <ul className="list-disc list-inside text-gray-700 space-y-1">
+                  <li>専門知識が必要な分野</li>
+                  <li>実技を伴う項目</li>
+                  <li>法令・規制に関する詳細</li>
+                </ul>
+              )}
             </div>
           </div>
         </section>
@@ -207,21 +464,25 @@ export default async function TrendPage({
         {/* 過去10年で8割出ている分野 */}
         <section className="bg-white rounded-lg shadow-md p-6 mb-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">
-            過去10年で8割出ている分野
+            頻繁に出題される分野
           </h2>
           <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
             <p className="text-blue-900 font-semibold mb-2">
               これらは確実に学習すべき分野です
             </p>
-            <ul className="list-disc list-inside space-y-1 text-blue-800 text-sm">
-              {categoryStats
-                .filter((s) => s.percentage >= 15)
-                .map((s) => (
+            {frequentlyAskedCategories.length > 0 ? (
+              <ul className="list-disc list-inside space-y-1 text-blue-800 text-sm">
+                {frequentlyAskedCategories.map((s) => (
                   <li key={s.category.id}>
                     {s.category.name}（{s.percentage}%の出題率）
                   </li>
                 ))}
-            </ul>
+              </ul>
+            ) : (
+              <p className="text-blue-800 text-sm">
+                データを分析中です。頻出分野ランキングを参照してください。
+              </p>
+            )}
           </div>
         </section>
 
@@ -231,23 +492,57 @@ export default async function TrendPage({
             直近3年で急に増えた論点
           </h2>
           <div className="bg-red-50 border-l-4 border-red-500 p-4">
-            <ul className="list-disc list-inside space-y-2 text-red-800 text-sm">
-              <li>
-                <strong>電気自動車（EV）・ハイブリッド車の技術</strong>
-                <br />
-                出題頻度が2021年から3倍に増加。今後も重要度が高まることが予想されます。
-              </li>
-              <li>
-                <strong>ADAS（先進運転支援システム）</strong>
-                <br />
-                2022年から出題が本格化。自動運転技術の基礎知識が求められています。
-              </li>
-              <li>
-                <strong>電子制御システムの故障診断</strong>
-                <br />
-                複合的な故障の原因特定に関する問題が増加傾向にあります。
-              </li>
-            </ul>
+            {growingCategories.length > 0 ? (
+              <ul className="list-disc list-inside space-y-2 text-red-800 text-sm">
+                {growingCategories.slice(0, 3).map((cat) => (
+                  <li key={cat.category.id}>
+                    <strong>{cat.category.name}</strong>
+                    <br />
+                    直近3年の出題数が以前と比較して{Math.round(cat.growthRate)}%増加しています。今後も重要度が高まることが予想されます。
+                  </li>
+                ))}
+              </ul>
+            ) : cert.id === "auto-mechanic-1" ? (
+              <ul className="list-disc list-inside space-y-2 text-red-800 text-sm">
+                <li>
+                  <strong>電気・電子装置／電子制御（ECU系）</strong>
+                  <br />
+                  電子制御システムの高度化に伴い、ECUの動作原理や制御ロジックに関する出題が増加傾向にあります。
+                </li>
+                <li>
+                  <strong>故障診断・トラブルシューティング</strong>
+                  <br />
+                  複合的な故障の原因特定や診断手順に関する問題が増加傾向にあります。
+                </li>
+                <li>
+                  <strong>図面・配線図・資料の読解</strong>
+                  <br />
+                  実務で必要となる技術資料の読解能力を問う問題が重視されています。
+                </li>
+              </ul>
+            ) : cert.id === "auto-mechanic-2" ? (
+              <ul className="list-disc list-inside space-y-2 text-red-800 text-sm">
+                <li>
+                  <strong>エンジン</strong>
+                  <br />
+                  各種エンジンシステムの理解と整備に関する出題が安定して多くなっています。
+                </li>
+                <li>
+                  <strong>シャシ</strong>
+                  <br />
+                  走行装置、制動装置、操舵装置の構造と点検・調整に関する問題が重要視されています。
+                </li>
+                <li>
+                  <strong>整備機器等</strong>
+                  <br />
+                  計測機器や診断機の正しい使い方に関する出題が増加傾向にあります。
+                </li>
+              </ul>
+            ) : (
+              <p className="text-red-800 text-sm">
+                データを分析中です。
+              </p>
+            )}
           </div>
         </section>
 
@@ -264,22 +559,30 @@ export default async function TrendPage({
               <p className="text-gray-700 text-sm mb-2">
                 頻出分野は確実に得点源にしましょう。これらの分野での失点は合格を遠ざけます。
               </p>
-              <ul className="list-disc list-inside text-gray-600 text-sm space-y-1">
-                {categoryStats
-                  .filter((s) => s.percentage >= 20)
-                  .map((s) => (
-                    <li key={s.category.id}>{s.category.name}</li>
+              {essentialCategories.length > 0 ? (
+                <ul className="list-disc list-inside text-gray-600 text-sm space-y-1">
+                  {essentialCategories.map((s) => (
+                    <li key={s.category.id}>{s.category.name}（{s.percentage}%）</li>
                   ))}
-              </ul>
+                </ul>
+              ) : (
+                <ul className="list-disc list-inside text-gray-600 text-sm space-y-1">
+                  {categoryStats.slice(0, 3).map((s) => (
+                    <li key={s.category.id}>{s.category.name}（{s.percentage}%）</li>
+                  ))}
+                </ul>
+              )}
             </div>
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-2">
-                実技試験対策
-              </h3>
-              <p className="text-gray-700 text-sm">
-                実技試験では、実際の作業手順と測定器の使い方が問われます。机上の学習だけでなく、実践的な練習が必要です。
-              </p>
-            </div>
+            {cert.examInfo?.passCriteria?.includes("実技") && (
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-2">
+                  実技試験対策
+                </h3>
+                <p className="text-gray-700 text-sm">
+                  実技試験では、実際の作業手順と測定器の使い方が問われます。机上の学習だけでなく、実践的な練習が必要です。
+                </p>
+              </div>
+            )}
           </div>
         </section>
 

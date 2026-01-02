@@ -131,6 +131,21 @@ function renderMarkdown(content: string): React.ReactNode {
           {trimmed.substring(4)}
         </h3>
       );
+    } else if (trimmed.startsWith("#### ")) {
+      if (currentParagraph.length > 0) {
+        const paragraphText = currentParagraph.join("\n");
+        elements.push(
+          <p key={`p-${index}`} className="mb-4 leading-relaxed text-gray-700">
+            {processBold(paragraphText, `p-${index}`)}
+          </p>
+        );
+        currentParagraph = [];
+      }
+      elements.push(
+        <h4 key={`h4-${index}`} className="text-lg font-semibold text-gray-900 mt-3 mb-2">
+          {trimmed.substring(5)}
+        </h4>
+      );
     } else if (trimmed === "") {
       // 空行
       if (currentParagraph.length > 0) {

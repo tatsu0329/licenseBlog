@@ -33,6 +33,11 @@ import autoMechanic1AppArticle from "./articles/auto_mechanic_1_app.json";
 import autoMechanic1WebVsAppArticle from "./articles/auto_mechanic_1_web_vs_app.json";
 import autoMechanic1CommonMistakesArticle from "./articles/auto_mechanic_1_common_mistakes.json";
 import autoMechanic1SystemChangesArticle from "./articles/auto_mechanic_1_system_changes.json";
+import autoMechanic2R7_1PassLineArticle from "./articles/auto_mechanic_2_r7_1_pass_line.json";
+import autoMechanic2AppArticle from "./articles/auto_mechanic_2_app.json";
+import autoMechanic2WebVsAppArticle from "./articles/auto_mechanic_2_web_vs_app.json";
+import autoMechanic2SystemChangesArticle from "./articles/auto_mechanic_2_system_changes.json";
+import autoMechanic2CommonMistakesArticle from "./articles/auto_mechanic_2_common_mistakes.json";
 
 // 全記事を読み込み
 export function getAllArticles(): Article[] {
@@ -42,6 +47,11 @@ export function getAllArticles(): Article[] {
     autoMechanic1WebVsAppArticle as ArticleJson,
     autoMechanic1CommonMistakesArticle as ArticleJson,
     autoMechanic1SystemChangesArticle as ArticleJson,
+    autoMechanic2R7_1PassLineArticle as ArticleJson,
+    autoMechanic2AppArticle as ArticleJson,
+    autoMechanic2WebVsAppArticle as ArticleJson,
+    autoMechanic2SystemChangesArticle as ArticleJson,
+    autoMechanic2CommonMistakesArticle as ArticleJson,
   ];
 
   return articles.map(parseArticleDates);
