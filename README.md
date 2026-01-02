@@ -149,3 +149,16 @@ npm start
 - ✅ アプリ紹介ページ
 - ✅ 画像・図表の表示機能
 - ✅ SEO 実装（sitemap, robots.txt, 構造化データ）
+- ✅ Google AdSense 統合（ポリシー準拠）
+
+## AdSenseポリシー準拠
+
+本サイトは Google AdSense のポリシーに準拠するよう実装されています。
+
+詳細は `docs/ADSENSE_POLICY_GUIDELINES.md` を参照してください。
+
+主な対策:
+- 広告ラベルの適切な表示
+- クリックを促す文言の排除
+- コンテンツと広告の明確な区別
+- 適切な広告配置
