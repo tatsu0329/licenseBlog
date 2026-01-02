@@ -388,7 +388,7 @@ export default async function StudyPage({
                       return cat.slug === "engine" || cat.slug === "electrical";
                     })
                     .map((cat) => {
-                      const match = cat.description.match(/問題(\d+)～(\d+)/);
+                      const match = cat.description?.match(/問題(\d+)～(\d+)/);
                       const questionRange = match ? `${match[1]}-${match[2]}` : "";
                       return (
                         <li key={cat.id}>
