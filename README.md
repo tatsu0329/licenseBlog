@@ -103,6 +103,22 @@ licenseBlog/
 
 ```env
 NEXT_PUBLIC_BASE_URL=https://your-domain.com
+NEXT_PUBLIC_ADSENSE_PUBLISHER_ID=ca-pub-XXXXXXXXXXXXXXXX
+```
+
+### AdSenseの設定
+
+1. Google AdSenseでアカウントを作成し、サイトを承認します
+2. Publisher IDを取得します（`ca-pub-`で始まるID）
+3. `.env.local`ファイルに`NEXT_PUBLIC_ADSENSE_PUBLISHER_ID`を設定します
+4. AdSense広告を表示するには、`<AdSense adSlot="XXXXXXXXXX" />`コンポーネントを使用します
+
+例：
+```tsx
+import AdSense from "@/components/AdSense";
+
+// ページ内で使用
+<AdSense adSlot="1234567890" adFormat="auto" fullWidthResponsive />
 ```
 
 ## ビルド
