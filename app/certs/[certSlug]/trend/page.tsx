@@ -418,6 +418,19 @@ export default async function TrendPage({
                     ))
                   )}
                 </ul>
+              ) : cert.id === "auto-mechanic-3" ? (
+                <ul className="list-disc list-inside text-gray-700 space-y-1">
+                  <li>エンジン（基本構造・動作原理）</li>
+                  <li>整備機器等（工具・測定器・材料）</li>
+                  <li>法規（道路運送車両法・保安基準）</li>
+                  {growingCategories.length > 0 && (
+                    growingCategories.slice(0, 3).map((cat) => (
+                      <li key={cat.category.id}>
+                        {cat.category.name}（直近3年で{cat.growthRate > 0 ? `${Math.round(cat.growthRate)}%増加` : "増加傾向"}）
+                      </li>
+                    ))
+                  )}
+                </ul>
               ) : (
                 <ul className="list-disc list-inside text-gray-700 space-y-1">
                   {growingCategories.length > 0 ? (
@@ -449,6 +462,13 @@ export default async function TrendPage({
                   <li>シャシ各部の構造と点検・調整方法</li>
                   <li>整備機器・計測機器の正しい使い方</li>
                   <li>法規・保安基準の詳細理解</li>
+                </ul>
+              ) : cert.id === "auto-mechanic-3" ? (
+                <ul className="list-disc list-inside text-gray-700 space-y-1">
+                  <li>エンジンの基本構造と動作原理（4サイクル・2サイクル、燃焼行程など）</li>
+                  <li>整備機器・測定器の正しい使い方（ダイヤルゲージ、プラスチゲージなど）</li>
+                  <li>材料・油脂・燃料の基礎知識</li>
+                  <li>法規・保安基準の基本的な理解</li>
                 </ul>
               ) : (
                 <ul className="list-disc list-inside text-gray-700 space-y-1">
@@ -536,6 +556,24 @@ export default async function TrendPage({
                   <strong>整備機器等</strong>
                   <br />
                   計測機器や診断機の正しい使い方に関する出題が増加傾向にあります。
+                </li>
+              </ul>
+            ) : cert.id === "auto-mechanic-3" ? (
+              <ul className="list-disc list-inside space-y-2 text-red-800 text-sm">
+                <li>
+                  <strong>エンジン</strong>
+                  <br />
+                  エンジンの基本構造（4サイクル・2サイクルエンジン、燃焼行程、冷却・潤滑システムなど）に関する出題が最も多く、全問題の約67%（20問）を占めています。基礎的な知識を確実に身につけることが重要です。
+                </li>
+                <li>
+                  <strong>整備機器等</strong>
+                  <br />
+                  工具・測定器の正しい使い方や材料・油脂・燃料の基礎知識に関する出題が増加傾向にあります。実務で必要な基礎知識が問われます。
+                </li>
+                <li>
+                  <strong>法規</strong>
+                  <br />
+                  道路運送車両法や保安基準の基本的な内容に関する出題が安定しています。3問しかないため、確実に得点源にする必要があります。
                 </li>
               </ul>
             ) : (
