@@ -190,10 +190,21 @@ export default async function QuestionPage({
                       <p className="text-sm text-green-100">
                         スキマ時間で繰り返し演習できます
                       </p>
+                      <p className="text-xs text-green-200 mt-1">
+                        ※ iOSアプリのみ対応
+                      </p>
                     </div>
                     <Link
-                      href={certSlug === "auto-mechanic-1" ? "/articles/auto-mechanic-1-app-introduction" : "/articles"}
-                      className="px-5 py-2 bg-white text-green-600 rounded-lg hover:bg-green-50 transition-colors font-semibold whitespace-nowrap"
+                      href={
+                        certSlug === "auto-mechanic-1"
+                          ? "/articles/auto-mechanic-1-app-introduction"
+                          : certSlug === "auto-mechanic-2"
+                          ? "/articles/auto-mechanic-2-app-introduction"
+                          : certSlug === "auto-mechanic-3"
+                          ? "/articles/auto-mechanic-3-app-introduction"
+                          : "/articles"
+                      }
+                      className="px-6 py-3 bg-white text-green-600 rounded-lg hover:bg-green-50 transition-colors font-bold text-base whitespace-nowrap min-h-[48px] flex items-center justify-center shadow-md hover:shadow-lg"
                     >
                       アプリを見る →
                     </Link>
@@ -288,10 +299,21 @@ export default async function QuestionPage({
                     <p className="text-sm text-gray-600">
                       同じ分野の問題をまとめて解いて知識を定着させましょう
                     </p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      ※ iOSアプリのみ対応
+                    </p>
                   </div>
                   <Link
-                    href={certSlug === "auto-mechanic-1" ? "/articles/auto-mechanic-1-app-introduction" : "/articles"}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold whitespace-nowrap text-sm"
+                    href={
+                      certSlug === "auto-mechanic-1"
+                        ? "/articles/auto-mechanic-1-app-introduction"
+                        : certSlug === "auto-mechanic-2"
+                        ? "/articles/auto-mechanic-2-app-introduction"
+                        : certSlug === "auto-mechanic-3"
+                        ? "/articles/auto-mechanic-3-app-introduction"
+                        : "/articles"
+                    }
+                    className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-bold whitespace-nowrap text-base min-h-[48px] flex items-center justify-center shadow-md hover:shadow-lg"
                   >
                     アプリで演習 →
                   </Link>

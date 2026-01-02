@@ -35,6 +35,141 @@ export async function generateMetadata({
   };
 }
 
+// App StoreリンクまたはWebアプリリンクを大きく目立つボタンとして表示する関数
+function processAppStoreLink(linkText: string, linkUrl: string, key: string): React.ReactNode {
+  const isAppStoreLink = linkUrl.includes("apps.apple.com") || linkText.includes("App Store");
+  const isWebAppLink = linkUrl.includes("seibishi-quiz-web.vercel.app") || linkText.includes("Webアプリ");
+  const displayText = linkText && linkText.trim() ? linkText.trim() : (isAppStoreLink ? "App Storeでダウンロード" : "Webアプリで学習する");
+  
+  // App Storeリンクの場合は黒背景、Webアプリリンクの場合は青背景
+  const bgColor = isAppStoreLink ? "bg-black hover:bg-gray-800" : "bg-blue-600 hover:bg-blue-700";
+  const icon = isAppStoreLink ? (
+    <svg
+      className="w-8 h-8 flex-shrink-0"
+      fill="currentColor"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C1.79 15.25 2.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
+    </svg>
+  ) : (
+    <svg
+      className="w-8 h-8 flex-shrink-0"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+    </svg>
+  );
+  
+  return (
+    <a
+      key={key}
+      href={linkUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`block w-full max-w-md mx-auto px-10 py-5 ${bgColor} text-white rounded-xl transition-all duration-300 font-bold text-xl shadow-lg hover:shadow-xl hover:scale-105 min-h-[64px] flex items-center justify-center text-center`}
+    >
+      <span className="flex items-center justify-center gap-3">
+        {icon}
+        <span>{displayText}</span>
+      </span>
+    </a>
+  );
+}
+
+// リンク（[text](url)）を処理するヘルパー関数
+function processLinks(text: string, keyPrefix: string): React.ReactNode {
+  const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+  const parts: React.ReactNode[] = [];
+  let lastIndex = 0;
+  let match;
+  let matchIndex = 0;
+
+  while ((match = linkRegex.exec(text)) !== null) {
+    // リンクの前のテキスト
+    if (match.index > lastIndex) {
+      const beforeText = text.substring(lastIndex, match.index);
+      parts.push(processBold(beforeText, `${keyPrefix}-before-${matchIndex}`));
+    }
+    
+    const linkText = match[1];
+    const linkUrl = match[2];
+    const isAppStoreLink = linkText.includes("App Store") || linkUrl.includes("apps.apple.com");
+    const isWebAppLink = linkText.includes("Webアプリ") || linkUrl.includes("seibishi-quiz-web.vercel.app");
+    
+    // App StoreリンクまたはWebアプリリンクの場合は大きく目立つボタンスタイルに（パラグラフ内の場合）
+    if (isAppStoreLink || isWebAppLink) {
+      // App Storeリンクの場合は黒背景、Webアプリリンクの場合は青背景
+      const bgColor = isAppStoreLink ? "bg-black hover:bg-gray-800" : "bg-blue-600 hover:bg-blue-700";
+      const icon = isAppStoreLink ? (
+        <svg
+          className="w-8 h-8 flex-shrink-0"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C1.79 15.25 2.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
+        </svg>
+      ) : (
+        <svg
+          className="w-8 h-8 flex-shrink-0"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+        </svg>
+      );
+      parts.push(
+        <a
+          key={`${keyPrefix}-link-${matchIndex}`}
+          href={linkUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`inline-block mt-4 mb-4 px-10 py-5 ${bgColor} text-white rounded-xl transition-all duration-300 font-bold text-xl shadow-lg hover:shadow-xl hover:scale-105 min-h-[64px] flex items-center justify-center`}
+        >
+          <span className="flex items-center gap-3">
+            {icon}
+            <span>{linkText && linkText.trim() ? linkText.trim() : (isAppStoreLink ? "App Storeでダウンロード" : "Webアプリで学習する")}</span>
+          </span>
+        </a>
+      );
+    } else {
+      // 通常のリンク
+      parts.push(
+        <a
+          key={`${keyPrefix}-link-${matchIndex}`}
+          href={linkUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 hover:text-blue-800 underline font-medium"
+        >
+          {processBold(linkText, `${keyPrefix}-link-text-${matchIndex}`)}
+        </a>
+      );
+    }
+    lastIndex = match.index + match[0].length;
+    matchIndex++;
+  }
+
+  // 残りのテキスト
+  if (lastIndex < text.length) {
+    const remainingText = text.substring(lastIndex);
+    parts.push(processBold(remainingText, `${keyPrefix}-after`));
+  }
+
+  // リンクが含まれていない場合は太字処理のみ
+  if (matchIndex === 0) {
+    return processBold(text, keyPrefix);
+  }
+
+  return <>{parts}</>;
+}
+
 // 太字（**text**）を処理するヘルパー関数
 function processBold(text: string, keyPrefix: string): React.ReactNode {
   const parts: React.ReactNode[] = [];
@@ -91,7 +226,7 @@ function renderMarkdown(content: string): React.ReactNode {
         const paragraphText = currentParagraph.join("\n");
         elements.push(
           <p key={`p-${index}`} className="mb-4 leading-relaxed text-gray-700">
-            {processBold(paragraphText, `p-${index}`)}
+            {processLinks(paragraphText, `p-${index}`)}
           </p>
         );
         currentParagraph = [];
@@ -106,7 +241,7 @@ function renderMarkdown(content: string): React.ReactNode {
         const paragraphText = currentParagraph.join("\n");
         elements.push(
           <p key={`p-${index}`} className="mb-4 leading-relaxed text-gray-700">
-            {processBold(paragraphText, `p-${index}`)}
+            {processLinks(paragraphText, `p-${index}`)}
           </p>
         );
         currentParagraph = [];
@@ -121,7 +256,7 @@ function renderMarkdown(content: string): React.ReactNode {
         const paragraphText = currentParagraph.join("\n");
         elements.push(
           <p key={`p-${index}`} className="mb-4 leading-relaxed text-gray-700">
-            {processBold(paragraphText, `p-${index}`)}
+            {processLinks(paragraphText, `p-${index}`)}
           </p>
         );
         currentParagraph = [];
@@ -136,7 +271,7 @@ function renderMarkdown(content: string): React.ReactNode {
         const paragraphText = currentParagraph.join("\n");
         elements.push(
           <p key={`p-${index}`} className="mb-4 leading-relaxed text-gray-700">
-            {processBold(paragraphText, `p-${index}`)}
+            {processLinks(paragraphText, `p-${index}`)}
           </p>
         );
         currentParagraph = [];
@@ -150,11 +285,44 @@ function renderMarkdown(content: string): React.ReactNode {
       // 空行
       if (currentParagraph.length > 0) {
         const paragraphText = currentParagraph.join("\n");
+        // App StoreリンクまたはWebアプリリンクが単独で含まれている場合は独立したブロックとして表示
+        const appStoreLinkRegex = /\[([^\]]*App Store[^\]]*)\]\(([^)]+apps\.apple\.com[^)]+)\)/;
+        const webAppLinkRegex = /\[([^\]]*Webアプリ[^\]]*)\]\(([^)]+seibishi-quiz-web\.vercel\.app[^)]+)\)/;
+        const appStoreMatch = paragraphText.match(appStoreLinkRegex);
+        const webAppMatch = paragraphText.match(webAppLinkRegex);
+        const match = appStoreMatch || webAppMatch;
+        if (match) {
+          // リンクの前のテキストがある場合は通常のパラグラフとして処理
+          const beforeLink = paragraphText.substring(0, paragraphText.indexOf(match[0]));
+          if (beforeLink.trim()) {
+            elements.push(
+              <p key={`p-${index}`} className="mb-4 leading-relaxed text-gray-700">
+                {processLinks(beforeLink, `p-${index}`)}
+              </p>
+            );
+          }
+        // App StoreリンクまたはWebアプリリンクを独立したブロックとして表示
         elements.push(
-          <p key={`p-${index}`} className="mb-4 leading-relaxed text-gray-700">
-            {processBold(paragraphText, `p-${index}`)}
-          </p>
+          <div key={`appstore-${index}`} className="my-6 flex justify-center">
+            {processAppStoreLink(match[1], match[2], `appstore-${index}`)}
+          </div>
         );
+          // リンクの後のテキストがある場合は通常のパラグラフとして処理
+          const afterLink = paragraphText.substring(paragraphText.indexOf(match[0]) + match[0].length);
+          if (afterLink.trim()) {
+            elements.push(
+              <p key={`p-${index}-after`} className="mb-4 leading-relaxed text-gray-700">
+                {processLinks(afterLink, `p-${index}-after`)}
+              </p>
+            );
+          }
+        } else {
+          elements.push(
+            <p key={`p-${index}`} className="mb-4 leading-relaxed text-gray-700">
+              {processLinks(paragraphText, `p-${index}`)}
+            </p>
+          );
+        }
         currentParagraph = [];
       }
     } else if (trimmed.startsWith("|")) {
@@ -163,7 +331,7 @@ function renderMarkdown(content: string): React.ReactNode {
         const paragraphText = currentParagraph.join("\n");
         elements.push(
           <p key={`p-${index}`} className="mb-4 leading-relaxed text-gray-700">
-            {processBold(paragraphText, `p-${index}`)}
+            {processLinks(paragraphText, `p-${index}`)}
           </p>
         );
         currentParagraph = [];
@@ -186,17 +354,82 @@ function renderMarkdown(content: string): React.ReactNode {
         );
       }
     } else {
-      currentParagraph.push(line);
+      // App StoreリンクまたはWebアプリリンクが単独行にある場合は独立したブロックとして処理
+      const appStoreLinkRegex = /^\[([^\]]*)\]\(([^)]+apps\.apple\.com[^)]+)\)$/;
+      const webAppLinkRegex = /^\[([^\]]*)\]\(([^)]+seibishi-quiz-web\.vercel\.app[^)]+)\)$/;
+      const appStoreMatch = trimmed.match(appStoreLinkRegex);
+      const webAppMatch = trimmed.match(webAppLinkRegex);
+      // より柔軟な検出
+      const anyAppStoreLinkRegex = /\[([^\]]*)\]\(([^)]*apps\.apple\.com[^)]*)\)/;
+      const anyWebAppLinkRegex = /\[([^\]]*)\]\(([^)]*seibishi-quiz-web\.vercel\.app[^)]*)\)/;
+      const anyAppStoreMatch = trimmed.match(anyAppStoreLinkRegex);
+      const anyWebAppMatch = trimmed.match(anyWebAppLinkRegex);
+      if (appStoreMatch || anyAppStoreMatch || webAppMatch || anyWebAppMatch) {
+        // 直前のパラグラフがある場合は処理
+        if (currentParagraph.length > 0) {
+          const paragraphText = currentParagraph.join("\n");
+          elements.push(
+            <p key={`p-${index}`} className="mb-4 leading-relaxed text-gray-700">
+              {processLinks(paragraphText, `p-${index}`)}
+            </p>
+          );
+          currentParagraph = [];
+        }
+        // App StoreリンクまたはWebアプリリンクを独立したブロックとして表示
+        const match = appStoreMatch || anyAppStoreMatch || webAppMatch || anyWebAppMatch;
+        if (match) {
+          elements.push(
+            <div key={`appstore-${index}`} className="my-6 flex justify-center">
+              {processAppStoreLink(match[1] || "", match[2] || "", `appstore-${index}`)}
+            </div>
+          );
+        }
+      } else {
+        currentParagraph.push(line);
+      }
     }
   });
 
   if (currentParagraph.length > 0) {
     const paragraphText = currentParagraph.join("\n");
-    elements.push(
-      <p key="p-final" className="mb-4 leading-relaxed text-gray-700">
-        {processBold(paragraphText, "p-final")}
-      </p>
-    );
+    // App StoreリンクまたはWebアプリリンクが単独で含まれている場合は独立したブロックとして表示
+    const appStoreLinkRegex = /\[([^\]]*App Store[^\]]*)\]\(([^)]+apps\.apple\.com[^)]+)\)/;
+    const webAppLinkRegex = /\[([^\]]*Webアプリ[^\]]*)\]\(([^)]+seibishi-quiz-web\.vercel\.app[^)]+)\)/;
+    const appStoreMatch = paragraphText.match(appStoreLinkRegex);
+    const webAppMatch = paragraphText.match(webAppLinkRegex);
+    const match = appStoreMatch || webAppMatch;
+    if (match) {
+      // リンクの前のテキストがある場合は通常のパラグラフとして処理
+      const beforeLink = paragraphText.substring(0, paragraphText.indexOf(match[0]));
+      if (beforeLink.trim()) {
+        elements.push(
+          <p key="p-final-before" className="mb-4 leading-relaxed text-gray-700">
+            {processLinks(beforeLink, "p-final-before")}
+          </p>
+        );
+      }
+      // App StoreリンクまたはWebアプリリンクを独立したブロックとして表示
+      elements.push(
+        <div key="appstore-final" className="my-6 flex justify-center">
+          {processAppStoreLink(match[1], match[2], "appstore-final")}
+        </div>
+      );
+      // リンクの後のテキストがある場合は通常のパラグラフとして処理
+      const afterLink = paragraphText.substring(paragraphText.indexOf(match[0]) + match[0].length);
+      if (afterLink.trim()) {
+        elements.push(
+          <p key="p-final-after" className="mb-4 leading-relaxed text-gray-700">
+            {processLinks(afterLink, "p-final-after")}
+          </p>
+        );
+      }
+    } else {
+      elements.push(
+        <p key="p-final" className="mb-4 leading-relaxed text-gray-700">
+          {processLinks(paragraphText, "p-final")}
+        </p>
+      );
+    }
   }
 
   return <div>{elements}</div>;

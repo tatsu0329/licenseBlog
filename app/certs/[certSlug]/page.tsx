@@ -583,6 +583,7 @@ export default async function CertPage({
               <p className="text-blue-50 text-base md:text-lg leading-relaxed">
                 通勤・通学中のスキマ時間で効率的に学習。
               </p>
+              <p className="text-blue-100 text-sm mt-2">※ iOSアプリのみ対応</p>
               <div className="flex flex-wrap gap-2 mt-4">
                 <span className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium">
                   即時正誤判定
@@ -594,11 +595,11 @@ export default async function CertPage({
             </div>
             <Link
               href={appArticleSlug}
-              className="group relative px-8 py-4 bg-white text-blue-600 rounded-xl hover:bg-blue-50 transition-all duration-300 font-bold text-lg whitespace-nowrap shadow-lg hover:shadow-xl hover:scale-105"
+              className="group relative px-10 py-5 bg-white text-blue-600 rounded-xl hover:bg-blue-50 transition-all duration-300 font-bold text-xl whitespace-nowrap shadow-lg hover:shadow-xl hover:scale-105 min-h-[56px] flex items-center justify-center"
             >
               <span className="flex items-center gap-2">
                 アプリを見る
-                <span className="group-hover:translate-x-1 transition-transform">
+                <span className="group-hover:translate-x-1 transition-transform text-2xl">
                   →
                 </span>
               </span>

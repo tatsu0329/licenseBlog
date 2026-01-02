@@ -172,14 +172,19 @@ export default async function KakomonPage({
               <p className="text-green-100 text-sm">
                 スキマ時間で繰り返し解ける。学習進捗・弱点も自動記録
               </p>
+              <p className="text-green-200 text-xs mt-1">※ iOSアプリのみ対応</p>
             </div>
             <Link
               href={
                 certSlug === "auto-mechanic-1"
                   ? "/articles/auto-mechanic-1-app-introduction"
+                  : certSlug === "auto-mechanic-2"
+                  ? "/articles/auto-mechanic-2-app-introduction"
+                  : certSlug === "auto-mechanic-3"
+                  ? "/articles/auto-mechanic-3-app-introduction"
                   : "/articles"
               }
-              className="px-6 py-3 bg-white text-green-600 rounded-lg hover:bg-green-50 transition-colors font-semibold whitespace-nowrap"
+              className="px-8 py-4 bg-white text-green-600 rounded-lg hover:bg-green-50 transition-colors font-bold text-lg whitespace-nowrap min-h-[56px] flex items-center justify-center shadow-md hover:shadow-lg"
             >
               アプリを見る →
             </Link>
@@ -433,16 +438,21 @@ export default async function KakomonPage({
             <h3 className="text-xl font-bold mb-2">
               📱 過去問をアプリで効率的に学習
             </h3>
-            <p className="text-blue-100 mb-4 max-w-2xl mx-auto">
+            <p className="text-blue-100 mb-2 max-w-2xl mx-auto">
               スキマ時間で繰り返し解ける。学習進捗を自動で分析。
             </p>
+            <p className="text-blue-200 text-xs mb-4">※ iOSアプリのみ対応</p>
             <Link
               href={
                 certSlug === "auto-mechanic-1"
                   ? "/articles/auto-mechanic-1-app-introduction"
+                  : certSlug === "auto-mechanic-2"
+                  ? "/articles/auto-mechanic-2-app-introduction"
+                  : certSlug === "auto-mechanic-3"
+                  ? "/articles/auto-mechanic-3-app-introduction"
                   : "/articles"
               }
-              className="inline-block px-8 py-3 bg-white text-blue-600 rounded-lg hover:bg-blue-50 transition-colors font-bold text-lg"
+              className="inline-block px-10 py-4 bg-white text-blue-600 rounded-lg hover:bg-blue-50 transition-colors font-bold text-xl min-h-[56px] flex items-center justify-center shadow-md hover:shadow-lg"
             >
               アプリ詳細を見る →
             </Link>

@@ -747,8 +747,11 @@ export default async function StudyPage({
               <h2 className="text-lg font-bold mb-2">
                 📱 アプリで効率的に学習
               </h2>
-              <p className="text-green-100 text-sm mb-4">
+              <p className="text-green-100 text-sm mb-2">
                 過去問をスキマ時間で解けるアプリ
+              </p>
+              <p className="text-green-200 text-xs mb-4">
+                ※ iOSアプリのみ対応
               </p>
               <Link
                 href={
@@ -757,7 +760,7 @@ export default async function StudyPage({
                     ? "/articles/auto-mechanic-1-app-introduction"
                     : "/articles"
                 }
-                className="inline-block px-4 py-2 bg-white text-green-600 rounded-lg hover:bg-green-50 transition-colors font-semibold text-sm"
+                className="inline-block px-8 py-4 bg-white text-green-600 rounded-lg hover:bg-green-50 transition-colors font-bold text-lg min-h-[56px] flex items-center justify-center shadow-md hover:shadow-lg"
               >
                 アプリ詳細を見る →
               </Link>
