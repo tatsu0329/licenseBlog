@@ -36,32 +36,6 @@ export default function HomePage() {
     return truncated + "...";
   };
 
-  // 合格率を取得する関数
-  const getPassRate = (cert: (typeof certs)[0]): string | null => {
-    if (cert.passRate !== undefined) {
-      return `${cert.passRate}%`;
-    }
-    
-    // passRateHistoryから最新の合格率を取得
-    if (cert.examInfo?.passRateHistory && cert.examInfo.passRateHistory.length > 0) {
-      const sortedHistory = [...cert.examInfo.passRateHistory].sort(
-        (a, b) => b.year - a.year
-      );
-      
-      for (const item of sortedHistory) {
-        // 最新の合格率を優先
-        if (item.autumn?.passRate !== undefined) {
-          return `${item.autumn.passRate}%`;
-        }
-        if (item.spring?.passRate !== undefined) {
-          return `${item.spring.passRate}%`;
-        }
-      }
-    }
-    
-    return null;
-  };
-
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white shadow-sm">
@@ -73,8 +47,6 @@ export default function HomePage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {certs.map((cert) => {
-            const passRate = getPassRate(cert);
-            
             return (
               <Link
                 key={cert.id}
@@ -87,14 +59,7 @@ export default function HomePage() {
                 <p className="text-gray-600 text-sm mb-4 flex-1 leading-relaxed">
                   {getSummary(cert.description)}
                 </p>
-                <div className="flex items-center justify-between text-sm pt-4 border-t border-gray-200">
-                  {passRate ? (
-                    <span className="text-gray-700 font-medium">
-                      合格率: <span className="text-blue-600">{passRate}</span>
-                    </span>
-                  ) : (
-                    <span className="text-gray-500">合格率: 未公開</span>
-                  )}
+                <div className="flex items-center justify-end text-sm pt-4 border-t border-gray-200">
                   <span className="font-medium text-blue-600 hover:text-blue-800">
                     詳細を見る →
                   </span>
