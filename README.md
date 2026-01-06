@@ -136,6 +136,14 @@ npm start
 - 介護福祉士
 - USCPA
 
+## コンテンツの追加方法
+
+記事や問題集を自分で追加する方法は、[コンテンツ追加ガイド](./docs/ADD_CONTENT_GUIDE.md)を参照してください。
+
+- **記事の追加**: `lib/data/articles/` にJSONファイルを作成
+- **問題集の追加**: `lib/data/questions/` にJSONファイルを作成
+- **テンプレートファイル**: `lib/data/articles/_template.json` と `lib/data/questions/_template_*.json` を参照
+
 ## 設計ドキュメント
 
 詳細な設計は `DESIGN.md` を参照してください。

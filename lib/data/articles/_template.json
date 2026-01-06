@@ -1,0 +1,23 @@
+{
+  "id": "記事の一意なID（例: auto-mechanic-1-r6-2-pass-line）",
+  "slug": "URLスラッグ（英数字とハイフンのみ、例: auto-mechanic-1-r6-2-pass-line）",
+  "title": "記事のタイトル",
+  "excerpt": "記事の要約（SEO用、150文字程度推奨）。この記事では、1級自動車整備士の合格ラインについて検証します。",
+  "featuredImageUrl": null,
+  "author": "ライセンスブログ編集部",
+  "tags": [
+    "1級自動車整備士",
+    "合格ライン",
+    "合格率",
+    "令和6年度第2回"
+  ],
+  "relatedCertIds": [
+    "auto-mechanic-1"
+  ],
+  "relatedQuestionIds": [],
+  "publishedAt": "2024-10-01T00:00:00.000Z",
+  "updatedAt": "2024-10-01T00:00:00.000Z",
+  "content": "# 記事のタイトル\n\n## はじめに\n\n記事の導入文をここに記述します。\n\n## セクション1\n\n本文をMarkdown形式で記述します。\n\n### サブセクション\n\n- リスト項目1\n- リスト項目2\n- リスト項目3\n\n## セクション2\n\n| 項目 | 値 |\n|------|-----|\n| データ1 | 値1 |\n| データ2 | 値2 |\n\n## まとめ\n\n記事のまとめをここに記述します。"
+}
+
+
