@@ -97,6 +97,8 @@ export default async function AppDetailPage({
                     width={128}
                     height={128}
                     className="w-full h-full object-cover"
+                    priority
+                    unoptimized={process.env.NODE_ENV === "development"}
                   />
                 </div>
               )}
@@ -175,15 +177,18 @@ export default async function AppDetailPage({
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                   {app.screenshots.map((screenshot, index) => (
                     <div
-                      key={index}
+                      key={`screenshot-${index}-${screenshot}`}
                       className="rounded-lg overflow-hidden bg-gray-100"
                     >
                       <Image
+                        key={`image-${index}-${screenshot}`}
                         src={screenshot}
                         alt={`${app.name} スクリーンショット ${index + 1}`}
                         width={400}
                         height={800}
                         className="w-full h-auto"
+                        priority={index < 3}
+                        unoptimized={process.env.NODE_ENV === "development"}
                       />
                     </div>
                   ))}
@@ -211,7 +216,7 @@ export default async function AppDetailPage({
               </section>
             )}
 
-            {/* なぜこのアプリなのか */}
+            {/* なぜこのアプリなのか - 1級 */}
             {app.slug === "auto-mechanic-1-app" && (
               <section className="mb-8 bg-blue-50 rounded-lg p-6">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">
@@ -270,7 +275,42 @@ export default async function AppDetailPage({
               </section>
             )}
 
-            {/* 効果的な使い方 */}
+            {/* なぜこのアプリなのか - 2級 */}
+            {app.slug === "auto-mechanic-2-app" && (
+              <section className="mb-8 bg-blue-50 rounded-lg p-6">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  なぜこのアプリなのか
+                </h2>
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📱 ガソリン・ジーゼル両対応
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      2級整備士のガソリン（Gコース）とジーゼル（Dコース）の両方の問題に対応。1つのアプリで、年度ごとに問題集を切り替えて学習できます。ガソリン・ジーゼル両方の資格を目指している方にも最適です。
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📚 令和最新版の過去問を完全収録
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      令和7年度・令和6年度・令和5年度・令和4年度の国家2級整備士試験（学科）の過去問題を搭載。分野別・年度別に学習できるので、出題傾向の変化を比較しながら学べます。「どの分野がよく出るか」を意識して復習することで、短期間で合格レベルへ。
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      💾 途中保存・再開機能でスキマ時間を活用
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      途中まで解いた問題を保存し、アプリ再起動後も「続きから再開」できます。保存時のモードやシャッフル設定も記録されるため、学習環境をそのまま再現。忙しい整備士学校の学生や社会人の方でも、スキマ時間で学習を継続できます。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* 効果的な使い方 - 1級 */}
             {app.slug === "auto-mechanic-1-app" && (
               <section className="mb-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">
@@ -327,7 +367,64 @@ export default async function AppDetailPage({
               </section>
             )}
 
-            {/* こんな方におすすめ */}
+            {/* 効果的な使い方 - 2級 */}
+            {app.slug === "auto-mechanic-2-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  効果的な使い方
+                </h2>
+                <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6">
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          1
+                        </span>
+                        まずは学習モードで基礎を固める
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        初めて問題を解く際は、学習モードを使用して、その場で正誤確認をしながら理解を深めます。間違えた問題には復習マークを付けて、後から効率的に復習できるようにしましょう。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          2
+                        </span>
+                        本番モードで実力を確認
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        ある程度問題を解いたら、本番モードで時間を計って問題を解きます。実際の試験に近い感覚で問題を解くことで、時間配分の練習や実力の確認ができます。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          3
+                        </span>
+                        途中保存機能でスキマ時間を活用
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        途中保存機能を使うことで、忙しい時でも途中まで解いた問題を保存し、後から続きから再開できます。通勤・通学中などのスキマ時間を有効活用して、学習を継続できます。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          4
+                        </span>
+                        履歴を振り返って弱点を克服
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        解答結果は自動で保存され、過去の成績を一覧で確認できます。繰り返し間違える問題をチェックして、弱点を重点的に学習しましょう。
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* こんな方におすすめ - 1級 */}
             {app.slug === "auto-mechanic-1-app" && (
               <section className="mb-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">
@@ -441,7 +538,50 @@ export default async function AppDetailPage({
               )}
             </section>
 
-            {/* よくある質問 */}
+            {/* こんな方におすすめ - 2級 */}
+            {app.slug === "auto-mechanic-2-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  こんな方におすすめ
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      🎓 自動車整備士養成校の学生
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      整備士学校で学びながら、2級整備士試験の合格を目指している方。スキマ時間を有効活用して、効率的に学習できます。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      🆕 2級整備士試験を初めて受ける方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      初めて2級整備士試験を受ける方。令和最新版の過去問を収録しているので、最新の出題傾向を把握できます。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📱 過去問をスマホで効率的に解きたい方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      紙の過去問では続かない方。スマホ1台で、いつでもどこでも本番対策を行えます。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      ⚡ ガソリン・ジーゼル両方の資格を目指している方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      ガソリンとジーゼルの両方の資格を取得したい方。1つのアプリで、両方の問題集を切り替えて学習できます。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* よくある質問 - 1級 */}
             {app.slug === "auto-mechanic-1-app" && (
               <section className="mb-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">
@@ -478,6 +618,49 @@ export default async function AppDetailPage({
                     </h3>
                     <p className="text-gray-700 leading-relaxed">
                       A. 1級自動車整備士試験に特化した設計で、画像付き問題の拡大表示、本番モードでの時間配分練習、復習マーク機能など、1級試験対策に最適な機能を提供しています。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* よくある質問 - 2級 */}
+            {app.slug === "auto-mechanic-2-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  よくある質問
+                </h2>
+                <div className="space-y-4">
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. 無料でどのくらい使えますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 本アプリは基本機能が無料でご利用いただけます。過去問の閲覧、学習モード・本番モード、復習マーク機能、途中保存・再開機能、ランダム出題、履歴保存機能などが無料で使えます。広告非表示オプションは有料プランで提供されています。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. ガソリンとジーゼルの両方に対応していますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. はい、ガソリン（Gコース）とジーゼル（Dコース）の両方の問題に対応しています。年度ごとに問題集を切り替えて学習できます。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. 途中保存機能はどのように使いますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 途中まで解いた問題を保存し、アプリ再起動後も「続きから再開」できます。保存時のモードやシャッフル設定も記録されるため、学習環境をそのまま再現できます。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. 他の過去問アプリと何が違いますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 2級自動車整備士試験に特化した設計で、ガソリン・ジーゼル両対応、途中保存・再開機能、履歴保存・結果分析機能など、2級試験対策に最適な機能を提供しています。
                     </p>
                   </div>
                 </div>

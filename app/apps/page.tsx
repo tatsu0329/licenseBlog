@@ -55,6 +55,7 @@ export default async function AppsPage() {
                             width={64}
                             height={64}
                             className="w-full h-full object-cover"
+                            unoptimized={process.env.NODE_ENV === "development"}
                           />
                         </div>
                       )}
