@@ -69,17 +69,17 @@ export default async function AppDetailPage({
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white shadow-sm">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <BackButton href="/apps" label="アプリ一覧に戻る" />
+          <BackButton href="/apps" label={app.slug === "uscpa-app" ? "Back to App List" : "アプリ一覧に戻る"} />
           <nav className="text-sm text-gray-600 mb-2 mt-4">
             <Link href="/" className="hover:text-gray-900">
-              ホーム
+              {app.slug === "uscpa-app" ? "Home" : "ホーム"}
             </Link>
             <span className="mx-2">/</span>
             <Link href="/apps" className="hover:text-gray-900">
-              アプリ一覧
+              {app.slug === "uscpa-app" ? "App List" : "アプリ一覧"}
             </Link>
             <span className="mx-2">/</span>
-            <span>{app.name}</span>
+            <span>{app.slug === "uscpa-app" && app.nameEn ? app.nameEn : app.name}</span>
           </nav>
         </div>
       </header>
@@ -103,7 +103,7 @@ export default async function AppDetailPage({
                 </div>
               )}
               <div className="flex-1 text-white">
-                <h1 className="text-3xl font-bold mb-2">{app.name}</h1>
+                <h1 className="text-3xl font-bold mb-2">{app.slug === "uscpa-app" && app.nameEn ? app.nameEn : app.name}</h1>
                 {cert && (
                   <Link
                     href={`/certs/${cert.slug}`}
@@ -112,7 +112,7 @@ export default async function AppDetailPage({
                     {cert.name}
                   </Link>
                 )}
-                <p className="text-blue-50 text-lg mb-4">{app.description}</p>
+                <p className="text-blue-50 text-lg mb-4">{app.slug === "uscpa-app" && app.descriptionEn ? app.descriptionEn : app.description}</p>
                 {/* ヘッダー内のダウンロードボタン */}
                 {app.appStoreUrl && (
                   <a
@@ -158,11 +158,11 @@ export default async function AppDetailPage({
                   >
                     <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C1.79 15.25 2.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
                   </svg>
-                  <span>App Storeで無料ダウンロード</span>
+                  <span>{app.slug === "uscpa-app" ? "Download for Free on App Store" : "App Storeで無料ダウンロード"}</span>
                 </a>
                 {app.pricing.free && (
                   <p className="text-sm text-gray-500 mt-3">
-                    ✓ 完全無料で使えます
+                    {app.slug === "uscpa-app" ? "✓ Completely free to use" : "✓ 完全無料で使えます"}
                   </p>
                 )}
               </div>
@@ -172,7 +172,7 @@ export default async function AppDetailPage({
             {app.screenshots && app.screenshots.length > 0 && (
               <section className="mb-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                  スクリーンショット
+                  {app.slug === "uscpa-app" ? "Screenshots" : "スクリーンショット"}
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                   {app.screenshots.map((screenshot, index) => (
@@ -183,7 +183,7 @@ export default async function AppDetailPage({
                       <Image
                         key={`image-${index}-${screenshot}`}
                         src={screenshot}
-                        alt={`${app.name} スクリーンショット ${index + 1}`}
+                        alt={`${app.slug === "uscpa-app" && app.nameEn ? app.nameEn : app.name} ${app.slug === "uscpa-app" ? "Screenshot" : "スクリーンショット"} ${index + 1}`}
                         width={400}
                         height={800}
                         className="w-full h-auto"
@@ -255,7 +255,7 @@ export default async function AppDetailPage({
             {app.features && app.features.length > 0 && (
               <section className="mb-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                  主な機能
+                  {app.slug === "uscpa-app" ? "Key Features" : "主な機能"}
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {app.features.map((feature, index) => (
@@ -264,10 +264,10 @@ export default async function AppDetailPage({
                       className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
                     >
                       <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                        {feature.title}
+                        {app.slug === "uscpa-app" && feature.titleEn ? feature.titleEn : feature.title}
                       </h3>
                       <p className="text-gray-600 leading-relaxed">
-                        {feature.description}
+                        {app.slug === "uscpa-app" && feature.descriptionEn ? feature.descriptionEn : feature.description}
                       </p>
                     </div>
                   ))}
@@ -470,16 +470,16 @@ export default async function AppDetailPage({
             {/* 価格情報 */}
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                価格情報
+                {app.slug === "uscpa-app" ? "Pricing Information" : "価格情報"}
               </h2>
               <div className="bg-gray-50 rounded-lg p-6">
                 {app.pricing.free && (
                   <div className="mb-4">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                      無料機能
+                      {app.slug === "uscpa-app" ? "Free Features" : "無料機能"}
                     </h3>
                     <ul className="list-disc list-inside space-y-1 text-gray-600">
-                      {app.freeFeatures.map((feature, index) => (
+                      {(app.slug === "uscpa-app" && app.freeFeaturesEn ? app.freeFeaturesEn : app.freeFeatures).map((feature, index) => (
                         <li key={index}>{feature}</li>
                       ))}
                     </ul>
@@ -488,12 +488,12 @@ export default async function AppDetailPage({
                 {(app.pricing.subscriptionPrice || app.pricing.oneTimePrice) && (
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                      有料プラン
+                      {app.slug === "uscpa-app" ? "Paid Plans" : "有料プラン"}
                     </h3>
                     <div className="space-y-2 mb-4">
                       {app.pricing.subscriptionPrice && (
                         <div className="flex items-center justify-between">
-                          <span className="text-gray-700">月額プラン</span>
+                          <span className="text-gray-700">{app.slug === "uscpa-app" ? "Monthly Plan" : "月額プラン"}</span>
                           <span className="font-semibold text-gray-900">
                             ¥{app.pricing.subscriptionPrice.toLocaleString()}/月
                           </span>
@@ -501,7 +501,7 @@ export default async function AppDetailPage({
                       )}
                       {app.pricing.oneTimePrice && (
                         <div className="flex items-center justify-between">
-                          <span className="text-gray-700">買い切りプラン</span>
+                          <span className="text-gray-700">{app.slug === "uscpa-app" ? "One-time Purchase" : "買い切りプラン"}</span>
                           <span className="font-semibold text-gray-900">
                             ¥{app.pricing.oneTimePrice.toLocaleString()}
                           </span>
@@ -509,7 +509,7 @@ export default async function AppDetailPage({
                       )}
                     </div>
                     <ul className="list-disc list-inside space-y-1 text-gray-600">
-                      {app.paidFeatures.map((feature, index) => (
+                      {(app.slug === "uscpa-app" && app.paidFeaturesEn ? app.paidFeaturesEn : app.paidFeatures).map((feature, index) => (
                         <li key={index}>{feature}</li>
                       ))}
                     </ul>
@@ -532,7 +532,7 @@ export default async function AppDetailPage({
                     >
                       <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C1.79 15.25 2.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
                     </svg>
-                    <span>無料でダウンロード</span>
+                    <span>{app.slug === "uscpa-app" ? "Download for Free" : "無料でダウンロード"}</span>
                   </a>
                 </div>
               )}
@@ -667,6 +667,378 @@ export default async function AppDetailPage({
               </section>
             )}
 
+            {/* なぜこのアプリなのか - 3級 */}
+            {app.slug === "auto-mechanic-3-app" && (
+              <section className="mb-8 bg-blue-50 rounded-lg p-6">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  なぜこのアプリなのか
+                </h2>
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📱 ガソリン・ジーゼル両対応
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      3級整備士のガソリン（Gコース）とジーゼル（Dコース）の両方の問題に対応。1つのアプリで、年度ごとに問題集を切り替えて学習できます。ガソリン・ジーゼル両方の資格を目指している方にも最適です。
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📚 令和最新版の過去問を収録
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      令和4年度〜令和7年度の国家3級整備士試験（学科）の過去問題を収録。各回30問を1セットで出題し、実際の試験形式に準拠しています。最新の出題傾向を把握できます。
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      🎯 ログインスタンプ機能で継続学習をサポート
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      毎日のアプリ起動でスタンプが記録され、ログイン連続記録（ストリーク）として可視化。継続的な学習習慣を作りたい受験生にぴったりです。進捗保存・再開機能と組み合わせて、スキマ時間を有効活用できます。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* 効果的な使い方 - 3級 */}
+            {app.slug === "auto-mechanic-3-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  効果的な使い方
+                </h2>
+                <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6">
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          1
+                        </span>
+                        通常モードで基礎を固める
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        初めて問題を解く際は、通常モード（学習モード）を使用して、選択肢をタップするとすぐに正誤が表示される形式で理解を深めます。間違えた問題には復習マークを付けて、後から効率的に復習できるようにしましょう。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          2
+                        </span>
+                        本番モードで実力を確認
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        ある程度問題を解いたら、本番モード（模擬試験）で時間を計って問題を解きます。正誤は表示されず、すべての回答後に採点される緊張感ある形式で、実際の試験に近い感覚を体験できます。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          3
+                        </span>
+                        進捗保存機能でスキマ時間を活用
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        進捗保存機能を使うことで、忙しい時でも途中まで解いた問題を保存し、後から続きから再開できます。保存内容には回答履歴・スコア・モード・出題順なども含まれ、完全再現が可能です。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          4
+                        </span>
+                        ログインスタンプで継続学習
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        毎日のアプリ起動でスタンプが記録され、ログイン連続記録（ストリーク）として可視化されます。継続的な学習習慣を作り、履歴保存機能と組み合わせて弱点を克服しましょう。
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* こんな方におすすめ - 3級 */}
+            {app.slug === "auto-mechanic-3-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  こんな方におすすめ
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      🎯 3級整備士試験を受験予定の方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      国家3級整備士試験を受験予定の方。令和4年度〜令和7年度の過去問を収録しているので、最新の出題傾向を把握できます。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      🔧 ガソリン整備士・ジーゼル整備士として現場に出たい方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      ガソリン整備士・ジーゼル整備士として現場に出たい方。ガソリン・ジーゼル両方の問題に対応しているので、両方の資格を目指す方にも最適です。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📚 過去問を何度も繰り返し学びたい受験生
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      過去問を何度も繰り返し学びたい受験生。ランダム出題機能により、毎回出題順がシャッフルされるため、真の理解力を試せます。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      ⏰ スキマ時間で効率よく勉強したい方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      通勤・通学中などのスキマ時間で効率よく勉強したい方。進捗保存・再開機能により、いつでも学習を継続できます。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* よくある質問 - 3級 */}
+            {app.slug === "auto-mechanic-3-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  よくある質問
+                </h2>
+                <div className="space-y-4">
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. 無料でどのくらい使えますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 本アプリは基本機能が無料でご利用いただけます。過去問の閲覧、通常モード・本番モード、ランダム出題、復習マーク機能、進捗保存・再開機能、ログインスタンプ機能、履歴保存機能などが無料で使えます。広告非表示オプションは有料プランで提供されています。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. ガソリンとジーゼルの両方に対応していますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. はい、ガソリン（Gコース）とジーゼル（Dコース）の両方の問題に対応しています。年度ごとに問題集を切り替えて学習できます。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. 進捗保存機能はどのように使いますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 回答の進行状況は保存しておくことができ、アプリ再起動後も再開可能です。保存内容には回答履歴・スコア・モード・出題順なども含まれ、完全再現が可能です。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. ログインスタンプ機能とは何ですか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 毎日のアプリ起動でスタンプが記録され、ログイン連続記録（ストリーク）として可視化されます。継続的な学習習慣を作りたい受験生にぴったりです。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. 他の過去問アプリと何が違いますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 3級自動車整備士試験に特化した設計で、ガソリン・ジーゼル両対応、進捗保存・再開機能、ログインスタンプ機能、履歴保存・結果分析機能など、3級試験対策に最適な機能を提供しています。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* なぜこのアプリなのか - 介護福祉士 */}
+            {app.slug === "care-worker-app" && (
+              <section className="mb-8 bg-blue-50 rounded-lg p-6">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  なぜこのアプリなのか
+                </h2>
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📱 年度別・科目別の過去問収録
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      令和4年度〜令和6年度の介護福祉士国家試験の過去問を収録。年度別問題セットと科目別問題セットで、出題傾向の変化を比較しながら学べます。各問題に解説つきで、理解を深めながら学習できます。
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      🎯 本番形式で実力を確認
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      本番モードでは、制限時間なしの連続解答で、本番と同じ「緊張感」でスコアを確認できます。実際の介護福祉士試験と同じ5択形式で、実戦力が自然に身につきます。
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📚 スタンプカレンダー機能で継続学習
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      毎日学習を続けるとスタンプが貯まる「継続サポート」機能。モチベーション維持にも最適です。自動で学習履歴を保存し、いつ解いたか、何点だったか、何回挑戦したかが自動記録されます。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* 効果的な使い方 - 介護福祉士 */}
+            {app.slug === "care-worker-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  効果的な使い方
+                </h2>
+                <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6">
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          1
+                        </span>
+                        年度を選ぶ
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        まずは年度を選んで、過去問を解きます。令和4年度〜令和6年度の過去問が収録されているので、最新の出題傾向を把握できます。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          2
+                        </span>
+                        モードを選ぶ（本番 / 通常）
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        通常モードで基礎を固めてから、本番モードで実力を確認します。本番モードでは、制限時間なしの連続解答で、本番と同じ「緊張感」を体験できます。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          3
+                        </span>
+                        シャッフル出題で理解を深める
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        シャッフル出題機能により、並び順を変えて何度も解けるため、暗記ではなく理解が深まります。科目別学習で苦手な科目を重点的に学習できます。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          4
+                        </span>
+                        スタンプカレンダーで継続学習
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        毎日学習を続けるとスタンプが貯まる機能で、継続的な学習習慣を作ります。学習履歴を振り返って、自分の成長を可視化しましょう。
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* こんな方におすすめ - 介護福祉士 */}
+            {app.slug === "care-worker-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  こんな方におすすめ
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      🆕 はじめて介護福祉士試験を受ける人
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      初めて介護福祉士試験を受ける方。年度別・科目別の過去問を収録しているので、最新の出題傾向を把握できます。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📚 過去問をもっと効率的に解きたい人
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      過去問をもっと効率的に解きたい方。シャッフル出題機能により、並び順を変えて何度も解けるため、暗記ではなく理解が深まります。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      ⏰ スキマ時間にスマホで学習したい人
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      通勤・通学中などのスキマ時間にスマホで学習したい方。いつでもどこでも過去問に挑戦できます。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      🎯 本番形式で模擬試験のように練習したい人
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      本番形式で模擬試験のように練習したい方。本番モードでは、制限時間なしの連続解答で、本番と同じ「緊張感」を体験できます。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* よくある質問 - 介護福祉士 */}
+            {app.slug === "care-worker-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  よくある質問
+                </h2>
+                <div className="space-y-4">
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. 無料でどのくらい使えますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 本アプリは完全無料でご利用いただけます。過去問の閲覧、本番モード・通常モード、5択問題対応、年度別・科目別問題セット、シャッフル出題、スタンプカレンダー機能、学習履歴保存など、すべての機能を制限なくお使いいただけます。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. どの年度の過去問が収録されていますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 令和4年度〜令和6年度の介護福祉士国家試験の過去問を収録しています。年度別問題セットと科目別問題セットで学習できます。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. スタンプカレンダー機能とは何ですか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 毎日学習を続けるとスタンプが貯まる「継続サポート」機能です。モチベーション維持にも最適で、継続的な学習習慣を作りたい受験生にぴったりです。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. 科目別学習はできますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. はい、科目別に問題を学習できる機能を搭載しています。苦手な科目を重点的に学習できます。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. 他の過去問アプリと何が違いますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 介護福祉士国家試験に特化した設計で、年度別・科目別問題セット、本番モード・通常モード、5択問題対応、スタンプカレンダー機能、シャッフル出題、学習履歴保存など、介護福祉士試験対策に最適な機能を提供しています。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
             {/* 関連資格 */}
             {cert && (
               <section className="mb-8">
@@ -720,14 +1092,329 @@ export default async function AppDetailPage({
               </section>
             )}
 
+            {/* なぜこのアプリなのか - USCPA */}
+            {app.slug === "uscpa-app" && (
+              <section className="mb-8 bg-blue-50 rounded-lg p-6">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  Why Choose This App for USCPA Prep?
+                </h2>
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📚 Full Coverage of CPA Evolution Exam Structure
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      Since 2024, the USCPA exam has shifted to a Core + Discipline model. All candidates must complete three Core sections—Auditing & Attestation (AUD), Financial Accounting & Reporting (FAR), and Regulation (REG)—plus one Discipline of their choice: Business Analysis & Reporting (BAR), Information Systems & Controls (ISC), or Tax Compliance & Planning (TCP). This app covers all combinations seamlessly.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      🎯 Rich Question Bank with Explanations & Media
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      Our database includes thousands of multiple-choice and task-based simulation questions with full explanations, images, and optional CSV-based content import. Questions adapt based on your performance and track weak areas.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      ⏰ Simulated Exam Mode & Study Mode
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      Study Mode delivers immediate feedback and rationales so you can learn on the spot. Exam Mode simulates the actual USCPA timing, difficulty progression, and interface to sharpen your test-taking stamina.
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* 効果的な使い方 - USCPA */}
+            {app.slug === "uscpa-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  How to Get the Most from the App
+                </h2>
+                <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6">
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          1
+                        </span>
+                        Pick your discipline based on interest or career path (BAR/ISC/TCP)
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        Choose a discipline that aligns with your career goals. BAR pairs with FAR, ISC pairs with AUD, and TCP pairs with REG.
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          2
+                        </span>
+                        Begin with core sections
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        Many candidates start with their strongest accounting or regulatory topic. Focus on mastering the three Core sections—AUD, FAR, and REG—first.
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          3
+                        </span>
+                        Use Study Mode for conceptual learning, then switch to Exam Mode
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        Start with Study Mode to understand concepts and receive immediate feedback. Then switch to Exam Mode to test under pressure and build test-taking stamina.
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          4
+                        </span>
+                        Review weak points and pace yourself
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        Flagged questions are automatically revisited. Complete 25-question "Part" segments at a time, and study daily for consistent progress.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* よくある質問 - USCPA */}
+            {app.slug === "uscpa-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  Frequently Asked Questions
+                </h2>
+                <div className="space-y-4">
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. Is this app free?
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. Yes, this app is completely free to use. All features, including over 1,500 questions, Study Mode, Exam Mode, progress tracking, and review features, are available at no cost.
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. Which exam sections are covered?
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. This app covers all USCPA exam sections: Core sections (AUD, FAR, REG) and all Discipline sections (BAR, ISC, TCP). You can prepare for any combination.
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. Can I import my own questions?
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. Yes, the app supports CSV-based content import. You can import your own questions and study materials.
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. What is the difference between Study Mode and Exam Mode?
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. Study Mode provides immediate feedback and explanations after each question, perfect for learning. Exam Mode simulates the actual USCPA exam experience with timing, difficulty progression, and interface matching the real test.
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* なぜこのアプリなのか - 公認会計士企業法 */}
+            {app.slug === "cpa-corporate-law-app" && (
+              <section className="mb-8 bg-blue-50 rounded-lg p-6">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  なぜこのアプリなのか
+                </h2>
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📱 企業法に特化した設計
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      公認会計士試験の「企業法」に特化した過去問学習アプリです。会社法、金融商品取引法、商法など、出題頻度の高いテーマを厳選し、短答式対策に最適な1問1答形式で収録しています。
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📚 過去問ベースだから安心
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      公認会計士試験の過去問をベースにした問題を収録しているため、実際の試験形式に沿った問題で、本番に近い感覚で学習できます。年度別に問題を整理しているため、出題傾向の変化を把握しながら学習できます。
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      ⏰ スキマ時間で素早く復習
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      クイズ形式だから、暗記に偏りすぎず、論文式にもつながる法的思考力が自然と身につきます。通勤・通学中などのスキマ時間を有効活用して、学習時間を最大化し、「あと1点」が取れる実力を身につけます。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* 効果的な使い方 - 公認会計士企業法 */}
+            {app.slug === "cpa-corporate-law-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  効果的な使い方
+                </h2>
+                <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6">
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          1
+                        </span>
+                        まずは学習モードで基礎を固める
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        初めて問題を解く際は、学習モードを使用して、正解・不正解を即判定しながら理解を深めます。間違えた問題には復習マークを付けて、後から効率的に復習できるようにしましょう。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          2
+                        </span>
+                        本番モードで実力を確認
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        ある程度問題を解いたら、本番モードで実際の試験に近い形式で問題を解きます。時間配分の練習や実力の確認ができます。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          3
+                        </span>
+                        結果画面で問題文を確認
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        結果画面では、各問題の正誤、選んだ選択肢、正解を一覧で確認できます。問題文も確認できるため、復習がしやすくなっています。間違えた問題を重点的に学習しましょう。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          4
+                        </span>
+                        スキマ時間で繰り返し学習
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        過去問は最低3回は繰り返し解くことが推奨されています。通勤・通学中や休憩時間などのスキマ時間を活用して、同じ問題を繰り返し解くことで、知識が定着し、法的思考力が身につきます。
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* こんな方におすすめ - 公認会計士企業法 */}
+            {app.slug === "cpa-corporate-law-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  こんな方におすすめ
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📚 公認会計士試験の短答式対策をしたい方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      公認会計士試験の短答式試験で企業法の対策をしたい方。1問1答形式で、短答式対策に最適な学習ができます。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      ⏰ スキマ時間で素早く復習したい方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      通勤・通学中などのスキマ時間で素早く復習したい方。クイズ形式だから、いつでもどこでも学習できます。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      🎯 法的思考力を身につけたい方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      暗記に偏りすぎず、論文式にもつながる法的思考力を身につけたい方。過去問ベースの問題で、自然と法的思考力が身につきます。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📖 年度別に学習したい方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      年度別に問題を整理して、出題傾向の変化を把握しながら学習したい方。学習時間を最大化し、「あと1点」が取れる実力を身につけます。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* よくある質問 - 公認会計士企業法 */}
+            {app.slug === "cpa-corporate-law-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  よくある質問
+                </h2>
+                <div className="space-y-4">
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. 無料でどのくらい使えますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 本アプリは基本機能が無料でご利用いただけます。過去問の閲覧、本番モード・学習モード、復習マーク機能、結果画面で問題文確認、年度別学習などが無料で使えます。広告非表示オプションは¥120の買い切りプランで提供されています。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. どのような問題が収録されていますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 公認会計士試験の過去問をベースにした問題を収録しています。会社法、金融商品取引法、商法など、出題頻度の高いテーマを厳選しています。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. 本番モードと学習モードの違いは何ですか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 学習モードでは、正解・不正解を即判定し、その場で理解を深められます。本番モードでは、実際の試験に近い形式で問題を解くことができ、時間配分の練習や実力の確認ができます。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. 他の過去問アプリと何が違いますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 公認会計士試験の「企業法」に特化した設計で、短答式対策に最適な1問1答形式、年度別学習、復習マーク機能、結果画面で問題文確認など、企業法試験対策に最適な機能を提供しています。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
             {/* 最終CTAセクション */}
             {app.appStoreUrl && (
               <section className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl p-8 text-center text-white mb-8">
                 <h2 className="text-2xl font-bold mb-2">
-                  スキマ時間で合格を目指す
+                  {app.slug === "uscpa-app" ? "Prepare and conquer the USCPA Exam" : "スキマ時間で合格を目指す"}
                 </h2>
                 <p className="text-blue-50 mb-6">
-                  {app.name}で効率的に学習しましょう
+                  {app.slug === "uscpa-app" 
+                    ? "Start your USCPA preparation journey with confidence"
+                    : `${app.name}で効率的に学習しましょう`}
                 </p>
                 <a
                   href={app.appStoreUrl}
@@ -742,7 +1429,7 @@ export default async function AppDetailPage({
                   >
                     <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C1.79 15.25 2.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
                   </svg>
-                  <span>App Storeで無料ダウンロード</span>
+                  <span>{app.slug === "uscpa-app" ? "Download for Free on App Store" : "App Storeで無料ダウンロード"}</span>
                 </a>
               </section>
             )}

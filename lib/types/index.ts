@@ -216,16 +216,22 @@ export type App = {
   slug: string; // URL用（例: 'auto-mechanic-1-app'）
   certId: string;
   name: string; // アプリ名
+  nameEn?: string; // アプリ名（英語）
   description: string;
+  descriptionEn?: string; // 説明（英語）
   iconUrl: string;
   screenshots: string[]; // スクリーンショットURL
   features: {
     title: string;
+    titleEn?: string; // タイトル（英語）
     description: string;
+    descriptionEn?: string; // 説明（英語）
     iconUrl?: string;
   }[];
   freeFeatures: string[]; // 無料で使える機能
+  freeFeaturesEn?: string[]; // 無料で使える機能（英語）
   paidFeatures: string[]; // 有料機能
+  paidFeaturesEn?: string[]; // 有料機能（英語）
   pricing: {
     free: boolean;
     subscriptionPrice?: number; // 月額価格（円）
