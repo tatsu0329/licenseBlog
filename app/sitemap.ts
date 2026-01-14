@@ -2,6 +2,7 @@ import { MetadataRoute } from "next";
 import { getAllCerts } from "@/lib/data/certs";
 import { getAllQuestions } from "@/lib/data/questions";
 import { getAllArticles } from "@/lib/data/articles";
+import { getAllApps } from "@/lib/data/apps";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://example.com";
@@ -9,6 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const certs = getAllCerts();
   const questions = getAllQuestions();
   const articles = getAllArticles();
+  const apps = getAllApps();
 
   return [
     {
@@ -68,6 +70,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: article.updatedAt,
       changeFrequency: "monthly" as const,
       priority: 0.8,
+    })),
+    {
+      url: `${baseUrl}/apps`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    },
+    ...apps.map((app) => ({
+      url: `${baseUrl}/apps/${app.slug}`,
+      lastModified: app.updatedAt,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
     })),
     {
       url: `${baseUrl}/disclaimer`,

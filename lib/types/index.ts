@@ -213,6 +213,7 @@ export type FAQ = {
 // アプリ情報
 export type App = {
   id: string;
+  slug: string; // URL用（例: 'auto-mechanic-1-app'）
   certId: string;
   name: string; // アプリ名
   description: string;

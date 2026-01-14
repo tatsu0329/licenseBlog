@@ -3,79 +3,73 @@ import { App } from "../types";
 // 1級自動車整備士アプリ
 export const appAutoMechanic1: App = {
   id: "app-auto-mechanic-1",
+  slug: "auto-mechanic-1-app",
   certId: "auto-mechanic-1",
-  name: "1級自動車整備士 過去問アプリ",
+  name: "国家1級自動車整備士 問題集",
   description:
-    "1級自動車整備士の過去問をスマートフォンで手軽に学習できるアプリです。詳しい解説、弱点分析、学習進捗管理などの機能を提供しています。",
-  iconUrl: "/images/apps/auto-mechanic-1-icon.png",
+    "1級整備士試験対策に特化した過去問アプリ。画像付き問題は拡大表示に対応。ランダム出題・本番モード・成績管理で、スキマ時間を合格力に変える。",
+  iconUrl: "/images/apps/auto-mechanic-1/icon.png",
   screenshots: [
-    "/images/apps/auto-mechanic-1-screenshot1.png",
-    "/images/apps/auto-mechanic-1-screenshot2.png",
-    "/images/apps/auto-mechanic-1-screenshot3.png",
+    "/images/apps/auto-mechanic-1/screenshot1.jpg",
+    "/images/apps/auto-mechanic-1/screenshot2.jpg",
+    "/images/apps/auto-mechanic-1/screenshot3.jpg",
+    "/images/apps/auto-mechanic-1/screenshot4.jpg",
   ],
   features: [
     {
-      title: "豊富な過去問データベース",
+      title: "画像付き問題の拡大表示",
       description:
-        "直近10年分の過去問を収録。年度・分野・難易度で検索・絞り込みが可能です。",
+        "問題文に含まれる図・イラスト付き問題にも対応。画像はタップで拡大表示できるため、細かい文字や構造図、配線図なども正確に確認できます。",
       iconUrl: "/images/icons/book.svg",
     },
     {
-      title: "詳しい解説",
+      title: "学習モードと本番モード",
       description:
-        "各問題に詳細な解説を掲載。図解も豊富で、理解が深まります。",
-      iconUrl: "/images/icons/explanation.svg",
-    },
-    {
-      title: "弱点分析機能",
-      description:
-        "間違えた問題を自動で記録し、苦手分野を可視化。効率的に復習できます。",
-      iconUrl: "/images/icons/analysis.svg",
-    },
-    {
-      title: "学習進捗管理",
-      description:
-        "学習状況をグラフで可視化。毎日の学習時間や正答率を管理できます。",
-      iconUrl: "/images/icons/progress.svg",
-    },
-    {
-      title: "模試機能",
-      description:
-        "本番形式の模擬試験を実施。時間配分や実力を確認できます。",
+        "学習スタイルに合わせて、学習モード（その場で正誤確認）と本番モード（試験形式で実力チェック）を切り替え可能。実際の試験に近い感覚で対策を行えます。",
       iconUrl: "/images/icons/exam.svg",
     },
     {
-      title: "オフライン学習",
+      title: "復習マーク機能",
       description:
-        "過去問をダウンロードして、オフラインでも学習できます。通勤・通学中も便利です。",
+        "間違えた問題や重要だと思った問題にマークを付けて、後から効率的に復習できます。苦手分野の問題を重点的に学習できます。",
+      iconUrl: "/images/icons/analysis.svg",
+    },
+    {
+      title: "成績保存・履歴管理",
+      description:
+        "過去の結果を確認できる成績保存・履歴管理機能を搭載。学習状況を可視化することで、自分の進捗を把握し、モチベーションを維持できます。",
+      iconUrl: "/images/icons/progress.svg",
+    },
+    {
+      title: "スキマ時間での学習",
+      description:
+        "忙しい社会人や現役整備士の方でも、スキマ時間で効率的に学習できます。通勤・通学中などのちょっとした時間を有効活用できます。",
       iconUrl: "/images/icons/offline.svg",
+    },
+    {
+      title: "1級自動車整備士（学科試験）対応",
+      description:
+        "国家資格である1級整備士試験に向けて、過去問演習・復習・成績管理を1つのアプリで完結できます。",
+      iconUrl: "/images/icons/explanation.svg",
     },
   ],
   freeFeatures: [
-    "過去問10問/日まで無料で閲覧",
-    "基礎解説の閲覧",
-    "学習進捗の記録",
-    "広告表示",
+    "過去問の閲覧",
+    "学習モード・本番モード",
+    "復習マーク機能",
+    "成績保存・履歴管理",
+    "画像付き問題の拡大表示",
   ],
-  paidFeatures: [
-    "全過去問の無制限閲覧",
-    "詳細解説・図解の閲覧",
-    "弱点分析機能",
-    "模試機能",
-    "広告非表示",
-    "ダウンロード機能（オフライン学習）",
-  ],
+  paidFeatures: [],
   pricing: {
     free: true,
-    subscriptionPrice: 980, // 月額980円
-    oneTimePrice: 9800, // 買い切り9800円
   },
-  appStoreUrl: "https://apps.apple.com/jp/app/auto-mechanic-1/id123456789",
-  googlePlayUrl:
-    "https://play.google.com/store/apps/details?id=com.example.automechanic1",
-  deepLinkSchema: "automechanic1://",
-  publishedAt: new Date("2024-01-01"),
-  updatedAt: new Date("2024-01-01"),
+  appStoreUrl:
+    "https://apps.apple.com/jp/app/%E5%9B%BD%E5%AE%B61%E7%B4%9A%E8%87%AA%E5%8B%95%E8%BB%8A%E6%95%B4%E5%82%99%E5%A3%AB-%E5%95%8F%E9%A1%8C%E9%9B%86/id6756804508",
+  googlePlayUrl: undefined,
+  deepLinkSchema: undefined,
+  publishedAt: new Date("2024-12-24"),
+  updatedAt: new Date("2025-12-29"),
 };
 
 export function getAllApps(): App[] {
@@ -84,6 +78,10 @@ export function getAllApps(): App[] {
 
 export function getAppByCert(certId: string): App | undefined {
   return getAllApps().find((a) => a.certId === certId);
+}
+
+export function getAppBySlug(slug: string): App | undefined {
+  return getAllApps().find((a) => a.slug === slug);
 }
 
 
