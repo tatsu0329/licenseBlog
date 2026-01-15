@@ -1405,6 +1405,540 @@ export default async function AppDetailPage({
               </section>
             )}
 
+            {/* なぜこのアプリなのか - 習慣カレンダー */}
+            {app.slug === "habit-calendar-app" && (
+              <section className="mb-8 bg-blue-50 rounded-lg p-6">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  なぜこのアプリなのか
+                </h2>
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📱 習慣を「見える化」する設計
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      週間カレンダー形式の習慣グリッドで、7日間の習慣達成状況を一目で確認できます。続けるモチベーションが自然にアップし、三日坊主を卒業できます。
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      ⏰ 通知でリマインド
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      決めた時間に通知でお知らせするため、やることを忘れません。忙しい毎日でも、習慣を継続できます。
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      🎯 柔軟な繰り返し設定
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      「月・水・金だけ」など、習慣ごとに柔軟な繰り返しが可能です。複数の習慣を同時に管理でき、健康、勉強、家事、自己研鑽など、すべての習慣をまとめて記録できます。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* 効果的な使い方 - 習慣カレンダー */}
+            {app.slug === "habit-calendar-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  効果的な使い方
+                </h2>
+                <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6">
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          1
+                        </span>
+                        まずは習慣を追加
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        やりたい習慣を追加します。健康、勉強、家事、自己研鑽など、複数の習慣を同時に管理できます。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          2
+                        </span>
+                        曜日別の実施設定
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        「月・水・金だけ」など、習慣ごとに柔軟な繰り返しを設定します。無理のない範囲で設定することが、継続のコツです。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          3
+                        </span>
+                        通知リマインダーを設定
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        決めた時間に通知でお知らせするため、やることを忘れません。通知を有効にして、習慣を継続しましょう。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          4
+                        </span>
+                        毎日チェックして記録
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        習慣を実行したら、チェック形式でパッと記録します。週間カレンダー形式の習慣グリッドで、7日間の達成状況を一目で確認でき、続けるモチベーションが自然にアップします。
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* こんな方におすすめ - 習慣カレンダー */}
+            {app.slug === "habit-calendar-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  こんな方におすすめ
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📅 三日坊主を卒業したい方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      習慣を「見える化」することで、続けるモチベーションが自然にアップします。週間カレンダー形式の習慣グリッドで、達成状況を一目で確認できます。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      🎯 習慣を可視化して継続の手応えを得たい方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      7日間の習慣達成状況を可視化することで、継続の手応えを実感できます。少しずつ理想の生活に近づけます。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      💪 健康や勉強の習慣を身につけたい方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      健康、勉強、家事、自己研鑽など、複数の習慣を同時に管理できます。通知でリマインドするため、やることを忘れません。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📱 シンプルな習慣アプリを探している方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      シンプルで直感的なUIで、どなたでもすぐに使えます。複雑な機能はなく、習慣を記録することに集中できます。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* よくある質問 - 習慣カレンダー */}
+            {app.slug === "habit-calendar-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  よくある質問
+                </h2>
+                <div className="space-y-4">
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. 無料でどのくらい使えますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 本アプリは完全無料でご利用いただけます。すべての機能を制限なくお使いいただけます。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. どのデバイスに対応していますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. iPhone、iPad、Mac、Apple Visionに対応しています。iOS 18.4以降、iPadOS 18.4以降、macOS 15.4以降が必要です。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. 通知はどのように設定しますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 習慣を追加する際に、通知時間を設定できます。決めた時間に通知でお知らせするため、やることを忘れません。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. 他の習慣管理アプリと何が違いますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 週間カレンダー形式の習慣グリッドで、7日間の習慣達成状況を一目で確認できます。シンプルで直感的なUIで、どなたでもすぐに使えます。通知でリマインドするため、やることを忘れません。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* なぜこのアプリなのか - わたしのごはん */}
+            {app.slug === "my-gohan-app" && (
+              <section className="mb-8 bg-blue-50 rounded-lg p-6">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  なぜこのアプリなのか
+                </h2>
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📸 写真とメモで簡単記録
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      食事写真を登録し、店名やメニュー、料金、感想も記録できます。シンプルな操作で、手軽に外食ログを残せます。誰かに見せるほどじゃないけど、わたしにとってはちょっとした思い出。そんな「ごはん」を、写真とひとことメモでふんわりと残しておけます。
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      🔒 完全オフライン・プライバシー重視
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      すべてローカル保存で安心。完全オフラインで動作し、誰にも見せなくてOKです。SNSに投稿はしないけど、記録したい。そんな方にぴったりです。
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📅 カレンダーとリストで振り返り
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      カレンダーでいつ何を食べたか見返せます。リスト表示で過去の食事を一括確認でき、「今月はラーメンが多かった」などの軽い自己分析もできます。旅行中のごはんメモ、出張中の食事管理、自炊記録にも便利です。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* 効果的な使い方 - わたしのごはん */}
+            {app.slug === "my-gohan-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  効果的な使い方
+                </h2>
+                <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6">
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          1
+                        </span>
+                        食事の写真を撮る
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        外食したら、まずは食事の写真を撮ります。写真フォルダが「ごはん」で埋まりがちな方も、アプリ内で整理できます。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          2
+                        </span>
+                        店名・メニュー・感想を記録
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        店名やメニュー、料金、感想を記録します。「味」「コスパ」「静けさ」などの独自評価も可能です。自分だけの評価基準で、お気に入りのお店を記録できます。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          3
+                        </span>
+                        カレンダーで振り返る
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        カレンダーでいつ何を食べたか見返せます。リスト表示で過去の食事を一括確認でき、振り返りが簡単です。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          4
+                        </span>
+                        軽い自己分析で食生活を把握
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        「今月はラーメンが多かった」などの軽い自己分析ができます。自分の食生活の傾向を把握し、バランスの良い食事を心がけられます。
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* こんな方におすすめ - わたしのごはん */}
+            {app.slug === "my-gohan-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  こんな方におすすめ
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      🍜 お店やメニューを、あとで振り返りたい方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      旅行中のごはんメモ、出張中の食事管理、自炊記録にも便利です。カレンダーでいつ何を食べたか見返せます。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📱 SNSに投稿はしないけど、記録したい方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      完全オフラインで動作し、誰にも見せなくてOKです。プライバシーを守りながら、自分のごはん記録を残せます。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📷 写真フォルダが「ごはん」で埋まりがちな方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      アプリ内で整理できるため、写真フォルダが「ごはん」で埋まりがちな方にもおすすめです。写真とメモを一緒に管理できます。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      🍽️ 「外食ログ」を習慣にしたい方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      「外食ログ」を習慣にしたい方におすすめです。シンプルな操作で、手軽に外食ログを残せます。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* よくある質問 - わたしのごはん */}
+            {app.slug === "my-gohan-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  よくある質問
+                </h2>
+                <div className="space-y-4">
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. 無料でどのくらい使えますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 本アプリは完全無料でご利用いただけます。すべての機能を制限なくお使いいただけます。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. データはどこに保存されますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. すべてローカル保存で、デバイス内に保存されます。クラウドには保存されないため、プライバシーを守りながら、自分のごはん記録を残せます。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. オフラインでも使えますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. はい、完全オフラインで動作します。インターネット接続がなくても、すべての機能をご利用いただけます。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. 他のグルメ記録アプリと何が違いますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 完全オフラインで動作し、すべてローカル保存のため、プライバシーを守りながら記録できます。SNSに投稿はしないけど、記録したい方にぴったりです。シンプルな操作で、手軽に外食ログを残せます。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* なぜこのアプリなのか - ひわりん */}
+            {app.slug === "hiwarin-app" && (
+              <section className="mb-8 bg-blue-50 rounded-lg p-6">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  なぜこのアプリなのか
+                </h2>
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      💰 1日あたりの価格で見直す
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      「この買い物、1日あたりXX円だったなら、全然アリじゃない？」そんな"自己肯定感バフ"がもらえる日割り計算アプリです。価格と使う期間を入れるだけで、1日あたりの金額をすぐに計算できます。
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📊 ポジティブな見方をサポート
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      大きな出費もポジティブに捉えられるお金の見方をサポートします。自己投資や買い物に対する罪悪感をやわらげる"見せ方"を提供し、買い物の「納得感」と「理由」をくれます。
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📱 SNSシェア機能
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      SNSにシェアしやすいポップな画像を生成できます。「この買い物、実はお得だった！」を視覚的に表現し、SNSで「いい買い物した！」を共有できます。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* 効果的な使い方 - ひわりん */}
+            {app.slug === "hiwarin-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  効果的な使い方
+                </h2>
+                <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6">
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          1
+                        </span>
+                        価格と期間を入力
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        買い物の価格と使う期間を入力します。たとえば、MacBook（¥140,000）を5年間使う場合や、コート（¥30,000）を3シーズン使う場合など、様々な買い物に対応できます。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          2
+                        </span>
+                        1日あたりの金額を確認
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        アプリが自動で1日あたりの金額を計算します。「この買い物、1日あたりXX円だったなら、全然アリじゃない？」とポジティブに捉えられます。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          3
+                        </span>
+                        履歴を保存
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        計算した履歴を保存できるため、過去の買い物も振り返れます。買い物の「納得感」と「理由」を記録できます。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          4
+                        </span>
+                        SNSでシェア
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        SNSにシェアしやすいポップな画像を生成できます。「この買い物、実はお得だった！」を視覚的に表現し、SNSで「いい買い物した！」を共有できます。
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* こんな方におすすめ - ひわりん */}
+            {app.slug === "hiwarin-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  こんな方におすすめ
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      💸 高い買い物で悩んでしまう方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      大きな出費もポジティブに捉えられるお金の見方をサポートします。1日あたりの価格で見直すことで、買い物の「納得感」と「理由」を得られます。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      💪 自己投資をもっとポジティブに捉えたい方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      自己投資や買い物に対する罪悪感をやわらげる"見せ方"を提供します。1日あたりの価格で見直すことで、自己投資をポジティブに捉えられます。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📱 SNSで「いい買い物した！」を共有したい方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      SNSにシェアしやすいポップな画像を生成できます。「この買い物、実はお得だった！」を視覚的に表現し、SNSで「いい買い物した！」を共有できます。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      🛍️ 買い物の判断をサポートしたい方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      価格と使う期間を入れるだけで、1日あたりの金額をすぐに計算できます。買い物の判断をサポートし、あなたの買い物に「納得感」と「理由」をくれます。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* よくある質問 - ひわりん */}
+            {app.slug === "hiwarin-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  よくある質問
+                </h2>
+                <div className="space-y-4">
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. 無料でどのくらい使えますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 本アプリは完全無料でご利用いただけます。すべての機能を制限なくお使いいただけます。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. どのような買い物に対応していますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 価格と使う期間を入力できる買い物であれば、すべて対応しています。MacBookなどの高額な買い物から、コートなどの衣類まで、様々な買い物に対応できます。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. 履歴はどこに保存されますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 計算した履歴はデバイス内にローカル保存されます。クラウドには保存されないため、プライバシーを守りながら、過去の買い物も振り返れます。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. 他の買い物アプリと何が違いますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 1日あたりの価格で見直すことに特化した日割り計算アプリです。大きな出費もポジティブに捉えられるお金の見方をサポートし、SNSにシェアしやすいポップな画像を生成できます。自己投資や買い物に対する罪悪感をやわらげる"見せ方"を提供します。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
             {/* 最終CTAセクション */}
             {app.appStoreUrl && (
               <section className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl p-8 text-center text-white mb-8">

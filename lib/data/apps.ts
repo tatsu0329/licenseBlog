@@ -488,8 +488,200 @@ export const appCPACorporateLaw: App = {
   updatedAt: new Date("2025-11-29"),
 };
 
+// 習慣カレンダーアプリ
+export const appHabitCalendar: App = {
+  id: "app-habit-calendar",
+  slug: "habit-calendar-app",
+  certId: "", // 資格試験アプリではないため空文字列
+  name: "習慣カレンダー｜続けるを見える化",
+  description:
+    "毎日やりたいことをカレンダー形式で「見える化」できる、シンプルな習慣管理アプリ。チェック形式でパッと記録、通知でリマインド、実施状況はグリッド上で一目瞭然。忙しい毎日でも、やることを忘れず、少しずつ理想の生活に近づけます。",
+  iconUrl: "/images/apps/habit-calendar/icon.png",
+  screenshots: [
+    "/images/apps/habit-calendar/screenshot1.png",
+    "/images/apps/habit-calendar/screenshot2.png",
+    "/images/apps/habit-calendar/screenshot3.png",
+    "/images/apps/habit-calendar/screenshot4.png",
+  ],
+  features: [
+    {
+      title: "週間カレンダー形式の習慣グリッド",
+      description:
+        "7日間の習慣達成状況を可視化。続けるモチベーションが自然にアップします。",
+      iconUrl: "/images/icons/book.svg",
+    },
+    {
+      title: "曜日別の実施設定",
+      description:
+        "「月・水・金だけ」など、習慣ごとに柔軟な繰り返しが可能です。",
+      iconUrl: "/images/icons/book.svg",
+    },
+    {
+      title: "通知リマインダー",
+      description:
+        "決めた時間にお知らせ。忘れずに行動できます。",
+      iconUrl: "/images/icons/exam.svg",
+    },
+    {
+      title: "複数習慣の同時管理",
+      description:
+        "健康、勉強、家事、自己研鑽…まとめて記録できます。",
+      iconUrl: "/images/icons/analysis.svg",
+    },
+    {
+      title: "シンプルで直感的なUI",
+      description:
+        "どなたでもすぐに使える、わかりやすいデザインです。",
+      iconUrl: "/images/icons/progress.svg",
+    },
+  ],
+  freeFeatures: [
+    "週間カレンダー形式の習慣グリッド",
+    "曜日別の実施設定",
+    "通知リマインダー",
+    "複数習慣の同時管理",
+    "シンプルで直感的なUI",
+  ],
+  paidFeatures: [],
+  pricing: {
+    free: true,
+  },
+  appStoreUrl:
+    "https://apps.apple.com/jp/app/%E7%BF%92%E6%85%A3%E3%82%AB%E3%83%AC%E3%83%B3%E3%83%80%E3%83%BC-%E7%B6%9A%E3%81%91%E3%82%8B%E3%82%92%E8%A6%8B%E3%81%88%E3%82%8B%E5%8C%96/id6746375629",
+  googlePlayUrl: undefined,
+  deepLinkSchema: undefined,
+  publishedAt: new Date("2025-05-27"),
+  updatedAt: new Date("2025-08-22"),
+};
+
+// わたしのごはんアプリ
+export const appMyGohan: App = {
+  id: "app-my-gohan",
+  slug: "my-gohan-app",
+  certId: "", // 資格試験アプリではないため空文字列
+  name: "わたしのごはん",
+  description:
+    "写真で記録するメモアプリ（外食記録・ごはん日記・食事メモ）。誰かに見せるほどじゃないけど、わたしにとってはちょっとした思い出。そんな「ごはん」を、写真とひとことメモでふんわりと残しておけるグルメ記録アプリです。",
+  iconUrl: "/images/apps/わたしのごはん/icon.png",
+  screenshots: [
+    "/images/apps/わたしのごはん/screenshot1.jpg",
+    "/images/apps/わたしのごはん/screenshot2.jpg",
+    "/images/apps/わたしのごはん/screenshot3.jpg",
+    "/images/apps/わたしのごはん/screenshot4.jpg",
+  ],
+  features: [
+    {
+      title: "写真＋店名＋感想だけで簡単記録",
+      description:
+        "食事写真を登録し、店名やメニュー、料金、感想も記録できます。シンプルな操作で、手軽に外食ログを残せます。",
+      iconUrl: "/images/icons/book.svg",
+    },
+    {
+      title: "独自評価も可能",
+      description:
+        "「味」「コスパ」「静けさ」などの独自評価も可能です。自分だけの評価基準で、お気に入りのお店を記録できます。",
+      iconUrl: "/images/icons/book.svg",
+    },
+    {
+      title: "カレンダー／リスト表示",
+      description:
+        "カレンダーでいつ何を食べたか見返せます。リスト表示で過去の食事を一括確認でき、振り返りが簡単です。",
+      iconUrl: "/images/icons/exam.svg",
+    },
+    {
+      title: "軽い自己分析",
+      description:
+        "「今月はラーメンが多かった」などの軽い自己分析ができます。自分の食生活の傾向を把握できます。",
+      iconUrl: "/images/icons/analysis.svg",
+    },
+    {
+      title: "完全オフライン・ローカル保存",
+      description:
+        "すべてローカル保存で安心。完全オフラインで動作し、誰にも見せなくてOKです。プライバシーを守りながら、自分のごはん記録を残せます。",
+      iconUrl: "/images/icons/progress.svg",
+    },
+  ],
+  freeFeatures: [
+    "写真＋店名＋感想での記録",
+    "独自評価（味・コスパ・静けさなど）",
+    "カレンダー／リスト表示",
+    "軽い自己分析",
+    "完全オフライン・ローカル保存",
+  ],
+  paidFeatures: [],
+  pricing: {
+    free: true,
+  },
+  appStoreUrl:
+    "https://apps.apple.com/jp/app/%E3%82%8F%E3%81%9F%E3%81%97%E3%81%AE%E3%81%94%E3%81%AF%E3%82%93/id6748900242",
+  googlePlayUrl: undefined,
+  deepLinkSchema: undefined,
+  publishedAt: new Date("2025-07-23"),
+  updatedAt: new Date("2025-10-13"),
+};
+
+// ひわりんアプリ
+export const appHiwarin: App = {
+  id: "app-hiwarin",
+  slug: "hiwarin-app",
+  certId: "", // 資格試験アプリではないため空文字列
+  name: "ひわりん｜1日あたりの価格で見直す買い物アプリ",
+  description:
+    "「買い物の\"1日あたり\"がわかる」日割り計算アプリ。価格と使う期間を入れるだけで、1日あたりの金額をすぐに計算。大きな出費もポジティブに捉えられるお金の見方をサポートします。",
+  iconUrl: "/images/apps/ひわりん/icon.png",
+  screenshots: [
+    "/images/apps/ひわりん/screenshot1.png",
+    "/images/apps/ひわりん/screenshot2.png",
+    "/images/apps/ひわりん/screenshot3.png",
+    "/images/apps/ひわりん/screenshot4.png",
+  ],
+  features: [
+    {
+      title: "金額と期間を入れるだけでOK",
+      description:
+        "価格と使う期間を入れるだけで、1日あたりの金額をすぐに計算できます。使いやすい日割り計算と履歴の保存で、買い物の判断をサポートします。",
+      iconUrl: "/images/icons/book.svg",
+    },
+    {
+      title: "ポップな画像生成",
+      description:
+        "SNSにシェアしやすいポップな画像を生成できます。「この買い物、1日あたりXX円だったなら、全然アリじゃない？」を視覚的に表現できます。",
+      iconUrl: "/images/icons/book.svg",
+    },
+    {
+      title: "自己投資をポジティブに",
+      description:
+        "自己投資や買い物に対する罪悪感をやわらげる\"見せ方\"をサポート。大きな出費もポジティブに捉えられるお金の見方を提供します。",
+      iconUrl: "/images/icons/exam.svg",
+    },
+    {
+      title: "履歴の保存",
+      description:
+        "計算した履歴を保存できるため、過去の買い物も振り返れます。買い物の「納得感」と「理由」を記録できます。",
+      iconUrl: "/images/icons/analysis.svg",
+    },
+  ],
+  freeFeatures: [
+    "金額と期間を入れるだけでOK",
+    "使いやすい日割り計算",
+    "履歴の保存",
+    "SNSにシェアしやすいポップな画像生成",
+    "自己投資や買い物に対する罪悪感をやわらげる\"見せ方\"",
+  ],
+  paidFeatures: [],
+  pricing: {
+    free: true,
+  },
+  appStoreUrl:
+    "https://apps.apple.com/jp/app/%E3%81%B2%E3%82%8F%E3%82%8A%E3%82%93-1%E6%97%A5%E3%81%82%E3%81%9F%E3%82%8A%E3%81%AE%E4%BE%A1%E6%A0%BC%E3%81%A7%E8%A6%8B%E7%9B%B4%E3%81%99%E8%B2%B7%E3%81%84%E7%89%A9%E3%82%A2%E3%83%97%E3%83%AA/id6748552318",
+  googlePlayUrl: undefined,
+  deepLinkSchema: undefined,
+  publishedAt: new Date("2025-07-21"),
+  updatedAt: new Date("2025-08-25"),
+};
+
 export function getAllApps(): App[] {
-  return [appAutoMechanic1, appAutoMechanic2, appAutoMechanic3, appCareWorker, appUSCPA, appCPACorporateLaw];
+  return [appAutoMechanic1, appAutoMechanic2, appAutoMechanic3, appCareWorker, appUSCPA, appCPACorporateLaw, appHabitCalendar, appMyGohan, appHiwarin];
 }
 
 export function getAppByCert(certId: string): App | undefined {
