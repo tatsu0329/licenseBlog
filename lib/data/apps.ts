@@ -680,8 +680,155 @@ export const appHiwarin: App = {
   updatedAt: new Date("2025-08-25"),
 };
 
+// 禅タイマーアプリ
+export const appZenTimer: App = {
+  id: "app-zen-timer",
+  slug: "zen-timer-app",
+  certId: "", // 資格試験アプリではないため空文字列
+  name: "禅タイマー – Zen Breath Timer",
+  description:
+    "呼吸と静寂で整う、瞑想タイマー。吸う・止める・吐くのリズムに合わせて心を整える禅タイマー。円の動きと鐘の音に導かれ、深い呼吸と集中に戻れる静かな瞑想時間を。",
+  iconUrl: "/images/apps/禅タイマー/icon.png",
+  screenshots: [
+    "/images/apps/禅タイマー/screenshot1.png",
+    "/images/apps/禅タイマー/screenshot2.png",
+    "/images/apps/禅タイマー/screenshot3.png",
+    "/images/apps/禅タイマー/screenshot4.png",
+  ],
+  features: [
+    {
+      title: "禅鐘タイマー（開始・終了）",
+      description:
+        "開始時と終了時に、静かで深みのある「禅ベル」を再生。心地よい響きとともに瞑想を始め、やさしく終えられます。",
+      iconUrl: "/images/icons/book.svg",
+    },
+    {
+      title: "呼吸ガイド（吸う／止める／吐く）",
+      description:
+        "中心のリングがゆっくりと膨らんだり縮んだりし、呼吸のテンポに合わせて動く視覚的ガイドを搭載。自然に呼吸へ意識を導きます。",
+      iconUrl: "/images/icons/book.svg",
+    },
+    {
+      title: "テンポ調整 (4–0–6 / 4–2–6 など)",
+      description:
+        "初心者から上級者まで、自由に「吸う・止める・吐く」の秒数を設定可能。推奨プリセットも搭載しています。",
+      iconUrl: "/images/icons/exam.svg",
+    },
+    {
+      title: "シンプルで整ったデザイン",
+      description:
+        "黒 × 白（または金）の落ち着いたモノトーンUI。余白を活かし、視界のノイズを徹底的に排除した禅デザインです。",
+      iconUrl: "/images/icons/analysis.svg",
+    },
+    {
+      title: "セッション記録機能",
+      description:
+        "毎日の瞑想・呼吸法の継続をサポート。日付、実施時間、呼吸テンポを自動で保存します。",
+      iconUrl: "/images/icons/progress.svg",
+    },
+    {
+      title: "バックグラウンド環境音（BGM）",
+      description:
+        "雨音／川の流れ／焚き火など自然音をループ再生して、より深いリラックスへ導きます。",
+      iconUrl: "/images/icons/offline.svg",
+    },
+  ],
+  freeFeatures: [
+    "禅鐘タイマー（開始・終了）",
+    "呼吸ガイド（吸う／止める／吐く）",
+    "テンポ調整 (4–0–6 / 4–2–6 など)",
+    "シンプルで整ったデザイン",
+    "セッション記録機能",
+    "バックグラウンド環境音（BGM）",
+  ],
+  paidFeatures: [],
+  pricing: {
+    free: true,
+  },
+  appStoreUrl:
+    "https://apps.apple.com/jp/app/%E7%A6%85%E3%82%BF%E3%82%A4%E3%83%9E%E3%83%BC-zen-breath-timer/id6755300927",
+  googlePlayUrl: undefined,
+  deepLinkSchema: undefined,
+  publishedAt: new Date("2025-11-16"),
+  updatedAt: new Date("2025-11-19"),
+};
+
+// RUNNING CHARTアプリ
+export const appRunningChart: App = {
+  id: "app-running-chart",
+  slug: "running-chart-app",
+  certId: "", // 資格試験アプリではないため空文字列
+  name: "RUNNING CHART",
+  description:
+    "データ駆動型ランナー向けのチャートベースのランニングログアプリ。時系列ラインチャート、距離-時間グラフ、ゴールライン分析で、ペース、距離の傾向、パフォーマンスを明確に可視化します。",
+  iconUrl: "/images/apps/Run Chart/icon.png",
+  screenshots: [
+    "/images/apps/Run Chart/screenshot1.png",
+    "/images/apps/Run Chart/screenshot2.png",
+    "/images/apps/Run Chart/screenshot3.png",
+  ],
+  features: [
+    {
+      title: "時系列ラインチャート",
+      description:
+        "日、週、月単位でランニング履歴を可視化します。時系列データで、パフォーマンスの変化を明確に把握できます。",
+      iconUrl: "/images/icons/book.svg",
+    },
+    {
+      title: "距離-時間グラフ",
+      description:
+        "持久力とペースの傾向を正確に追跡します。距離と時間の関係を視覚化し、トレーニングの効果を分析できます。",
+      iconUrl: "/images/icons/book.svg",
+    },
+    {
+      title: "ゴールライン分析",
+      description:
+        "カスタムゴールを設定し、進捗を即座に確認できます。目標に向けた進捗を視覚的に把握し、モチベーションを維持できます。",
+      iconUrl: "/images/icons/exam.svg",
+    },
+    {
+      title: "パフォーマンスインサイト",
+      description:
+        "長距離走の持久力、スピードの変化、一貫性レベルを特定します。データから得られる洞察で、トレーニングを最適化できます。",
+      iconUrl: "/images/icons/analysis.svg",
+    },
+    {
+      title: "ミニマル、グラフ優先デザイン",
+      description:
+        "クリーンなチャート、簡単なデータ入力、即座のフィードバック。データに集中できる、シンプルで直感的なデザインです。",
+      iconUrl: "/images/icons/progress.svg",
+    },
+    {
+      title: "ローカルデータ保存",
+      description:
+        "アカウント不要で、すべてのデータをローカルに保存。プライバシーを守りながら、データを安全に管理できます。",
+      iconUrl: "/images/icons/offline.svg",
+    },
+  ],
+  freeFeatures: [
+    "時系列ラインチャート",
+    "距離-時間グラフ",
+    "ゴールライン分析",
+    "パフォーマンスインサイト",
+    "ミニマル、グラフ優先デザイン",
+    "ローカルデータ保存",
+    "ダーク＆ライトモード",
+    "データエクスポート機能",
+  ],
+  paidFeatures: [],
+  pricing: {
+    free: true,
+  },
+  appStoreUrl:
+    "https://apps.apple.com/jp/app/running-chart/id6754525303",
+  googlePlayUrl: undefined,
+  deepLinkSchema: undefined,
+  publishedAt: new Date("2025-11-04"),
+  updatedAt: new Date("2025-11-11"),
+};
+
 export function getAllApps(): App[] {
-  return [appAutoMechanic1, appAutoMechanic2, appAutoMechanic3, appCareWorker, appUSCPA, appCPACorporateLaw, appHabitCalendar, appMyGohan, appHiwarin];
+  return [appAutoMechanic1, appAutoMechanic2, appAutoMechanic3, appCareWorker, appUSCPA, appCPACorporateLaw, appHabitCalendar, appMyGohan, appHiwarin, appZenTimer, appRunningChart];
 }
 
 export function getAppByCert(certId: string): App | undefined {

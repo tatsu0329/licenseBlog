@@ -1932,7 +1932,379 @@ export default async function AppDetailPage({
                       Q. 他の買い物アプリと何が違いますか？
                     </h3>
                     <p className="text-gray-700 leading-relaxed">
-                      A. 1日あたりの価格で見直すことに特化した日割り計算アプリです。大きな出費もポジティブに捉えられるお金の見方をサポートし、SNSにシェアしやすいポップな画像を生成できます。自己投資や買い物に対する罪悪感をやわらげる"見せ方"を提供します。
+                      A. 1日あたりの価格で見直すことに特化した日割り計算アプリです。大きな出費もポジティブに捉えられるお金の見方をサポートし、SNSにシェアしやすいポップな画像を生成できます。自己投資や買い物に対する罪悪感をやわらげる\"見せ方\"を提供します。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* なぜこのアプリなのか - 禅タイマー */}
+            {app.slug === "zen-timer-app" && (
+              <section className="mb-8 bg-blue-50 rounded-lg p-6">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  なぜこのアプリなのか
+                </h2>
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      🧘 呼吸と静寂に集中
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      「吸う・止める・吐く」のシンプルな呼吸サイクルに合わせ、深い集中と落ち着きを取り戻すためのミニマルな瞑想タイマーです。円のアニメーションと禅鐘の澄んだ音が、自然に呼吸へ意識を導きます。
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      🎵 禅鐘タイマーと視覚的ガイド
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      開始時と終了時に、静かで深みのある「禅ベル」を再生。中心のリングがゆっくりと膨らんだり縮んだりし、呼吸のテンポに合わせて動く視覚的ガイドを搭載しています。
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      🎨 ミニマルな禅デザイン
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      黒 × 白（または金）の落ち着いたモノトーンUI。余白を活かし、視界のノイズを徹底的に排除した禅デザインです。日常の忙しさから離れ、数分だけ静かな呼吸の時間をつくります。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* 効果的な使い方 - 禅タイマー */}
+            {app.slug === "zen-timer-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  効果的な使い方
+                </h2>
+                <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6">
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          1
+                        </span>
+                        呼吸テンポを設定
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        初心者から上級者まで、自由に「吸う・止める・吐く」の秒数を設定します。推奨プリセット（4–0–6 / 4–2–6 など）も搭載されているため、初心者でも簡単に始められます。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          2
+                        </span>
+                        環境音を選ぶ（オプション）
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        雨音／川の流れ／焚き火など自然音をループ再生して、より深いリラックスへ導きます。環境音はオプションなので、静寂を好む方は無音でも使用できます。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          3
+                        </span>
+                        呼吸ガイドに合わせて瞑想
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        中心のリングがゆっくりと膨らんだり縮んだりする視覚的ガイドに合わせて、呼吸を整えます。禅鐘の澄んだ音とともに、深い集中と落ち着きを取り戻します。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          4
+                        </span>
+                        セッションを記録
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        毎日の瞑想・呼吸法の継続をサポート。日付、実施時間、呼吸テンポを自動で保存します。継続することで、心の整いを実感できます。
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* こんな方におすすめ - 禅タイマー */}
+            {app.slug === "zen-timer-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  こんな方におすすめ
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      🧘 毎日の瞑想を習慣にしたい方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      セッション記録機能で、毎日の瞑想・呼吸法の継続をサポートします。日付、実施時間、呼吸テンポを自動で保存し、継続を可視化できます。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      💨 呼吸法で心を整えたい方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      「吸う・止める・吐く」のシンプルな呼吸サイクルに合わせ、深い集中と落ち着きを取り戻せます。視覚的ガイドと禅鐘の音が、自然に呼吸へ意識を導きます。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      😌 ストレスや不安を軽減したい方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      日常の忙しさから離れ、数分だけ静かな呼吸の時間をつくります。深い呼吸と集中に戻れる静かな瞑想時間で、ストレスや不安を軽減できます。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      🌙 就寝前のリラックスに使いたい方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      雨音／川の流れ／焚き火など自然音をループ再生して、より深いリラックスへ導きます。就寝前のリラックスタイムに最適です。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      ⏸️ 短い休憩でも意識をリセットしたい方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      数分だけ静かな呼吸の時間をつくることで、短い休憩でも意識をリセットできます。忙しい日常の中でも、心を整える時間をつくれます。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      🎨 無駄のないミニマルな瞑想アプリが欲しい方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      黒 × 白（または金）の落ち着いたモノトーンUI。余白を活かし、視界のノイズを徹底的に排除した禅デザインです。無駄のないミニマルな設計で、集中を妨げません。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* よくある質問 - 禅タイマー */}
+            {app.slug === "zen-timer-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  よくある質問
+                </h2>
+                <div className="space-y-4">
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. 無料でどのくらい使えますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 本アプリは完全無料でご利用いただけます。すべての機能を制限なくお使いいただけます。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. どのデバイスに対応していますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. iPhone、iPad、Mac、Apple Visionに対応しています。iOS 16.0以降、iPadOS 16.0以降、macOS 13.0以降が必要です。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. 呼吸テンポはどのように設定しますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 初心者から上級者まで、自由に「吸う・止める・吐く」の秒数を設定できます。推奨プリセット（4–0–6 / 4–2–6 など）も搭載されているため、初心者でも簡単に始められます。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. 他の瞑想アプリと何が違いますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 呼吸と静寂に集中するミニマルな瞑想タイマーです。黒 × 白（または金）の落ち着いたモノトーンUIで、視界のノイズを徹底的に排除した禅デザイン。円のアニメーションと禅鐘の澄んだ音が、自然に呼吸へ意識を導きます。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* なぜこのアプリなのか - RUNNING CHART */}
+            {app.slug === "running-chart-app" && (
+              <section className="mb-8 bg-blue-50 rounded-lg p-6">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  なぜこのアプリなのか
+                </h2>
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📊 データ駆動型のランニングログ
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      多くのランニングアプリはGPSやソーシャルシェアに焦点を当てていますが、RUNNING CHARTはあなたのデータ、あなたの改善、あなたのラインに焦点を当てます。時系列ラインチャート、距離-時間グラフ、ゴールライン分析で、ペース、距離の傾向、パフォーマンスを明確に可視化します。
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📈 パフォーマンスインサイト
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      長距離走の持久力、スピードの変化、一貫性レベルを特定します。データから得られる洞察で、トレーニングを最適化できます。各セッションが探索可能なデータセットとなり、距離 × 時間 × 頻度 × 強度で分析できます。
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      🎯 ミニマル、グラフ優先デザイン
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      クリーンなチャート、簡単なデータ入力、即座のフィードバック。データに集中できる、シンプルで直感的なデザインです。ゲーミフィケーションではなく、真剣なランナー向けのツールです。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* 効果的な使い方 - RUNNING CHART */}
+            {app.slug === "running-chart-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  効果的な使い方
+                </h2>
+                <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6">
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          1
+                        </span>
+                        ランニングデータを記録
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        毎回のランニング後、距離、時間、その他のデータを記録します。簡単なデータ入力で、すべてのセッションが探索可能なデータセットになります。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          2
+                        </span>
+                        時系列チャートで傾向を分析
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        日、週、月単位でランニング履歴を可視化します。時系列データで、パフォーマンスの変化を明確に把握し、トレーニングの効果を確認できます。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          3
+                        </span>
+                        ゴールを設定して進捗を追跡
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        カスタムゴールを設定し、進捗を即座に確認できます。ゴールライン分析で、目標に向けた進捗を視覚的に把握し、モチベーションを維持できます。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          4
+                        </span>
+                        パフォーマンスインサイトで最適化
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        長距離走の持久力、スピードの変化、一貫性レベルを特定します。データから得られる洞察で、トレーニングを最適化し、パフォーマンスを向上させます。
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* こんな方におすすめ - RUNNING CHART */}
+            {app.slug === "running-chart-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  こんな方におすすめ
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      🏃 マラソン訓練や長距離練習をしている方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      マラソン訓練や長距離練習に最適です。時系列チャートで、持久力とペースの傾向を正確に追跡し、トレーニングの効果を分析できます。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📊 真剣なランナーの週次進捗追跡
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      真剣なランナーの週次進捗追跡に最適です。距離-時間グラフで、パフォーマンスの変化を明確に把握できます。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📈 休息期間前後のパフォーマンス比較
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      休息期間前後のパフォーマンスを比較できます。データから得られる洞察で、休息の効果を確認し、トレーニングを最適化できます。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📉 チャートが好きなデータ駆動型フィットネス愛好家
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      チャートが好きなデータ駆動型フィットネス愛好家に最適です。数値で測定、比較、改善を好む方にぴったりです。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* よくある質問 - RUNNING CHART */}
+            {app.slug === "running-chart-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  よくある質問
+                </h2>
+                <div className="space-y-4">
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. 無料でどのくらい使えますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 本アプリは完全無料でご利用いただけます。すべての機能を制限なくお使いいただけます。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. どのデバイスに対応していますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. iPhone、iPad、Mac、Apple Visionに対応しています。iOS 16.0以降、iPadOS 16.0以降、macOS 13.0以降が必要です。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. データはどこに保存されますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. すべてのデータはローカルに保存されます。アカウント不要で、プライバシーを守りながら、データを安全に管理できます。データエクスポート機能も搭載されているため、さらに分析したい場合はエクスポートできます。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. 他のランニングアプリと何が違いますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 多くのランニングアプリはGPSやソーシャルシェアに焦点を当てていますが、RUNNING CHARTはあなたのデータ、あなたの改善、あなたのラインに焦点を当てます。ゲーミフィケーションではなく、真剣なランナー向けのツールです。時系列ラインチャート、距離-時間グラフ、ゴールライン分析で、パフォーマンスを深く理解できます。
                     </p>
                   </div>
                 </div>
