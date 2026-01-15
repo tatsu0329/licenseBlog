@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 
 interface BackButtonProps {
+  href?: string;
   label?: string;
   className?: string;
   variant?: "default" | "minimal" | "gradient";
@@ -11,6 +12,7 @@ interface BackButtonProps {
 }
 
 export default function BackButton({ 
+  href,
   label = "戻る", 
   className = "",
   variant = "default",
@@ -20,7 +22,11 @@ export default function BackButton({
   const router = useRouter();
 
   const handleBack = () => {
-    router.back();
+    if (href) {
+      router.push(href);
+    } else {
+      router.back();
+    }
   };
 
   const baseClasses = "group inline-flex items-center gap-2.5 px-5 py-2.5 text-sm font-semibold rounded-xl transition-all duration-300 ease-out transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 z-40";
