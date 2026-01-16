@@ -2311,6 +2311,165 @@ export default async function AppDetailPage({
               </section>
             )}
 
+            {/* なぜこのアプリなのか - ITパスポート */}
+            {app.slug === "it-passport-app" && (
+              <section className="mb-8 bg-blue-50 rounded-lg p-6">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  なぜこのアプリなのか
+                </h2>
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📚 ITパスポート試験対策に特化
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      ITパスポート試験対策に特化した過去問アプリです。分野別演習・弱点復習で、スキマ時間でも効率よく学習できます。初学者から直前対策まで幅広く対応しています。
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      🎯 分野別問題演習で効率的に学習
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      ITパスポート試験の出題分野ごとに問題を分類。苦手分野を集中的に学習でき、効率的に知識を身につけられます。分野別の問題演習と、間違えた問題の復習を繰り返すことで、出題傾向と重要ポイントを自然に身につけられます。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* 効果的な使い方 - ITパスポート */}
+            {app.slug === "it-passport-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  効果的な使い方
+                </h2>
+                <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6">
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          1
+                        </span>
+                        分野別に問題を演習
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        ITパスポート試験の出題分野ごとに問題を分類して学習します。苦手分野を集中的に学習でき、効率的に知識を身につけられます。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          2
+                        </span>
+                        間違えた問題を復習
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        間違えた問題を自動で記録し、後から効率的に復習します。弱点復習機能で、苦手分野の問題を重点的に学習し、確実に得点力を向上させます。
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                          3
+                        </span>
+                        スキマ時間で繰り返し学習
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed ml-10">
+                        通勤・通学などのスキマ時間でも効率よく学習できます。短時間でも集中して取り組める設計で、忙しい社会人や学生にも最適です。
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* こんな方におすすめ - ITパスポート */}
+            {app.slug === "it-passport-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  こんな方におすすめ
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      🎓 ITパスポート試験の初学者
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      ITパスポート試験を初めて受験する方に最適です。分野別問題演習で、基礎からしっかりと学習できます。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      📖 スキマ時間で学習したい方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      通勤・通学などのスキマ時間でも効率よく学習できます。短時間でも集中して取り組める設計で、忙しい社会人や学生にも最適です。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      🔄 弱点を克服したい方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      間違えた問題を自動で記録し、後から効率的に復習できます。弱点復習機能で、苦手分野の問題を重点的に学習し、確実に得点力を向上させます。
+                    </p>
+                  </div>
+                  <div className="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      ⏰ 試験直前の総復習をしたい方
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      試験直前の総復習にも最適です。分野別の問題演習と、間違えた問題の復習を繰り返すことで、出題傾向と重要ポイントを自然に身につけられます。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* よくある質問 - ITパスポート */}
+            {app.slug === "it-passport-app" && (
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  よくある質問
+                </h2>
+                <div className="space-y-4">
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. 無料でどのくらい使えますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 本アプリは完全無料でご利用いただけます。すべての機能を制限なくお使いいただけます。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. どのデバイスに対応していますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. iPhone、iPad、Mac、Apple Visionに対応しています。iOS 16.0以降、iPadOS 16.0以降、macOS 13.0以降が必要です。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. どのような問題が収録されていますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. ITパスポート試験の過去問を分野別に分類して収録しています。正誤判定と復習を通じて、出題傾向と重要ポイントを自然に身につけられます。
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Q. 弱点復習機能はどのように使いますか？
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      A. 間違えた問題を自動で記録し、後から効率的に復習できます。弱点復習機能で、苦手分野の問題を重点的に学習し、確実に得点力を向上させます。
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
             {/* 最終CTAセクション */}
             {app.appStoreUrl && (
               <section className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl p-8 text-center text-white mb-8">

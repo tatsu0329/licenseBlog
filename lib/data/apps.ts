@@ -827,8 +827,77 @@ export const appRunningChart: App = {
   updatedAt: new Date("2025-11-11"),
 };
 
+// ITパスポートアプリ
+export const appITPassport: App = {
+  id: "app-it-passport",
+  slug: "it-passport-app",
+  certId: "", // 資格試験アプリだが、資格データが未登録のため空文字列
+  name: "ITパスポート 過去問トレーニング",
+  description:
+    "ITパスポート試験対策に特化した過去問アプリ。分野別演習・弱点復習で、スキマ時間でも効率よく学習できます。初学者から直前対策まで対応。",
+  iconUrl: "/images/apps/ITパスポート/icon.png",
+  screenshots: [
+    "/images/apps/ITパスポート/screenshot1.jpg",
+    "/images/apps/ITパスポート/screenshot2.jpg",
+    "/images/apps/ITパスポート/screenshot3.jpg",
+    "/images/apps/ITパスポート/screenshot4.jpg",
+    "/images/apps/ITパスポート/screenshot5.jpg",
+    "/images/apps/ITパスポート/screenshot6.jpg",
+    "/images/apps/ITパスポート/screenshot7.jpg",
+  ],
+  features: [
+    {
+      title: "分野別問題演習",
+      description:
+        "ITパスポート試験の出題分野ごとに問題を分類。苦手分野を集中的に学習でき、効率的に知識を身につけられます。",
+      iconUrl: "/images/icons/book.svg",
+    },
+    {
+      title: "弱点復習機能",
+      description:
+        "間違えた問題を自動で記録し、後から効率的に復習できます。苦手分野の問題を重点的に学習し、確実に得点力を向上させます。",
+      iconUrl: "/images/icons/analysis.svg",
+    },
+    {
+      title: "スキマ時間学習",
+      description:
+        "通勤・通学などのスキマ時間でも効率よく学習できます。短時間でも集中して取り組める設計で、忙しい社会人や学生にも最適です。",
+      iconUrl: "/images/icons/offline.svg",
+    },
+    {
+      title: "初学者から直前対策まで対応",
+      description:
+        "ITパスポート試験の初学者から、試験直前の総復習まで幅広く対応。自分のレベルに合わせて学習を進められます。",
+      iconUrl: "/images/icons/progress.svg",
+    },
+    {
+      title: "出題傾向の把握",
+      description:
+        "分野別の問題演習と、間違えた問題の復習を繰り返すことで、出題傾向と重要ポイントを自然に身につけられます。",
+      iconUrl: "/images/icons/book.svg",
+    },
+  ],
+  freeFeatures: [
+    "分野別問題演習",
+    "弱点復習機能",
+    "スキマ時間学習",
+    "初学者から直前対策まで対応",
+    "出題傾向の把握",
+  ],
+  paidFeatures: [],
+  pricing: {
+    free: true,
+  },
+  appStoreUrl:
+    "https://apps.apple.com/jp/app/it%E3%83%91%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%88-%E9%81%8E%E5%8E%BB%E5%95%8F%E3%83%88%E3%83%AC%E3%83%BC%E3%83%8B%E3%83%B3%E3%82%B0/id6757769436",
+  googlePlayUrl: undefined,
+  deepLinkSchema: undefined,
+  publishedAt: new Date("2025-01-01"),
+  updatedAt: new Date("2025-01-15"),
+};
+
 export function getAllApps(): App[] {
-  return [appAutoMechanic1, appAutoMechanic2, appAutoMechanic3, appCareWorker, appUSCPA, appCPACorporateLaw, appHabitCalendar, appMyGohan, appHiwarin, appZenTimer, appRunningChart];
+  return [appAutoMechanic1, appAutoMechanic2, appAutoMechanic3, appCareWorker, appUSCPA, appCPACorporateLaw, appHabitCalendar, appMyGohan, appHiwarin, appZenTimer, appRunningChart, appITPassport];
 }
 
 export function getAppByCert(certId: string): App | undefined {
